@@ -6,9 +6,9 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt
 
-ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
+#ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
 
-hwclock --systohc
+#hwclock --systohc
 
-sed -i 's/#en_US.UTF-8/en_US.UTF-8/g' /etc/locale.gen
-locale-gen
+#sed -i 's/#en_US.UTF-8/en_US.UTF-8/g' /etc/locale.gen
+#locale-gen
