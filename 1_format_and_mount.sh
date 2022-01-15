@@ -4,6 +4,7 @@ DRIVE="nvme1n1"
 
 wipefs --all /dev/${DRIVE}
 
+sgdisk -Z ${DRIVE}
 sgdisk /dev/${DRIVE} -o
 
 sgdisk -n 1::+512M /dev/${DRIVE} -t 1:ef00
