@@ -15,3 +15,13 @@ mkfs.vfat -F32 /dev/${DRIVE}p1
 mkswap /dev/${DRIVE}p2
 mkfs.ext4 /dev/${DRIVE}p3
 mkfs.ext4 /dev/${DRIVE}p4
+
+mount /dev/${DRIVE}p3 /mnt
+
+mkdir /mnt/home
+mount /dev/${DRIVE}p4 /mnt/home
+
+#mkdir /mnt/efi
+#mount /dev/${DRIVE}p1 /mnt/efi
+
+swapon /dev/${DRIVE}p2
