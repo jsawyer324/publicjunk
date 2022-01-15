@@ -18,3 +18,4 @@ useradd -m james
 
 systemctl enable NetworkManager
 systemctl enable sddm
+systemctl enable apcupsd
