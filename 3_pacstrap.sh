@@ -1,6 +1,6 @@
 #!/bin/sh
 
-pacstrap /mnt base linux linux-firmware base-devel nano sudo networkmanager sof-firmware plasma-desktop xorg kitty nemo nvidia nvidia-settings efibootmgr grub os-prober dosfstools mtools
+pacstrap /mnt base linux linux-firmware base-devel nano sudo networkmanager sof-firmware plasma-desktop xorg kitty nemo nvidia nvidia-settings efibootmgr grub os-prober dosfstools mtools sddm
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
