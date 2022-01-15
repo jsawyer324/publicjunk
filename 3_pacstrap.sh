@@ -6,7 +6,7 @@ pacstrap /mnt base linux linux-firmware base-devel amd-ucode nano sudo networkma
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-curl -L -o /mnt/tmp/main.zip https://github.com/jsawyer324/publicjunk/archive.refs/heads/main.zip
-bsdtar xvf /mnt/tmp/main.zip
+#curl -L -o /mnt/tmp/main.zip https://github.com/jsawyer324/publicjunk/archive.refs/heads/main.zip
+#bsdtar xvf /mnt/tmp/main.zip
 
 arch-chroot /mnt
