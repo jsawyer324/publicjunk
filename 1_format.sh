@@ -6,10 +6,10 @@ wipefs --all /dev/${DRIVE}
 
 sgdisk /dev/${DRIVE} -o
 
-sgdisk /dev/${DRIVE} 1::+512M -t 1:ef00
-sgdisk /dev/${DRIVE} 2::+4G -t 2:8200
-sgdisk /dev/${DRIVE} 3::+50G
-sgdisk /dev/${DRIVE} 4::+410G
+sgdisk -n 1::+512M /dev/${DRIVE} -t 1:ef00
+sgdisk -n 2::+4G /dev/${DRIVE} -t 2:8200
+sgdisk -n 3::+50G /dev/${DRIVE}
+sgdisk -n 4::+410G /dev/${DRIVE}
 
 mkfs.vfat -F32 /dev/${DRIVE}p1
 mkswap /dev/${DRIVE}p2
