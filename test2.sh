@@ -33,6 +33,9 @@ timedatectl set-ntp true
 
 echo "Initial Pacstrap."
 
+# enable options "color", "ParallelDownloads", "multilib (32-bit) repository"
+sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ; s #\[multilib\] \[multilib\] ; /\[multilib\]/{n;s #Include Include }' /etc/pacman.conf
+
 #base
 pacstrap /mnt base linux linux-firmware base-devel amd-ucode
 
