@@ -18,8 +18,8 @@ sgdisk -n 4::+410G /dev/${DRIVE}
 echo "Formatting Paritions"
 mkfs.vfat -F32 /dev/${DRIVE}p1
 mkswap /dev/${DRIVE}p2
-mkfs.ext4 /dev/${DRIVE}p3
-mkfs.ext4 /dev/${DRIVE}p4
+mkfs.ext4 -f /dev/${DRIVE}p3
+mkfs.ext4 -f /dev/${DRIVE}p4
 
 #mount partitions
 echo "Mounting Partitions"
