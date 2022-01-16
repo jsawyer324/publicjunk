@@ -40,4 +40,9 @@ chmod a+x /mnt/root/locale.sh
 cp ./grub.sh /mnt/root/
 chmod a+x /mnt/root/grub.sh
 
-#arch-chroot /mnt
+arch-chroot /mnt /root/locale.sh
+arch-chroot /mnt /root/grub.sh
+
+umount -a
+
+reboot
