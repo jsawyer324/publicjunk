@@ -40,7 +40,7 @@ sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ; s #\[multilib\
 
 pacman-key --init
 pacman-key --populate archlinux
-pacman-key --refresh-keys
+#pacman-key --refresh-keys
 
 #base
 pacstrap /mnt base linux linux-firmware base-devel amd-ucode
