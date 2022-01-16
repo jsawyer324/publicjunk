@@ -38,31 +38,33 @@ echo "Initial Pacstrap."
 # enable options "color", "ParallelDownloads", "multilib (32-bit) repository"
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ; s #\[multilib\] \[multilib\] ; /\[multilib\]/{n;s #Include Include }' /etc/pacman.conf
 
-pacman -Syy
+pacman-key --init
+pacman-key --populate archlinux
+pacman-key --refresh-keys
 
 #base
-pacstrap /mnt base linux linux-firmware base-devel amd-ucode --noconfirm --needed
+pacstrap /mnt base linux linux-firmware base-devel amd-ucode
 
 #grub
-pacstrap /mnt efibootmgr grub os-prober dosfstools mtools --noconfirm --needed
+pacstrap /mnt efibootmgr grub os-prober dosfstools mtools
 
 #admin
-pacstrap /mnt nano sudo --noconfirm --needed
+pacstrap /mnt nano sudo
 
 #networking
-pacstrap /mnt samba cifs-utils nfs-utils rsync networkmanager --noconfirm --needed
+pacstrap /mnt samba cifs-utils nfs-utils rsync networkmanager
 
 #Drivers
-pacstrap /mnt nvidia nvidia-settings apcupsd --noconfirm --needed
+pacstrap /mnt nvidia nvidia-settings apcupsd
 
 #software
-pacstrap /mnt cmus mpv htop pianobar firefox git --noconfirm --needed
+pacstrap /mnt cmus mpv htop pianobar firefox git
 
 #Audio
-pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils --noconfirm --needed
+pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils
 
 #KDE
-pacstrap /mnt plasma-desktop xorg konsole kate dolphin sddm plasma-pa kscreen --noconfirm --needed
+pacstrap /mnt plasma-desktop xorg konsole kate dolphin sddm plasma-pa kscreen
 
 echo "Updating mirror lists."
 #backup
