@@ -41,7 +41,6 @@ genfstab -U /mnt >> /mnt/etc/fstab
 #Prepare and launch phase2
 echo "Prepping Phase 2."
 curl https://raw.githubusercontent.com/jsawyer324/publicjunk/main/phase2.sh -o /mnt/root/phase2.sh
-#cp ./phase2.sh /mnt/root/
 chmod a+x /mnt/root/phase2.sh
 
 arch-chroot /mnt /root/phase2.sh
