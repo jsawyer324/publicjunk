@@ -23,10 +23,10 @@ yes | mkfs.ext4 ${DRIVE}p4
 
 #mount partitions
 echo "Mounting Partitions"
-mount /dev/${DRIVE}p3 /mnt
+mount ${DRIVE}p3 /mnt
 mkdir /mnt/home
-mount /dev/${DRIVE}p4 /mnt/home
-swapon /dev/${DRIVE}p2
+mount ${DRIVE}p4 /mnt/home
+swapon ${DRIVE}p2
 
 echo "Setting ntp."
 timedatectl set-ntp true
