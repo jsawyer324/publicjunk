@@ -1,6 +1,5 @@
 #!/bin/sh
 
-HOSTNAME="UltraArch2"
 USERNAME="james"
 DRIVE="nvme1n1"
 
@@ -8,14 +7,6 @@ echo "Setting Timezone."
 ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
 
 hwclock --systohc
-
-sed -i 's/#en_US.UTF-8/en_US.UTF-8/g' /etc/locale.gen
-echo "Generating Locale."
-locale-gen
-echo "LANG=en_US.UTF-8" > /etc/locale.conf
-
-echo "Setting Hostname."
-echo ${HOSTNAME} > /etc/hostname
 
 #Set root password
 echo "Please set root password."
