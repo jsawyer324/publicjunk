@@ -30,9 +30,7 @@ echo "Please set password for user " $USERNAME
 passwd $USERNAME
 
 #enable services
-systemctl enable NetworkManager
-systemctl enable sddm
-systemctl enable apcupsd
+systemctl enable NetworkManager sddm apcupsd
 
 
 mkdir /boot/efi
