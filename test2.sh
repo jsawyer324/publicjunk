@@ -1,5 +1,7 @@
 #!/bin/sh
 
+clear
+
 HOSTNAME="UltraArch2"
 USERNAME="james"
 DRIVE="/dev/nvme1n1"
@@ -34,9 +36,9 @@ echo "Setting ntp."
 timedatectl set-ntp true
 
 echo "Initial Pacstrap."
-
 # enable options "color", "ParallelDownloads", "multilib (32-bit) repository"
-sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ; s #\[multilib\] \[multilib\] ; /\[multilib\]/{n;s #Include Include }' /etc/pacman.conf
+# sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ; s #\[multilib\] \[multilib\] ; /\[multilib\]/{n;s #Include Include }' /etc/pacman.conf
+sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads }' /etc/pacman.conf
 
 #base
 pacstrap /mnt base linux linux-firmware base-devel amd-ucode
@@ -59,14 +61,8 @@ pacstrap /mnt cmus mpv htop pianobar firefox git
 #Audio
 pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils
 
-#KDE
+#KDE Plasma
 pacstrap /mnt plasma-desktop xorg konsole kate dolphin sddm plasma-pa kscreen
-
-echo "Updating mirror lists."
-#backup
-#mv /mnt/etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist.backup
-#update mirror lists
-#reflector --verbose --country 'United States' --latest 10 --protocol https --sort rate --save /mnt/etc/pacman.d/mirrorlist
 
 
 echo "Generating fstab"
