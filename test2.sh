@@ -56,7 +56,7 @@ pacstrap /mnt samba cifs-utils nfs-utils rsync networkmanager
 pacstrap /mnt nvidia nvidia-settings apcupsd
 
 #software
-pacstrap /mnt cmus mpv htop pianobar firefox
+pacstrap /mnt cmus mpv htop pianobar firefox git
 
 #Audio
 pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils
