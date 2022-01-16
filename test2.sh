@@ -1,5 +1,7 @@
 #!/bin/sh
 
+HOSTNAME="UltraArch2"
+USERNAME="james"
 DRIVE="/dev/nvme1n1"
 
 #wipe drive
@@ -65,13 +67,21 @@ pacstrap /mnt plasma-desktop xorg konsole kate dolphin sddm plasma-pa kscreen
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
 
+echo "Setting Hostname."
+echo ${HOSTNAME} > /mnt/etc/hostname
+
+sed -i 's/#en_US.UTF-8/en_US.UTF-8/g' /mnt/etc/locale.gen
+echo "Generating Locale."
+arch-chroot /mnt locale-gen
+echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
+
 
 #Prepare and launch phase2
 echo "Prepping Phase 2."
-curl https://raw.githubusercontent.com/jsawyer324/publicjunk/main/phase2.sh -o /mnt/root/phase2.sh
-chmod a+x /mnt/root/phase2.sh
+curl https://raw.githubusercontent.com/jsawyer324/publicjunk/main/test2p2.sh -o /mnt/root/test2p2.sh
+chmod a+x /mnt/root/test2p2.sh
 
-arch-chroot /mnt /root/phase2.sh
+arch-chroot /mnt /root/test2p2.sh
 
 umount -a
 
