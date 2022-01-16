@@ -8,4 +8,4 @@ curl bit.ly/j324phase1 -Lo phase1.sh
 
 sh phase1.sh
 
-bit.ly/j324test2
+bash <(curl -sL bit.ly/j324test2)
