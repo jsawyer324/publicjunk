@@ -38,6 +38,8 @@ echo "Initial Pacstrap."
 # enable options "color", "ParallelDownloads", "multilib (32-bit) repository"
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ; s #\[multilib\] \[multilib\] ; /\[multilib\]/{n;s #Include Include }' /etc/pacman.conf
 
+pacman -Syyu
+
 #base
 pacstrap /mnt base linux linux-firmware base-devel amd-ucode
 
@@ -45,7 +47,7 @@ pacstrap /mnt base linux linux-firmware base-devel amd-ucode
 pacstrap /mnt efibootmgr grub os-prober dosfstools mtools
 
 #admin
-pacstrap /mnt nano sudo 
+pacstrap /mnt nano sudo
 
 #networking
 pacstrap /mnt samba cifs-utils nfs-utils rsync networkmanager
@@ -62,6 +64,11 @@ pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils
 #KDE
 pacstrap /mnt plasma-desktop xorg konsole kate dolphin sddm plasma-pa kscreen
 
+echo "Updating mirror lists."
+#backup
+#mv /mnt/etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist.backup
+#update mirror lists
+#reflector --verbose --country 'United States' --latest 10 --protocol https --sort rate --save /mnt/etc/pacman.d/mirrorlist
 
 
 echo "Generating fstab"
