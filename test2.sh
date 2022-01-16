@@ -49,13 +49,13 @@ pacstrap /mnt base linux linux-firmware base-devel amd-ucode
 pacstrap /mnt efibootmgr grub os-prober dosfstools mtools
 
 #admin
-pacstrap /mnt nano sudo
+pacstrap /mnt nano sudo reflector
 
 #networking
 pacstrap /mnt samba cifs-utils nfs-utils rsync networkmanager
 
 #Drivers
-pacstrap /mnt nvidia nvidia-settings apcupsd
+pacstrap /mnt nvidia nvidia-settings nvidia-utils apcupsd
 
 #software
 pacstrap /mnt cmus mpv htop pianobar firefox git
