@@ -48,7 +48,7 @@ pacstrap /mnt efibootmgr grub os-prober dosfstools mtools
 pacstrap /mnt nano sudo 
 
 #networking
-pacstrap /mnt samba cifs-utils rsync networkmanager
+pacstrap /mnt samba cifs-utils nfs-utils rsync networkmanager
 
 #Drivers
 pacstrap /mnt nvidia nvidia-settings apcupsd
