@@ -32,7 +32,7 @@ echo "Setting ntp."
 timedatectl set-ntp true
 
 echo "Initial Pacstrap."
-pacstrap /mnt base linux linux-firmware base-devel amd-ucode nano sudo networkmanager sof-firmware plasma-desktop xorg konsole kate dolphin nvidia nvidia-settings efibootmgr grub os-prober dosfstools mtools sddm plasma-pa kscreen pulseaudio pulseaudio-alsa alsa-utils samba cifs-utils apcupsd cmus mpv htop pianobar firefox rsync
+pacstrap /mnt base linux linux-firmware base-devel amd-ucode nano sudo networkmanager sof-firmware plasma-desktop xorg konsole kate dolphin nvidia nvidia-settings efibootmgr grub os-prober dosfstools mtools sddm plasma-pa kscreen pulseaudio pulseaudio-alsa alsa-utils samba cifs-utils apcupsd cmus mpv htop pianobar firefox rsync nfs-utils
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
