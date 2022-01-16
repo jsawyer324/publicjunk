@@ -17,6 +17,8 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 echo ${HOSTNAME} > /etc/hostname
 
+#Set root password
+passwd
 
 #Create user
 useradd -m -G wheel $USERNAME
