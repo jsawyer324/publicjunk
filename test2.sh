@@ -38,10 +38,6 @@ echo "Initial Pacstrap."
 # enable options "color", "ParallelDownloads", "multilib (32-bit) repository"
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ; s #\[multilib\] \[multilib\] ; /\[multilib\]/{n;s #Include Include }' /etc/pacman.conf
 
-pacman-key --init
-pacman-key --populate archlinux
-#pacman-key --refresh-keys
-
 #base
 pacstrap /mnt base linux linux-firmware base-devel amd-ucode
 
