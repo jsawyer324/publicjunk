@@ -29,19 +29,17 @@ swapon /dev/${DRIVE}p2
 
 timedatectl set-ntp true
 
-pacstrap /mnt base linux linux-firmware base-devel amd-ucode nano sudo networkmanager sof-firmware plasma-desktop xorg konsole kate dolphin nvidia nvidia-settings efibootmgr grub os-prober dosfstools mtools sddm plasma-pa kscreen pulseaudio pulseaudio-alsa alsa-utils samba cifs-utils apcupsd cmus mpv htop pianobar
+pacstrap /mnt base linux linux-firmware base-devel amd-ucode nano sudo networkmanager sof-firmware plasma-desktop xorg konsole kate dolphin nvidia nvidia-settings efibootmgr grub os-prober dosfstools mtools sddm plasma-pa kscreen pulseaudio pulseaudio-alsa alsa-utils samba cifs-utils apcupsd cmus mpv htop pianobar firefox
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
 
-cp ./locale.sh /mnt/root/
-chmod a+x /mnt/root/locale.sh
+#Prepare and launce phase2
+curl https://raw.githubusercontent.com/jsawyer324/publicjunk/main/phase2.sh -o /mnt/root/phase2.sh
+#cp ./phase2.sh /mnt/root/
+chmod a+x /mnt/root/phase2.sh
 
-cp ./grub.sh /mnt/root/
-chmod a+x /mnt/root/grub.sh
-
-arch-chroot /mnt /root/locale.sh
-arch-chroot /mnt /root/grub.sh
+arch-chroot /mnt /root/phase2.sh
 
 umount -a
 
