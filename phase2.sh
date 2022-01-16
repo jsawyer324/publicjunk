@@ -18,6 +18,7 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo ${HOSTNAME} > /etc/hostname
 
 #Set root password
+echo "Please set root password"
 passwd
 
 #Create user
@@ -25,6 +26,7 @@ useradd -m -G wheel $USERNAME
 #Add user to sudoers
 sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers
 #Set password
+echo "Please set password for user " $USERNAME
 passwd $USERNAME
 
 #enable services
