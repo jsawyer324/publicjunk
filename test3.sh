@@ -45,11 +45,9 @@ mkdir /mnt/home
 mount ${DRIVE}4 /mnt/home
 swapon ${DRIVE}2
 
-lsblk -o name,mountpoint,label
+lsblk
 
-sleep 15
-
-exit
+sleep 10
 
 echo "Setting ntp."
 timedatectl set-ntp true
