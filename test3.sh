@@ -1,3 +1,6 @@
+#!/bin/sh
+
+clear
 
 # Select disk.
 Echo "Dont be dumb, the disk you choose will be erased!!"
@@ -8,3 +11,5 @@ do
     print "Installing on $DISK"
     break
 done
+
+echo $DISK
