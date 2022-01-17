@@ -4,7 +4,7 @@ USERNAME="james"
 DRIVE="/dev/vda"
 
 echo -e "Enter new password for $USERNAME:\n"
-read userpass
+read -s userpass
 
 
 echo "Setting Timezone."
@@ -25,11 +25,11 @@ sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers
 echo "Please set password for user "$USERNAME
 echo -e "$userpass\n$userpass" | passwd $USERNAME
 
-sleep 15
+#sleep 15
 
 #enable services
-echo "Enabling Services."
-systemctl enable NetworkManager qemu-guest-agent #sddm apcupsd
+#echo "Enabling Services."
+#systemctl enable NetworkManager qemu-guest-agent #sddm apcupsd
 
 #Configure Grub
 echo "Configuring Grub."
