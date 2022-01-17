@@ -14,6 +14,9 @@ done
 
 read -r -p "Please enter the hostname: " HOSTNAME
 
+echo $HOSTNAME
+
+sleep 10
 
 #HOSTNAME="UltraArch2"
 USERNAME="james"
