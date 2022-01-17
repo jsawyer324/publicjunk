@@ -8,7 +8,7 @@ PS3="Select the disk you want to use: "
 select ENTRY in $(lsblk -dpnoNAME|grep -P "/dev/sd|nvme|vd");
 do
     DRIVE=$ENTRY
-    print "Installing on $DRIVE"
+    echo "Installing on $DRIVE"
     break
 done
 
