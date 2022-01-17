@@ -14,13 +14,8 @@ done
 
 read -r -p "Please enter the hostname: " HOSTNAME
 
-echo $HOSTNAME
-
-sleep 10
-
-#HOSTNAME="UltraArch2"
 USERNAME="james"
-#DRIVE="/dev/nvme1n1"
+
 
 #wipe drive
 echo "Wiping Drive."
@@ -51,6 +46,8 @@ swapon ${DRIVE}p2
 lsblk
 
 sleep 15
+
+exit
 
 echo "Setting ntp."
 timedatectl set-ntp true
