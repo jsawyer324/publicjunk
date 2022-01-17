@@ -25,9 +25,11 @@ sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers
 echo "Please set password for user "$USERNAME
 echo -e "$userpass\n$userpass" | passwd $USERNAME
 
+sleep 15
+
 #enable services
 echo "Enabling Services."
-systemctl enable NetworkManager sddm apcupsd
+systemctl enable NetworkManager #sddm apcupsd
 
 #Configure Grub
 echo "Configuring Grub."
@@ -35,3 +37,5 @@ mkdir /boot/efi
 mount ${DRIVE}1 /boot/efi
 grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
+
+sleep 15
