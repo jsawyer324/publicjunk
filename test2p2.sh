@@ -4,7 +4,8 @@ USERNAME="james"
 DRIVE="/dev/nvme1n1"
 
 echo -e "Enter new password for $USERNAME:\n"
-read userpass
+read -s userpass
+
 
 echo "Setting Timezone."
 ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
