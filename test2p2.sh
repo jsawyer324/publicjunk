@@ -4,7 +4,7 @@ USERNAME="james"
 DRIVE="/dev/nvme1n1"
 
 echo -e "Enter new password for $USERNAME:\n"
-read -s userpass
+read userpass
 
 
 echo "Setting Timezone."
