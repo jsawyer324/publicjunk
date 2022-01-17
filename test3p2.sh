@@ -29,7 +29,7 @@ sleep 15
 
 #enable services
 echo "Enabling Services."
-systemctl enable NetworkManager #sddm apcupsd
+systemctl enable NetworkManager qemu-guest-agent #sddm apcupsd
 
 #Configure Grub
 echo "Configuring Grub."
