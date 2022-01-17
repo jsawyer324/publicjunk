@@ -88,8 +88,11 @@ systemctl enable qemu-guest-agent --root=/mnt
 #systemctl enable sddm --root=/mnt
 
 #LXQT
-sudo pacman -S --needed lxqt xdg-utils ttf-freefont sddm xorg libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt
+sudo pacstrap /mnt lxqt xdg-utils ttf-freefont sddm xorg libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt --noconfirm --needed
 systemctl enable sddm --root=/mnt
+
+#vm programs
+sudo pacstrap /mnt firefox torbrowser-launcher
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
