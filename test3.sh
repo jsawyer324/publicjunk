@@ -53,8 +53,7 @@ echo "Setting ntp."
 timedatectl set-ntp true
 
 echo "Initial Pacstrap."
-# enable options "color", "ParallelDownloads", "multilib (32-bit) repository"
-# sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ; s #\[multilib\] \[multilib\] ; /\[multilib\]/{n;s #Include Include }' /etc/pacman.conf
+# enable options "color", "ParallelDownloads"
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads }' /etc/pacman.conf
 
 #base
@@ -68,9 +67,12 @@ pacstrap /mnt nano sudo reflector --noconfirm --needed
 
 #networking
 pacstrap /mnt samba cifs-utils nfs-utils rsync networkmanager --noconfirm --needed
+systemctl enable networkmanager --root=/mnt
 
 #VM Hosts
+#qemu
 pacstrap /mnt qemu-guest-agent --noconfirm --needed
+systemctl enable qemu-guest-agent --root=/mnt
 
 #Drivers
 #pacstrap /mnt nvidia nvidia-settings nvidia-utils apcupsd --noconfirm --needed
@@ -83,6 +85,7 @@ pacstrap /mnt qemu-guest-agent --noconfirm --needed
 
 #KDE Plasma
 #pacstrap /mnt plasma-desktop xorg konsole kate dolphin sddm plasma-pa kscreen --noconfirm --needed
+#systemctl enable sddm --root=/mnt
 
 
 echo "Generating fstab"
