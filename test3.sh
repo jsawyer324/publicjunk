@@ -24,10 +24,10 @@ sgdisk -Zo ${DRIVE}
 
 #partition disk
 echo "Partitioning Drive"
-sgdisk -n 1::+512M ${DRIVE} -t 1:ef00 -c 0:BOOT
-sgdisk -n 2::+2G ${DRIVE} -t 2:8200 -c 0:SWAP
-sgdisk -n 3::+10G ${DRIVE} -c 0:ROOT
-sgdisk -n 4:: ${DRIVE} -c 0:HOME
+sgdisk -n 1::+512M ${DRIVE} -t 1:ef00 -c 1:BOOT
+sgdisk -n 2::+2G ${DRIVE} -t 2:8200 -c 2:SWAP
+sgdisk -n 3::+10G ${DRIVE} -c 3:ROOT
+sgdisk -n 4:: ${DRIVE} -c 4:HOME
 
 BOOT_P="/dev/disk/by-partlabel/BOOT"
 SWAP_P="/dev/disk/by-partlabel/SWAP"
