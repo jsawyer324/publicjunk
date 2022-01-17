@@ -48,6 +48,10 @@ mkdir /mnt/home
 mount ${DRIVE}p4 /mnt/home
 swapon ${DRIVE}p2
 
+lsblk
+
+sleep 15
+
 echo "Setting ntp."
 timedatectl set-ntp true
 
