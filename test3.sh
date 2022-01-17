@@ -37,19 +37,19 @@ HOME_P="/dev/disk/by-partlabel/HOME"
 
 #format partition
 echo "Formatting Paritions"
-mkfs.vfat -F32 $BOOT_P
-mkswap $SWAP_P
-yes | mkfs.ext4 $ROOT
-yes | mkfs.ext4 $HOME
+mkfs.vfat -F32 ${BOOT_P}
+mkswap ${SWAP_P}
+yes | mkfs.ext4 ${ROOT_P}
+yes | mkfs.ext4 ${HOME_P}
 
 #mount partitions
 echo "Mounting Partitions"
-mount $ROOT /mnt
+mount ${ROOT_P} /mnt
 mkdir /mnt/home
-mount $HOME /mnt/home
-swapon $SWAP
+mount ${HOME_P} /mnt/home
+swapon ${SWAP_P}
 
-lsblk
+lsblk -o name,mountpoint,label
 
 sleep 15
 
