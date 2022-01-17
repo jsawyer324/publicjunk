@@ -87,6 +87,9 @@ systemctl enable qemu-guest-agent --root=/mnt
 #pacstrap /mnt plasma-desktop xorg konsole kate dolphin sddm plasma-pa kscreen --noconfirm --needed
 #systemctl enable sddm --root=/mnt
 
+#LXQT
+sudo pacman -S --needed lxqt xdg-utils ttf-freefont sddm xorg libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt
+systemctl enable sddm --root=/mnt
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
