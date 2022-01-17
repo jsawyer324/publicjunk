@@ -95,10 +95,10 @@ echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 
 #Prepare and launch phase2
 echo "Prepping Phase 2."
-curl https://raw.githubusercontent.com/jsawyer324/publicjunk/main/test2p2.sh -o /mnt/root/test2p2.sh
-chmod a+x /mnt/root/test2p2.sh
+curl https://raw.githubusercontent.com/jsawyer324/publicjunk/main/test3p2.sh -o /mnt/root/test3p2.sh
+chmod a+x /mnt/root/test3p2.sh
 
-arch-chroot /mnt /root/test2p2.sh
+arch-chroot /mnt /root/test3p2.sh
 
 umount -a
 
