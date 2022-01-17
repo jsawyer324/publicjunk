@@ -1,7 +1,7 @@
 #!/bin/sh
 
 USERNAME="james"
-DRIVE="/dev/vda"
+BOOT_P="/dev/disk/by-partlabel/BOOT"
 
 echo -e "Enter new password for $USERNAME:\n"
 read userpass
@@ -32,6 +32,6 @@ systemctl enable NetworkManager sddm apcupsd
 #Configure Grub
 echo "Configuring Grub."
 mkdir /boot/efi
-mount ${DRIVE}p1 /boot/efi
+mount ${BOOT_P} /boot/efi
 grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
