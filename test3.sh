@@ -69,6 +69,9 @@ pacstrap /mnt nano sudo reflector --noconfirm --needed
 #networking
 pacstrap /mnt samba cifs-utils nfs-utils rsync networkmanager --noconfirm --needed
 
+#VM Hosts
+pacstrap /mnt qemu-guest-agent --noconfirm --needed
+
 #Drivers
 #pacstrap /mnt nvidia nvidia-settings nvidia-utils apcupsd --noconfirm --needed
 
