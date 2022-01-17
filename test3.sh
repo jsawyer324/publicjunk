@@ -24,30 +24,26 @@ sgdisk -Zo ${DRIVE}
 
 #partition disk
 echo "Partitioning Drive"
-sgdisk -n 1::+512M ${DRIVE} -t 1:ef00 -c 1:BOOT
-sgdisk -n 2::+2G ${DRIVE} -t 2:8200 -c 2:SWAP
-sgdisk -n 3::+10G ${DRIVE} -c 3:ROOT
-sgdisk -n 4:: ${DRIVE} -c 4:HOME
+sgdisk -n 1::+512M ${DRIVE} -t 1:ef00
+sgdisk -n 2::+2G ${DRIVE} -t 2:8200
+sgdisk -n 3::+10G ${DRIVE}
+sgdisk -n 4:: ${DRIVE}
 
-BOOT_P="/dev/disk/by-partlabel/BOOT"
-SWAP_P="/dev/disk/by-partlabel/SWAP"
-ROOT_P="/dev/disk/by-partlabel/ROOT"
-HOME_P="/dev/disk/by-partlabel/HOME"
 
 
 #format partition
 echo "Formatting Paritions"
-mkfs.vfat -F32 ${BOOT_P}
-mkswap ${SWAP_P}
-yes | mkfs.ext4 ${ROOT_P}
-yes | mkfs.ext4 ${HOME_P}
+mkfs.vfat -F32 ${DRIVE}1
+mkswap ${DRIVE}2
+yes | mkfs.ext4 ${DRIVE}3
+yes | mkfs.ext4 ${DRIVE}4
 
 #mount partitions
 echo "Mounting Partitions"
-mount ${ROOT_P} /mnt
+mount ${DRIVE}3 /mnt
 mkdir /mnt/home
-mount ${HOME_P} /mnt/home
-swapon ${SWAP_P}
+mount ${DRIVE}4 /mnt/home
+swapon ${DRIVE}2
 
 lsblk -o name,mountpoint,label
 
