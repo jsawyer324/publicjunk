@@ -1,7 +1,7 @@
 #!/bin/sh
 
 USERNAME="james"
-DRIVE="/dev/vda"
+DRIVE="/dev/sda"
 
 echo -e "Enter new password for $USERNAME:\n"
 read -s userpass
