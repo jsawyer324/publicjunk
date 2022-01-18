@@ -8,6 +8,8 @@ curl bit.ly/j324phase1 -Lo phase1.sh
 
 sh phase1.sh
 
-bash <(curl -sL bit.ly/j324test2)
+bash <(curl -sL bit.ly/j324test2)  #test2.sh
+
+bash <(curl -sL bit.ly/j324test3)  #test3.sh
 
 curl https://raw.githubusercontent.com/jsawyer324/publicjunk/main/phase1.sh -o phase1.sh
