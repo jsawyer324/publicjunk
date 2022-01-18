@@ -66,7 +66,7 @@ pacstrap /mnt efibootmgr grub os-prober dosfstools mtools --noconfirm --needed
 pacstrap /mnt nano sudo reflector --noconfirm --needed
 
 #networking
-pacstrap /mnt samba cifs-utils nfs-utils rsync networkmanager --noconfirm --needed
+pacstrap /mnt samba cifs-utils nfs-utils ntfs-3g rsync networkmanager --noconfirm --needed
 systemctl enable NetworkManager --root=/mnt
 
 #VM Hosts
