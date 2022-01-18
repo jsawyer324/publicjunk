@@ -14,7 +14,11 @@ done
 
 read -r -p "Please enter the hostname: " HOSTNAME
 
-USERNAME="james"
+echo -e "Enter new username:\n"
+read USERNAME
+
+echo -e "Enter new password for $USERNAME:\n"
+read -s USERPASS
 
 
 #wipe drive
@@ -115,11 +119,48 @@ echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 sleep 15
 
 #Prepare and launch phase2
-echo "Prepping Phase 2."
-curl https://raw.githubusercontent.com/jsawyer324/publicjunk/main/test3p2.sh -o /mnt/root/test3p2.sh
-chmod a+x /mnt/root/test3p2.sh
+#echo "Prepping Phase 2."
+#curl https://raw.githubusercontent.com/jsawyer324/publicjunk/main/test3p2.sh -o /mnt/root/test3p2.sh
+#chmod a+x /mnt/root/test3p2.sh
 
-arch-chroot /mnt /root/test3p2.sh
+#arch-chroot /mnt /root/test3p2.sh
+
+
+
+# Configuring the system.    
+arch-chroot /mnt /bin/bash -e <<EOF
+    
+    # Setting up timezone.
+    echo "Setting up the timezone."
+    ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
+    
+    # Setting up clock.
+    echo "Setting up the system clock."
+    hwclock --systohc
+    
+    #echo "Please set root password."
+    echo -e "$USERPASS\n$USERPASS" | passwd root
+
+    #Create user
+    echo "Creating User."
+    useradd -m -G wheel $USERNAME
+    #Add user to sudoers
+    sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers
+    #Set password
+    #echo "Please set password for user "$USERNAME
+    echo -e "$USERPASS\n$USERPASS" | passwd $USERNAME
+   
+    
+   #Configure Grub
+    echo "Configuring Grub."
+    mkdir /boot/efi
+    mount ${DRIVE}1 /boot/efi
+    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
+    grub-mkconfig -o /boot/grub/grub.cfg
+    
+    sleep 15
+    
+EOF
 
 umount -a
 
