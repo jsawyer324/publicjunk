@@ -71,8 +71,11 @@ systemctl enable networkmanager --root=/mnt
 
 #VM Hosts
 #qemu
-pacstrap /mnt qemu-guest-agent --noconfirm --needed
-systemctl enable qemu-guest-agent --root=/mnt
+#pacstrap /mnt qemu-guest-agent --noconfirm --needed
+#systemctl enable qemu-guest-agent --root=/mnt
+#virtualbox
+pacstrap /mnt virtualbox-guest-utils xf86-video-vmware --noconfirm --needed
+systemctl enable vboxservice --root=/mnt
 
 #Drivers
 #pacstrap /mnt nvidia nvidia-settings nvidia-utils apcupsd --noconfirm --needed
@@ -88,11 +91,15 @@ systemctl enable qemu-guest-agent --root=/mnt
 #systemctl enable sddm --root=/mnt
 
 #LXQT
-sudo pacstrap /mnt lxqt xdg-utils ttf-freefont sddm xorg libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt --noconfirm --needed
-systemctl enable sddm --root=/mnt
+#pacstrap /mnt lxqt xdg-utils ttf-freefont sddm xorg libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt --noconfirm --needed
+#systemctl enable sddm --root=/mnt
+
+#XFCE
+pacstrap /mnt xorg xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
+systemctl enable lightdm --root=/mnt
 
 #vm programs
-sudo pacstrap /mnt firefox torbrowser-launcher
+pacstrap /mnt firefox torbrowser-launcher
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
