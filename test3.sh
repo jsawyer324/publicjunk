@@ -34,7 +34,6 @@ sgdisk -n 3::+10G ${DRIVE}
 sgdisk -n 4:: ${DRIVE}
 
 
-
 #format partition
 echo "Formatting Paritions"
 mkfs.vfat -F32 ${DRIVE}1
@@ -49,9 +48,6 @@ mkdir /mnt/home
 mount ${DRIVE}4 /mnt/home
 swapon ${DRIVE}2
 
-lsblk
-
-sleep 10
 
 echo "Setting ntp."
 timedatectl set-ntp true
@@ -116,16 +112,6 @@ echo "Generating Locale."
 arch-chroot /mnt locale-gen
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 
-sleep 15
-
-#Prepare and launch phase2
-#echo "Prepping Phase 2."
-#curl https://raw.githubusercontent.com/jsawyer324/publicjunk/main/test3p2.sh -o /mnt/root/test3p2.sh
-#chmod a+x /mnt/root/test3p2.sh
-
-#arch-chroot /mnt /root/test3p2.sh
-
-
 
 # Configuring the system.    
 arch-chroot /mnt /bin/bash -e <<EOF
@@ -157,8 +143,6 @@ arch-chroot /mnt /bin/bash -e <<EOF
     mount ${DRIVE}1 /boot/efi
     grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
     grub-mkconfig -o /boot/grub/grub.cfg
-    
-    sleep 15
     
 EOF
 
