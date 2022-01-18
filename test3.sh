@@ -67,7 +67,7 @@ pacstrap /mnt nano sudo reflector --noconfirm --needed
 
 #networking
 pacstrap /mnt samba cifs-utils nfs-utils rsync networkmanager --noconfirm --needed
-systemctl enable networkmanager --root=/mnt
+systemctl enable NetworkManager --root=/mnt
 
 #VM Hosts
 #qemu
