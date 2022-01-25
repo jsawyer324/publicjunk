@@ -86,6 +86,9 @@ systemctl enable vboxservice --root=/mnt
 #Audio
 #pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils --noconfirm --needed
 
+#Bluetooth
+#pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
+
 #KDE Plasma
 #pacstrap /mnt plasma-desktop xorg konsole kate dolphin sddm plasma-pa kscreen --noconfirm --needed
 #systemctl enable sddm --root=/mnt
