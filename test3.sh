@@ -74,17 +74,23 @@ systemctl enable NetworkManager --root=/mnt
 #pacstrap /mnt qemu-guest-agent --noconfirm --needed
 #systemctl enable qemu-guest-agent --root=/mnt
 #virtualbox
-pacstrap /mnt virtualbox-guest-utils xf86-video-vmware --noconfirm --needed
-systemctl enable vboxservice --root=/mnt
+#pacstrap /mnt virtualbox-guest-utils xf86-video-vmware --noconfirm --needed
+#systemctl enable vboxservice --root=/mnt
 
-#Drivers
+#Video Drivers
+#Nvidia
 #pacstrap /mnt nvidia nvidia-settings nvidia-utils apcupsd --noconfirm --needed
+#Intel
+pacstrap /mnt xf86-video-intel mesa --noconfirm --needed
+
+#Other Drivers
+#pacstrap /mnt apcupsd --noconfirm --needed
 
 #software
-#pacstrap /mnt cmus mpv htop pianobar firefox git --noconfirm --needed
+pacstrap /mnt cmus mpv htop pianobar firefox git --noconfirm --needed
 
 #Audio
-#pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils --noconfirm --needed
+pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils --noconfirm --needed
 
 #Bluetooth
 #pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
@@ -98,11 +104,15 @@ systemctl enable vboxservice --root=/mnt
 #systemctl enable sddm --root=/mnt
 
 #XFCE
-pacstrap /mnt xorg xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
+#pacstrap /mnt xorg xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
+#systemctl enable lightdm --root=/mnt
+
+#i3
+pacstrap /mnt i3-wm rofi i3status polybar i3blocks ttf-dejavu xorg xorg-xinit xterm lightdm lightdm-gtk-greeter --noconfirm --needed
 systemctl enable lightdm --root=/mnt
 
 #vm programs
-pacstrap /mnt firefox torbrowser-launcher
+#pacstrap /mnt firefox torbrowser-launcher
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
