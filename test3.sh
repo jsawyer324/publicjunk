@@ -79,7 +79,7 @@ pacstrap /mnt xf86-video-intel mesa --noconfirm --needed
 pacstrap /mnt efibootmgr grub os-prober dosfstools mtools --noconfirm --needed
 
 #admin
-pacstrap /mnt nano sudo reflector --noconfirm --needed
+pacstrap /mnt nano sudo reflector htop git --noconfirm --needed
 
 #networking
 pacstrap /mnt samba cifs-utils nfs-utils ntfs-3g rsync networkmanager --noconfirm --needed
@@ -97,7 +97,7 @@ systemctl enable NetworkManager --root=/mnt
 #pacstrap /mnt apcupsd --noconfirm --needed
 
 #software
-pacstrap /mnt cmus mpv htop pianobar firefox git --noconfirm --needed
+pacstrap /mnt cmus mpv pianobar firefox --noconfirm --needed
 
 #Audio
 pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils --noconfirm --needed
