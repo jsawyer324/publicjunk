@@ -79,7 +79,8 @@ pacstrap /mnt xf86-video-intel mesa --noconfirm --needed
 pacstrap /mnt efibootmgr grub os-prober dosfstools mtools --noconfirm --needed
 
 #admin
-pacstrap /mnt nano sudo reflector htop git --noconfirm --needed
+pacstrap /mnt nano sudo reflector htop git openssh --noconfirm --needed
+systemctl enable sshd --root=/mnt
 
 #networking
 pacstrap /mnt samba cifs-utils nfs-utils ntfs-3g rsync networkmanager --noconfirm --needed
