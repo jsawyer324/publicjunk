@@ -14,5 +14,6 @@ bash <(curl -sL bit.ly/j324test3)  #test3.sh
 
 curl https://raw.githubusercontent.com/jsawyer324/publicjunk/main/phase1.sh -o phase1.sh
 
-iwctl - station wlan0 connect Un...
-nmctl - 
+iwctl - station wlan0 connect Un...  
+  
+nmcli - nmcli dev wifi connect ssid password password
