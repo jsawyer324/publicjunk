@@ -108,7 +108,8 @@ pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils --noconfirm --n
 #systemctl enable lightdm --root=/mnt
 
 #i3
-pacstrap /mnt i3-wm rofi i3status polybar i3blocks ttf-dejavu xorg xorg-xinit xterm lightdm lightdm-gtk-greeter --noconfirm --needed
+pacstrap /mnt i3-wm dmenu xorg xorg-xinit xterm lightdm lightdm-gtk-greeter --noconfirm --needed
+pacstrap /mnt rofi i3status polybar i3blocks ttf-dejavu --noconfirm --needed
 systemctl enable lightdm --root=/mnt
 
 #vm programs
