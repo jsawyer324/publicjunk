@@ -104,6 +104,7 @@ pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol --n
 
 #Bluetooth
 pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
+systemctl enable bluetooth --root=/mnt
 
 #xorg
 pacstrap /mnt xorg-server xorg-apps xorg-xinit --noconfirm --needed
