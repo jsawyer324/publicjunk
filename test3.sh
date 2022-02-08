@@ -106,17 +106,16 @@ pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils --noconfirm --n
 #pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
 
 #KDE Plasma
-#pacstrap /mnt plasma-desktop xorg konsole kate dolphin sddm plasma-pa plasma-nm kscreen --noconfirm --needed
-#systemctl enable sddm --root=/mnt
+pacstrap /mnt plasma-desktop xorg-server xorg-apps xorg-xinit konsole kate dolphin sddm plasma-pa plasma-nm kscreen --noconfirm --needed
+systemctl enable sddm --root=/mnt
 
 #LXQT
-#pacstrap /mnt lxqt xdg-utils ttf-freefont sddm xorg libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt --noconfirm --needed
+#pacstrap /mnt lxqt xdg-utils ttf-freefont sddm xorg-server xorg-apps xorg-xinit libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt --noconfirm --needed
 #systemctl enable sddm --root=/mnt
 
 #XFCE
-pacstrap /mnt xorg-server xorg-apps xorg-xinit xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
-#pacstrap /mnt xorg xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
-systemctl enable lightdm --root=/mnt
+#pacstrap /mnt xorg-server xorg-apps xorg-xinit xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
+#systemctl enable lightdm --root=/mnt
 
 #i3
 #pacstrap /mnt i3-wm i3blocks i3lock i3status numlockx xorg-server xorg-apps xorg-xinit lightdm lightdm-gtk-greeter ranger dmenu kitty --noconfirm --needed
