@@ -114,16 +114,17 @@ pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils --noconfirm --n
 #systemctl enable sddm --root=/mnt
 
 #XFCE
+pacstrap /mnt xorg-server xorg-apps xorg-xinit xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
 #pacstrap /mnt xorg xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
-#systemctl enable lightdm --root=/mnt
+systemctl enable lightdm --root=/mnt
 
 #i3
 #pacstrap /mnt i3-wm i3blocks i3lock i3status numlockx xorg-server xorg-apps xorg-xinit lightdm lightdm-gtk-greeter ranger dmenu kitty --noconfirm --needed
 #pacstrap /mnt noto-fonts ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font --noconfirm --needed
 #systemctl enable lightdm --root=/mnt
 
-#Awesome
-pacstrap /mnt awesome xterm xorg-server xorg-xinit xorg-server-utils xorg-twm xorg-xclock --noconfirm --needed
+#Awesome - wip
+#pacstrap /mnt awesome xterm xorg-server xorg-apps xorg-xinit xorg-twm xorg-xclock --noconfirm --needed
 
 #vm programs
 #pacstrap /mnt firefox torbrowser-launcher
