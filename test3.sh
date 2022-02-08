@@ -111,7 +111,7 @@ pacstrap /mnt xorg-server xorg-apps xorg-xinit --noconfirm --needed
 #KDE Plasma
 pacstrap /mnt plasma-desktop kde-utilities-meta kde-graphics-meta kde-system-meta sddm plasma-pa plasma-nm plasma-systemmonitor kscreen --noconfirm --needed
 # pacstrap /mnt plasma-desktop konsole kate dolphin filelight ark kcalc sddm plasma-pa plasma-nm kscreen --noconfirm --needed
-pacstrap /mnt discover packagekit-qt5 appstream-qt --noconfirm --needed
+pacstrap /mnt discover packagekit-qt5 --noconfirm --needed
 systemctl enable sddm --root=/mnt
 
 #LXQT
