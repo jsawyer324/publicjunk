@@ -30,7 +30,7 @@ sgdisk -Zo ${DRIVE}
 echo "Partitioning Drive"
 sgdisk -n 1::+512M ${DRIVE} -t 1:ef00
 sgdisk -n 2::+2G ${DRIVE} -t 2:8200
-sgdisk -n 3::+10G ${DRIVE}
+sgdisk -n 3::+50G ${DRIVE}
 sgdisk -n 4:: ${DRIVE}
 
 
@@ -57,13 +57,23 @@ echo "Initial Pacstrap."
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
 
 #base
-pacstrap /mnt base linux linux-firmware base-devel amd-ucode --noconfirm --needed
+pacstrap /mnt base linux linux-firmware base-devel --noconfirm --needed
+
+#----------------------------
 
 #CPU
 #AMD
 #pacstrap /mnt amd-ucode --noconfirm --needed
 #INTEL
 pacstrap /mnt intel-ucode --noconfirm --needed
+
+#Video Drivers
+#Nvidia
+#pacstrap /mnt nvidia nvidia-settings nvidia-utils apcupsd --noconfirm --needed
+#Intel
+pacstrap /mnt xf86-video-intel mesa --noconfirm --needed
+
+#----------------------------
 
 #grub
 pacstrap /mnt efibootmgr grub os-prober dosfstools mtools --noconfirm --needed
@@ -82,12 +92,6 @@ systemctl enable NetworkManager --root=/mnt
 #virtualbox
 #pacstrap /mnt virtualbox-guest-utils xf86-video-vmware --noconfirm --needed
 #systemctl enable vboxservice --root=/mnt
-
-#Video Drivers
-#Nvidia
-#pacstrap /mnt nvidia nvidia-settings nvidia-utils apcupsd --noconfirm --needed
-#Intel
-pacstrap /mnt xf86-video-intel mesa --noconfirm --needed
 
 #Other Drivers
 #pacstrap /mnt apcupsd --noconfirm --needed
@@ -113,7 +117,7 @@ systemctl enable sddm --root=/mnt
 #pacstrap /mnt xorg xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
 #systemctl enable lightdm --root=/mnt
 
-#i3
+#i3 - inprogress
 #pacstrap /mnt i3-wm dmenu xorg xorg-xinit xterm lightdm lightdm-gtk-greeter --noconfirm --needed
 #pacstrap /mnt rofi i3status polybar i3blocks ttf-dejavu --noconfirm --needed
 #systemctl enable lightdm --root=/mnt
@@ -151,7 +155,6 @@ arch-chroot /mnt /bin/bash -e <<EOF
     echo "Creating User."
     useradd -m -G wheel $USERNAME
     #Add user to sudoers
-    #sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
     sed -i 's/# %wheel ALL=(ALL/%wheel ALL=(ALL/' /etc/sudoers
     #Set password
     #echo "Please set password for user "$USERNAME
