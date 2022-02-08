@@ -100,7 +100,7 @@ systemctl enable NetworkManager --root=/mnt
 pacstrap /mnt cmus mpv pianobar firefox --noconfirm --needed
 
 #Audio
-pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils --noconfirm --needed
+pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol --noconfirm --needed
 
 #Bluetooth
 pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
