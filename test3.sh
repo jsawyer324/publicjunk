@@ -54,10 +54,16 @@ timedatectl set-ntp true
 
 echo "Initial Pacstrap."
 # enable options "color", "ParallelDownloads"
-sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads }' /etc/pacman.conf
+sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
 
 #base
 pacstrap /mnt base linux linux-firmware base-devel amd-ucode --noconfirm --needed
+
+#CPU
+#AMD
+#pacstrap /mnt amd-ucode --noconfirm --needed
+#INTEL
+pacstrap /mnt intel-ucode --noconfirm --needed
 
 #grub
 pacstrap /mnt efibootmgr grub os-prober dosfstools mtools --noconfirm --needed
@@ -96,8 +102,8 @@ pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils --noconfirm --n
 #pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
 
 #KDE Plasma
-#pacstrap /mnt plasma-desktop xorg konsole kate dolphin sddm plasma-pa kscreen --noconfirm --needed
-#systemctl enable sddm --root=/mnt
+pacstrap /mnt plasma-desktop xorg konsole kate dolphin sddm plasma-pa kscreen --noconfirm --needed
+systemctl enable sddm --root=/mnt
 
 #LXQT
 #pacstrap /mnt lxqt xdg-utils ttf-freefont sddm xorg libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt --noconfirm --needed
@@ -108,9 +114,9 @@ pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils --noconfirm --n
 #systemctl enable lightdm --root=/mnt
 
 #i3
-pacstrap /mnt i3-wm dmenu xorg xorg-xinit xterm lightdm lightdm-gtk-greeter --noconfirm --needed
-pacstrap /mnt rofi i3status polybar i3blocks ttf-dejavu --noconfirm --needed
-systemctl enable lightdm --root=/mnt
+#pacstrap /mnt i3-wm dmenu xorg xorg-xinit xterm lightdm lightdm-gtk-greeter --noconfirm --needed
+#pacstrap /mnt rofi i3status polybar i3blocks ttf-dejavu --noconfirm --needed
+#systemctl enable lightdm --root=/mnt
 
 #vm programs
 #pacstrap /mnt firefox torbrowser-launcher
