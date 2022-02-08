@@ -151,7 +151,8 @@ arch-chroot /mnt /bin/bash -e <<EOF
     echo "Creating User."
     useradd -m -G wheel $USERNAME
     #Add user to sudoers
-    sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers
+    #sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+    sed -i 's/# %wheel ALL=(ALL/%wheel ALL=(ALL/' /etc/sudoers
     #Set password
     #echo "Please set password for user "$USERNAME
     echo -e "$USERPASS\n$USERPASS" | passwd $USERNAME
