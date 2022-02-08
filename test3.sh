@@ -120,7 +120,9 @@ systemctl enable sddm --root=/mnt
 #i3 - inprogress
 #pacstrap /mnt i3-wm dmenu xorg xorg-xinit xterm lightdm lightdm-gtk-greeter --noconfirm --needed
 #pacstrap /mnt rofi i3status polybar i3blocks ttf-dejavu --noconfirm --needed
-#systemctl enable lightdm --root=/mnt
+pacstrap /mnt i3-wm i3blocks i3lock numlockx xorg-server xorg-apps xorg-xinit lightdm lightdm-gtk-greeter ranger rofi dmenu --noconfirm --needed
+pacstrap /mnt noto-fonts ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font --noconfirm --needed
+systemctl enable lightdm --root=/mnt
 
 #vm programs
 #pacstrap /mnt firefox torbrowser-launcher
