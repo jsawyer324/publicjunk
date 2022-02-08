@@ -103,10 +103,11 @@ pacstrap /mnt cmus mpv htop pianobar firefox git --noconfirm --needed
 pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils --noconfirm --needed
 
 #Bluetooth
-#pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
+pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
 
 #KDE Plasma
 pacstrap /mnt plasma-desktop xorg-server xorg-apps xorg-xinit konsole kate dolphin sddm plasma-pa plasma-nm kscreen --noconfirm --needed
+pacstrap /mnt discover packagekit-qt5 appstream-qt --noconfirm --needed
 systemctl enable sddm --root=/mnt
 
 #LXQT
