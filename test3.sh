@@ -106,8 +106,8 @@ pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils --noconfirm --n
 #pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
 
 #KDE Plasma
-pacstrap /mnt plasma-desktop xorg konsole kate dolphin sddm plasma-pa plasma-nm kscreen --noconfirm --needed
-systemctl enable sddm --root=/mnt
+#pacstrap /mnt plasma-desktop xorg konsole kate dolphin sddm plasma-pa plasma-nm kscreen --noconfirm --needed
+#systemctl enable sddm --root=/mnt
 
 #LXQT
 #pacstrap /mnt lxqt xdg-utils ttf-freefont sddm xorg libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt --noconfirm --needed
@@ -120,9 +120,11 @@ systemctl enable sddm --root=/mnt
 #i3 - inprogress
 #pacstrap /mnt i3-wm dmenu xorg xorg-xinit xterm lightdm lightdm-gtk-greeter --noconfirm --needed
 #pacstrap /mnt rofi i3status polybar i3blocks ttf-dejavu --noconfirm --needed
-pacstrap /mnt i3-wm i3blocks i3lock numlockx xorg-server xorg-apps xorg-xinit lightdm lightdm-gtk-greeter ranger rofi dmenu --noconfirm --needed
+pacstrap /mnt i3-wm i3blocks i3lock i3status numlockx xorg-server xorg-apps xorg-xinit lightdm lightdm-gtk-greeter ranger rofi dmenu --noconfirm --needed
 pacstrap /mnt noto-fonts ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font --noconfirm --needed
 systemctl enable lightdm --root=/mnt
+
+sleep 10
 
 #vm programs
 #pacstrap /mnt firefox torbrowser-launcher
