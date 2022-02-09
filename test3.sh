@@ -29,7 +29,7 @@ sgdisk -Zo ${DRIVE}
 #partition disk
 echo "Partitioning Drive"
 sgdisk -n 1::+512M ${DRIVE} -t 1:ef00
-sgdisk -n 2::+8G ${DRIVE} -t 2:8200
+sgdisk -n 2::+4G ${DRIVE} -t 2:8200
 sgdisk -n 3::+50G ${DRIVE}
 sgdisk -n 4:: ${DRIVE}
 
