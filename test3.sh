@@ -111,7 +111,7 @@ systemctl enable bluetooth --root=/mnt
 pacstrap /mnt xorg-server xorg-apps xorg-xinit --noconfirm --needed
 
 #KDE Plasma
-pacstrap /mnt plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager gwenview spectacle okular dolphin --noconfirm --needed
+pacstrap /mnt plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager powerdevil gwenview spectacle okular dolphin --noconfirm --needed
 # pacstrap /mnt plasma-desktop konsole kate dolphin filelight ark kcalc sddm plasma-pa plasma-nm kscreen --noconfirm --needed
 systemctl enable sddm --root=/mnt
 
