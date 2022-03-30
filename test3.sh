@@ -61,9 +61,20 @@ echo "Initial Pacstrap."
 # enable options "color", "ParallelDownloads"
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
 
+#Detect Microcode
+CPU=$(grep vendor_id /proc/cpuinfo)
+if [[ $CPU == *"AuthenticAMD"* ]]; then
+    print "An AMD CPU has been detected, the AMD microcode will be installed."
+    microcode="amd-ucode"
+else
+    print "An Intel CPU has been detected, the Intel microcode will be installed."
+    microcode="intel-ucode"
+fi
+
+
 #base
 #pacstrap /mnt base linux linux-firmware base-devel --noconfirm --needed
-pacstrap /mnt base linux --noconfirm --needed
+pacstrap /mnt base linux $microcode --noconfirm --needed
 
 #----------------------------
 
@@ -73,11 +84,24 @@ pacstrap /mnt base linux --noconfirm --needed
 #INTEL
 #pacstrap /mnt intel-ucode --noconfirm --needed
 
+
 #Video Drivers
 #Nvidia
-#pacstrap /mnt nvidia nvidia-settings nvidia-utils apcupsd --noconfirm --needed
+#pacstrap /mnt nvidia nvidia-settings nvidia-utils --noconfirm --needed
 #Intel
 #pacstrap /mnt xf86-video-intel mesa --noconfirm --needed
+
+
+gpu_type=$(lspci)
+if grep -E "NVIDIA|GeForce" <<< ${gpu_type}; then
+    pacstrap /mnt nvidia nvidia-settings nvidia-utils --noconfirm --needed
+elif lspci | grep 'VGA' | grep -E "Radeon|AMD"; then
+    pacstrap /mnt xf86-video-amdgpu --noconfirm --needed 
+elif grep -E "Integrated Graphics Controller" <<< ${gpu_type}; then
+    pacstrap /mnt libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa --noconfirm --needed
+elif grep -E "Intel Corporation UHD" <<< ${gpu_type}; then
+    pacstrap /mnt libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa --noconfirm --needed
+fi
 
 #----------------------------
 
