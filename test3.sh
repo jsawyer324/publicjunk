@@ -29,8 +29,8 @@ sgdisk -Zo ${DRIVE}
 #partition disk
 echo "Partitioning Drive"
 sgdisk -n 1::+512M ${DRIVE} -t 1:ef00
-sgdisk -n 2::+4G ${DRIVE} -t 2:8200
-sgdisk -n 3::+50G ${DRIVE}
+sgdisk -n 2::+2G ${DRIVE} -t 2:8200
+sgdisk -n 3::+10G ${DRIVE}
 sgdisk -n 4:: ${DRIVE}
 
 
@@ -65,13 +65,13 @@ pacstrap /mnt base linux linux-firmware base-devel --noconfirm --needed
 #AMD
 #pacstrap /mnt amd-ucode --noconfirm --needed
 #INTEL
-pacstrap /mnt intel-ucode --noconfirm --needed
+#pacstrap /mnt intel-ucode --noconfirm --needed
 
 #Video Drivers
 #Nvidia
 #pacstrap /mnt nvidia nvidia-settings nvidia-utils apcupsd --noconfirm --needed
 #Intel
-pacstrap /mnt xf86-video-intel mesa --noconfirm --needed
+#pacstrap /mnt xf86-video-intel mesa --noconfirm --needed
 
 #----------------------------
 
@@ -91,37 +91,37 @@ systemctl enable NetworkManager --root=/mnt
 #pacstrap /mnt qemu-guest-agent --noconfirm --needed
 #systemctl enable qemu-guest-agent --root=/mnt
 #virtualbox
-#pacstrap /mnt virtualbox-guest-utils xf86-video-vmware --noconfirm --needed
-#systemctl enable vboxservice --root=/mnt
+pacstrap /mnt virtualbox-guest-utils xf86-video-vmware --noconfirm --needed
+systemctl enable vboxservice --root=/mnt
 
 #Other Drivers
-pacstrap /mnt apcupsd broadcom-wl --noconfirm --needed
+#pacstrap /mnt apcupsd broadcom-wl --noconfirm --needed
 
 #software
-pacstrap /mnt cmus mpv pianobar firefox --noconfirm --needed
+#pacstrap /mnt cmus mpv pianobar firefox --noconfirm --needed
 
 #Audio
 pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol --noconfirm --needed
 
 #Bluetooth
-pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
-systemctl enable bluetooth --root=/mnt
+#pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
+#systemctl enable bluetooth --root=/mnt
 
 #xorg
 pacstrap /mnt xorg-server xorg-apps xorg-xinit --noconfirm --needed
 
 #KDE Plasma
-pacstrap /mnt plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager kwallet-pam powerdevil gwenview spectacle okular dolphin --noconfirm --needed
-# pacstrap /mnt plasma-desktop konsole kate dolphin filelight ark kcalc sddm plasma-pa plasma-nm kscreen --noconfirm --needed
-systemctl enable sddm --root=/mnt
+#pacstrap /mnt plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager kwallet-pam powerdevil gwenview spectacle okular dolphin --noconfirm --needed
+#pacstrap /mnt plasma-desktop konsole kate dolphin filelight ark kcalc sddm plasma-pa plasma-nm kscreen --noconfirm --needed
+#systemctl enable sddm --root=/mnt
 
 #LXQT
 #pacstrap /mnt lxqt xdg-utils ttf-freefont sddm libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt --noconfirm --needed
 #systemctl enable sddm --root=/mnt
 
 #XFCE
-#pacstrap /mnt xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
-#systemctl enable lightdm --root=/mnt
+pacstrap /mnt xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
+systemctl enable lightdm --root=/mnt
 
 #i3
 #pacstrap /mnt i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty --noconfirm --needed
@@ -132,7 +132,7 @@ systemctl enable sddm --root=/mnt
 #pacstrap /mnt awesome xterm xorg-twm xorg-xclock --noconfirm --needed
 
 #vm programs
-#pacstrap /mnt firefox torbrowser-launcher
+pacstrap /mnt firefox torbrowser-launcher
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
