@@ -11,14 +11,19 @@ do
     echo "Installing on $DRIVE"
     break
 done
+clear
 
-read -r -p "Please enter the hostname: " HOSTNAME
+read -rp "Please enter the hostname: " HOSTNAME
+clear
 
-echo -e "Enter new username:\n"
-read USERNAME
+read -rp "Enter new username [james]:" USERNAME
+USERNAME=${USERNAME:-james}
+clear
 
-echo -e "Enter new password for $USERNAME:\n"
-read -s USERPASS
+read -rsp "Enter new password for $USERNAME: " USERPASS
+echo -e "/n"
+read -rsp"Renter password: " USERPASS2
+clear
 
 
 #wipe drive
