@@ -21,8 +21,8 @@ USERNAME=${USERNAME:-james}
 clear
 
 read -rsp "Enter new password for $USERNAME: " USERPASS
-echo -e "/n"
-read -rsp"Renter password: " USERPASS2
+# echo -e "/n"
+# read -rsp"Renter password: " USERPASS2
 clear
 
 
@@ -62,7 +62,8 @@ echo "Initial Pacstrap."
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
 
 #base
-pacstrap /mnt base linux linux-firmware base-devel --noconfirm --needed
+#pacstrap /mnt base linux linux-firmware base-devel --noconfirm --needed
+pacstrap /mnt base linux --noconfirm --needed
 
 #----------------------------
 
@@ -81,14 +82,16 @@ pacstrap /mnt base linux linux-firmware base-devel --noconfirm --needed
 #----------------------------
 
 #grub
-pacstrap /mnt efibootmgr grub os-prober dosfstools mtools --noconfirm --needed
+#pacstrap /mnt efibootmgr grub os-prober dosfstools mtools --noconfirm --needed
+pacstrap /mnt efibootmgr grub --noconfirm --needed
 
 #admin
 pacstrap /mnt nano sudo reflector htop git openssh --noconfirm --needed
 systemctl enable sshd --root=/mnt
 
 #networking
-pacstrap /mnt samba cifs-utils nfs-utils ntfs-3g rsync networkmanager --noconfirm --needed
+#pacstrap /mnt samba cifs-utils nfs-utils ntfs-3g rsync networkmanager --noconfirm --needed
+pacstrap /mnt networkmanager --noconfirm --needed
 systemctl enable NetworkManager --root=/mnt
 
 #VM Hosts
@@ -106,14 +109,14 @@ systemctl enable vboxservice --root=/mnt
 #pacstrap /mnt cmus mpv pianobar firefox --noconfirm --needed
 
 #Audio
-pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol --noconfirm --needed
+#pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol --noconfirm --needed
 
 #Bluetooth
 #pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
 #systemctl enable bluetooth --root=/mnt
 
 #xorg
-pacstrap /mnt xorg-server xorg-apps xorg-xinit --noconfirm --needed
+#pacstrap /mnt xorg-server xorg-apps xorg-xinit --noconfirm --needed
 
 #KDE Plasma
 #pacstrap /mnt plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager kwallet-pam powerdevil gwenview spectacle okular dolphin --noconfirm --needed
@@ -125,8 +128,8 @@ pacstrap /mnt xorg-server xorg-apps xorg-xinit --noconfirm --needed
 #systemctl enable sddm --root=/mnt
 
 #XFCE
-pacstrap /mnt xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
-systemctl enable lightdm --root=/mnt
+#pacstrap /mnt xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
+#systemctl enable lightdm --root=/mnt
 
 #i3
 #pacstrap /mnt i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty --noconfirm --needed
@@ -137,7 +140,7 @@ systemctl enable lightdm --root=/mnt
 #pacstrap /mnt awesome xterm xorg-twm xorg-xclock --noconfirm --needed
 
 #vm programs
-pacstrap /mnt firefox torbrowser-launcher
+#pacstrap /mnt firefox torbrowser-launcher
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -183,6 +186,17 @@ arch-chroot /mnt /bin/bash -e <<EOF
     grub-mkconfig -o /boot/grub/grub.cfg
     
 EOF
+
+#Systemd Boot
+#echo "Configuring Systemd Boot."
+#bootctl install --esp-path /mnt/boot
+#cat <<EOF > /mnt/boot/loader/entries/arch.conf
+#title Arch Linux
+#linux /vmlinuz-linux
+#initrd /initramfs-linux.img
+#options root=${DRIVE}3 rw
+#EOF
+
 
 umount -a
 
