@@ -3,7 +3,7 @@
 clear
 
 # Select disk.
-echo "4 Dont be dumb, the disk you choose will be erased!!"
+echo "Dont be dumb, the disk you choose will be erased!!"
 PS3="Select the disk you want to use: "
 select ENTRY in $(lsblk -dpnoNAME|grep -P "/dev/sd|nvme|vd");
 do
@@ -180,30 +180,16 @@ arch-chroot /mnt /bin/bash -e <<EOF
    
     
    #Configure Grub
-    #echo "Configuring Grub."
-    #mkdir /boot/efi
-    #mount ${DRIVE}1 /boot/efi
-    #grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
-    #grub-mkconfig -o /boot/grub/grub.cfg
+    echo "Configuring Grub."
+    mkdir /boot/efi
+    mount ${DRIVE}1 /boot/efi
+    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
+    grub-mkconfig -o /boot/grub/grub.cfg
    
-   
-
    
 EOF
 
-#Systemd Boot
-echo "Configuring Systemd Boot."
-mkdir /mnt/boot
-mount ${DRIVE}1 /mnt/boot/
-bootctl install --esp-path /mnt/boot
-cat <<EOF2 > /mnt/boot/loader/entries/arch.conf
-    title Arch Linux
-    linux /vmlinuz-linux
-    initrd /initramfs-linux.img
-    options root=${DRIVE}3 rw
-EOF2
-
-sleep 20
+#sleep 20
 
 umount -a
 
