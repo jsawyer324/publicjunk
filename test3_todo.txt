@@ -1,0 +1,17 @@
+add drive size to initial listing (auto or manual)
+add standard options plus manual config in drives
+option for swap file or drive
+
+add default username
+
+add option to choose DE & minimal/full & option to only use CD repo
+
+add auto check for cpu
+add auto check for gpu
+add auto check for vm options
+
+explore grub uefi alternatives
+
+add yay config
+
+explore more minimal install
