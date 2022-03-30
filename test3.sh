@@ -198,7 +198,7 @@ initrd /initramfs-linux.img
 options root=${DRIVE}3 rw
 EOF
 
-wait 20
+sleep 20
 
 umount -a
 
