@@ -3,7 +3,7 @@
 clear
 
 # Select disk.
-echo "2 Dont be dumb, the disk you choose will be erased!!"
+echo "3 Dont be dumb, the disk you choose will be erased!!"
 PS3="Select the disk you want to use: "
 select ENTRY in $(lsblk -dpnoNAME|grep -P "/dev/sd|nvme|vd");
 do
@@ -188,22 +188,21 @@ arch-chroot /mnt /bin/bash -e <<EOF
    
    
    #Systemd Boot
-    echo "Configuring Systemd Boot."
-    mkdir /boot
-    mkdir /boot/efi
-    mount ${DRIVE}1 /boot/
-    bootctl install --esp-path /boot
-    cat <<EOF2 > /boot/loader/entries/arch.conf
-    title Arch Linux
-    linux /vmlinuz-linux
-    initrd /initramfs-linux.img
-    options root=${DRIVE}3 rw
-    EOF2
+    #echo "Configuring Systemd Boot."
+    #mkdir /boot/efi
+    #mount ${DRIVE}1 /boot/
+    #bootctl install --esp-path /boot
+    #cat <<EOF2 > /boot/loader/entries/arch.conf
+    #title Arch Linux
+    #linux /vmlinuz-linux
+    #initrd /initramfs-linux.img
+    #options root=${DRIVE}3 rw
+    #EOF2
    
 EOF
 
-sleep 20
+#sleep 20
 
-umount -a
+#umount -a
 
-reboot
+#reboot
