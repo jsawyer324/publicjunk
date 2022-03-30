@@ -5,7 +5,7 @@ clear
 # Select disk.
 echo "Dont be dumb, the disk you choose will be erased!!"
 PS3="Select the disk you want to use: "
-select ENTRY in $(lsblk -dpnoNAME,SIZE|grep -P "/dev/sd|nvme|vd");
+select ENTRY in $(lsblk -dpnoNAME|grep -P "/dev/sd|nvme|vd");
 do
     DRIVE=$ENTRY
     echo "Installing on $DRIVE"
@@ -86,7 +86,8 @@ pacstrap /mnt base linux --noconfirm --needed
 pacstrap /mnt efibootmgr grub --noconfirm --needed
 
 #admin
-pacstrap /mnt nano sudo reflector htop git openssh --noconfirm --needed
+#pacstrap /mnt nano sudo reflector htop git openssh --noconfirm --needed
+pacstrap /mnt nano sudo --noconfirm --needed
 systemctl enable sshd --root=/mnt
 
 #networking
@@ -179,23 +180,23 @@ arch-chroot /mnt /bin/bash -e <<EOF
    
     
    #Configure Grub
-    echo "Configuring Grub."
-    mkdir /boot/efi
-    mount ${DRIVE}1 /boot/efi
-    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
-    grub-mkconfig -o /boot/grub/grub.cfg
+    #echo "Configuring Grub."
+    #mkdir /boot/efi
+    #mount ${DRIVE}1 /boot/efi
+    #grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
+    #grub-mkconfig -o /boot/grub/grub.cfg
     
 EOF
 
 #Systemd Boot
-#echo "Configuring Systemd Boot."
-#bootctl install --esp-path /mnt/boot
-#cat <<EOF > /mnt/boot/loader/entries/arch.conf
-#title Arch Linux
-#linux /vmlinuz-linux
-#initrd /initramfs-linux.img
-#options root=${DRIVE}3 rw
-#EOF
+echo "Configuring Systemd Boot."
+bootctl install --esp-path /mnt/boot
+cat <<EOF > /mnt/boot/loader/entries/arch.conf
+title Arch Linux
+linux /vmlinuz-linux
+initrd /initramfs-linux.img
+options root=${DRIVE}3 rw
+EOF
 
 
 umount -a
