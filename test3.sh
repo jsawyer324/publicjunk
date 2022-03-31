@@ -25,6 +25,14 @@ read -rsp "Enter new password for $USERNAME: " USERPASS
 # read -rsp"Renter password: " USERPASS2
 clear
 
+#Select DE
+PS3="Select a DE: "
+select DE in Server Plasma Gnome XFCE i3 Awesome LXQT
+do
+    DESKTOP=$DE
+    break
+done
+
 
 #wipe drive
 echo "Wiping Drive."
