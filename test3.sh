@@ -27,7 +27,7 @@ clear
 
 #Select DE
 PS3="Select a DE: "
-select DE in Server Plasma Gnome XFCE i3 Awesome LXQT
+select DE in Plasma Gnome XFCE i3 Awesome LXQT Server
 do
     DESKTOP=$DE
     break
@@ -86,18 +86,6 @@ pacstrap /mnt base linux $microcode --noconfirm --needed
 
 #----------------------------
 
-#CPU
-#AMD
-#pacstrap /mnt amd-ucode --noconfirm --needed
-#INTEL
-#pacstrap /mnt intel-ucode --noconfirm --needed
-
-
-#Video Drivers
-#Nvidia
-#pacstrap /mnt nvidia nvidia-settings nvidia-utils --noconfirm --needed
-#Intel
-#pacstrap /mnt xf86-video-intel mesa --noconfirm --needed
 
 
 gpu_type=$(lspci)
@@ -114,7 +102,6 @@ fi
 #----------------------------
 
 #grub
-#pacstrap /mnt efibootmgr grub os-prober dosfstools mtools --noconfirm --needed
 pacstrap /mnt efibootmgr grub --noconfirm --needed
 
 #admin
@@ -174,6 +161,9 @@ systemctl enable vboxservice --root=/mnt
 
 #vm programs
 #pacstrap /mnt firefox torbrowser-launcher
+
+
+#---------
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
