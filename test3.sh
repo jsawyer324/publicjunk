@@ -138,7 +138,7 @@ pacstrap /mnt efibootmgr grub --noconfirm --needed
 #admin
 #pacstrap /mnt nano sudo reflector htop git openssh --noconfirm --needed
 pacstrap /mnt nano sudo --noconfirm --needed
-systemctl enable sshd --root=/mnt
+#systemctl enable sshd --root=/mnt
 
 #networking
 #pacstrap /mnt samba cifs-utils nfs-utils ntfs-3g rsync networkmanager --noconfirm --needed
@@ -172,7 +172,7 @@ xorg="xorg-server xorg-apps xorg-xinit "
 
 case $DESKTOP in
     Plasma )    #KDE Plasma
-                pacstrap /mnt plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager kwallet-pam powerdevil gwenview spectacle okular dolphin --noconfirm --needed
+                pacstrap /mnt plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager kwallet-pam powerdevil gwenview spectacle okular dolphin $xorg --noconfirm --needed
                 #pacstrap /mnt plasma-desktop konsole kate dolphin filelight ark kcalc sddm plasma-pa plasma-nm kscreen --noconfirm --needed
                 systemctl enable sddm --root=/mnt
                 ;;
@@ -184,15 +184,15 @@ case $DESKTOP in
                 systemctl enable lightdm --root=/mnt
                 ;;
     i3 )        #i3
-                pacstrap /mnt i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty --noconfirm --needed
+                pacstrap /mnt i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty $xorg --noconfirm --needed
                 pacstrap /mnt noto-fonts ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font --noconfirm --needed
                 systemctl enable lightdm --root=/mnt
                 ;;
     Awesome )   #Awesome - wip
-                pacstrap /mnt awesome xterm xorg-twm xorg-xclock --noconfirm --needed
+                pacstrap /mnt awesome xterm xorg-twm xorg-xclock $xorg --noconfirm --needed
                 ;;
     LXQT )      #LXQT
-                pacstrap /mnt lxqt xdg-utils ttf-freefont sddm libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt --noconfirm --needed
+                pacstrap /mnt lxqt xdg-utils ttf-freefont sddm libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt $xorg --noconfirm --needed
                 systemctl enable sddm --root=/mnt
                 ;;
     Server )  ;;  
