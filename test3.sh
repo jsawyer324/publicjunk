@@ -86,7 +86,38 @@ pacstrap /mnt base linux $microcode --noconfirm --needed
 
 #----------------------------
 
+hypervisor=$(systemd-detect-virt)
+    case $hypervisor in
+        kvm )   print "KVM has been detected."
+                print "Installing guest tools."
+                pacstrap /mnt qemu-guest-agent --noconfirm --needed >/dev/null
+                print "Enabling specific services for the guest tools."
+                systemctl enable qemu-guest-agent --root=/mnt &>/dev/null
+                ;;
+        vmware  )   print "VMWare Workstation/ESXi has been detected."
+                    print "Installing guest tools."
+                    pacstrap /mnt open-vm-tools --noconfirm --needed >/dev/null
+                    print "Enabling specific services for the guest tools."
+                    systemctl enable vmtoolsd --root=/mnt &>/dev/null
+                    systemctl enable vmware-vmblock-fuse --root=/mnt &>/dev/null
+                    ;;
+        oracle )    print "VirtualBox has been detected."
+                    print "Installing guest tools."
+                    pacstrap /mnt virtualbox-guest-utils xf86-video-vmware --noconfirm --needed >/dev/null
+                    print "Enabling specific services for the guest tools."
+                    systemctl enable vboxservice --root=/mnt &>/dev/null
+                    ;;
+        microsoft ) print "Hyper-V has been detected."
+                    print "Installing guest tools."
+                    pacstrap /mnt hyperv --noconfirm --needed >/dev/null
+                    print "Enabling specific services for the guest tools."
+                    systemctl enable hv_fcopy_daemon --root=/mnt &>/dev/null
+                    systemctl enable hv_kvp_daemon --root=/mnt &>/dev/null
+                    systemctl enable hv_vss_daemon --root=/mnt &>/dev/null
+                    ;;
+        * ) ;;
 
+#----------------------------
 
 gpu_type=$(lspci)
 if grep -E "NVIDIA|GeForce" <<< ${gpu_type}; then
@@ -119,8 +150,8 @@ systemctl enable NetworkManager --root=/mnt
 #pacstrap /mnt qemu-guest-agent --noconfirm --needed
 #systemctl enable qemu-guest-agent --root=/mnt
 #virtualbox
-pacstrap /mnt virtualbox-guest-utils xf86-video-vmware --noconfirm --needed
-systemctl enable vboxservice --root=/mnt
+#pacstrap /mnt virtualbox-guest-utils xf86-video-vmware --noconfirm --needed
+#systemctl enable vboxservice --root=/mnt
 
 #Other Drivers
 #pacstrap /mnt apcupsd broadcom-wl --noconfirm --needed
@@ -134,6 +165,19 @@ systemctl enable vboxservice --root=/mnt
 #Bluetooth
 #pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
 #systemctl enable bluetooth --root=/mnt
+
+
+case $DESKTOP in
+    Plasma ) echo "plasma"
+             sleep 10
+             ;;
+    2 ) echo "2"
+        sleep 10
+        ;;
+    * ) echo "somthing else"
+        sleep 10
+esac
+
 
 #xorg
 pacstrap /mnt xorg-server xorg-apps xorg-xinit --noconfirm --needed
