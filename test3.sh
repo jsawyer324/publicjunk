@@ -136,7 +136,7 @@ systemctl enable vboxservice --root=/mnt
 #systemctl enable bluetooth --root=/mnt
 
 #xorg
-#pacstrap /mnt xorg-server xorg-apps xorg-xinit --noconfirm --needed
+pacstrap /mnt xorg-server xorg-apps xorg-xinit --noconfirm --needed
 
 #KDE Plasma
 #pacstrap /mnt plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager kwallet-pam powerdevil gwenview spectacle okular dolphin --noconfirm --needed
@@ -148,8 +148,8 @@ systemctl enable vboxservice --root=/mnt
 #systemctl enable sddm --root=/mnt
 
 #XFCE
-#pacstrap /mnt xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
-#systemctl enable lightdm --root=/mnt
+pacstrap /mnt xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
+systemctl enable lightdm --root=/mnt
 
 #i3
 #pacstrap /mnt i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty --noconfirm --needed
@@ -160,8 +160,8 @@ systemctl enable vboxservice --root=/mnt
 #pacstrap /mnt awesome xterm xorg-twm xorg-xclock --noconfirm --needed
 
 #vm programs
-#pacstrap /mnt firefox torbrowser-launcher
-
+pacstrap /mnt firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel --noconfirm --needed
+#systemctl enable ufw --root=/mnt
 
 #---------
 
