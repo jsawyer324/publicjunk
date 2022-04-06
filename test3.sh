@@ -88,29 +88,29 @@ pacstrap /mnt base linux $microcode --noconfirm --needed
 
 hypervisor=$(systemd-detect-virt)
     case $hypervisor in
-        kvm )   print "KVM has been detected."
-                print "Installing guest tools."
+        kvm )   echo "KVM has been detected."
+                echo "Installing guest tools."
                 pacstrap /mnt qemu-guest-agent --noconfirm --needed >/dev/null
-                print "Enabling specific services for the guest tools."
+                echo "Enabling specific services for the guest tools."
                 systemctl enable qemu-guest-agent --root=/mnt &>/dev/null
                 ;;
-        vmware  )   print "VMWare Workstation/ESXi has been detected."
-                    print "Installing guest tools."
+        vmware  )   echo "VMWare Workstation/ESXi has been detected."
+                    echo "Installing guest tools."
                     pacstrap /mnt open-vm-tools --noconfirm --needed >/dev/null
-                    print "Enabling specific services for the guest tools."
+                    echo "Enabling specific services for the guest tools."
                     systemctl enable vmtoolsd --root=/mnt &>/dev/null
                     systemctl enable vmware-vmblock-fuse --root=/mnt &>/dev/null
                     ;;
-        oracle )    print "VirtualBox has been detected."
-                    print "Installing guest tools."
+        oracle )    echo "VirtualBox has been detected."
+                    echo "Installing guest tools."
                     pacstrap /mnt virtualbox-guest-utils xf86-video-vmware --noconfirm --needed >/dev/null
-                    print "Enabling specific services for the guest tools."
+                    echo "Enabling specific services for the guest tools."
                     systemctl enable vboxservice --root=/mnt &>/dev/null
                     ;;
-        microsoft ) print "Hyper-V has been detected."
-                    print "Installing guest tools."
+        microsoft ) echo "Hyper-V has been detected."
+                    echo "Installing guest tools."
                     pacstrap /mnt hyperv --noconfirm --needed >/dev/null
-                    print "Enabling specific services for the guest tools."
+                    echo "Enabling specific services for the guest tools."
                     systemctl enable hv_fcopy_daemon --root=/mnt &>/dev/null
                     systemctl enable hv_kvp_daemon --root=/mnt &>/dev/null
                     systemctl enable hv_vss_daemon --root=/mnt &>/dev/null
