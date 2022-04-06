@@ -166,42 +166,39 @@ systemctl enable NetworkManager --root=/mnt
 #pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
 #systemctl enable bluetooth --root=/mnt
 
+#Xorg
+xorg="xorg-server xorg-apps xorg-xinit "
+#pacstrap /mnt xorg-server xorg-apps xorg-xinit --noconfirm --needed
 
 case $DESKTOP in
-    Plasma ) echo "plasma"
-             sleep 10
-             ;;
-    2 ) echo "2"
-        sleep 10
-        ;;
-    * ) echo "somthing else"
-        sleep 10
+    Plasma )    #KDE Plasma
+                pacstrap /mnt plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager kwallet-pam powerdevil gwenview spectacle okular dolphin --noconfirm --needed
+                #pacstrap /mnt plasma-desktop konsole kate dolphin filelight ark kcalc sddm plasma-pa plasma-nm kscreen --noconfirm --needed
+                systemctl enable sddm --root=/mnt
+                ;;
+    Gnome )     echo "Gnome stuff here"
+                sleep 10
+                ;;
+    XFCE )      #XFCE
+                pacstrap /mnt xfce4 xfce4-goodies lightdm lightdm-gtk-greeter $xorg --noconfirm --needed
+                systemctl enable lightdm --root=/mnt
+                ;;
+    i3 )        #i3
+                pacstrap /mnt i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty --noconfirm --needed
+                pacstrap /mnt noto-fonts ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font --noconfirm --needed
+                systemctl enable lightdm --root=/mnt
+                ;;
+    Awesome )   #Awesome - wip
+                pacstrap /mnt awesome xterm xorg-twm xorg-xclock --noconfirm --needed
+                ;;
+    LXQT )      #LXQT
+                pacstrap /mnt lxqt xdg-utils ttf-freefont sddm libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt --noconfirm --needed
+                systemctl enable sddm --root=/mnt
+                ;;
+    Server )  ;;  
+    * )
 esac
 
-
-#xorg
-pacstrap /mnt xorg-server xorg-apps xorg-xinit --noconfirm --needed
-
-#KDE Plasma
-#pacstrap /mnt plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager kwallet-pam powerdevil gwenview spectacle okular dolphin --noconfirm --needed
-#pacstrap /mnt plasma-desktop konsole kate dolphin filelight ark kcalc sddm plasma-pa plasma-nm kscreen --noconfirm --needed
-#systemctl enable sddm --root=/mnt
-
-#LXQT
-#pacstrap /mnt lxqt xdg-utils ttf-freefont sddm libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt --noconfirm --needed
-#systemctl enable sddm --root=/mnt
-
-#XFCE
-pacstrap /mnt xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
-systemctl enable lightdm --root=/mnt
-
-#i3
-#pacstrap /mnt i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty --noconfirm --needed
-#pacstrap /mnt noto-fonts ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font --noconfirm --needed
-#systemctl enable lightdm --root=/mnt
-
-#Awesome - wip
-#pacstrap /mnt awesome xterm xorg-twm xorg-xclock --noconfirm --needed
 
 #vm programs
 pacstrap /mnt firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel --noconfirm --needed
