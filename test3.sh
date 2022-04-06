@@ -116,7 +116,7 @@ hypervisor=$(systemd-detect-virt)
                     systemctl enable hv_vss_daemon --root=/mnt &>/dev/null
                     ;;
         * ) ;;
-
+    esac
 #----------------------------
 
 gpu_type=$(lspci)
@@ -195,8 +195,8 @@ case $DESKTOP in
                 pacstrap /mnt lxqt xdg-utils ttf-freefont sddm libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt $xorg --noconfirm --needed
                 systemctl enable sddm --root=/mnt
                 ;;
-    Server )  ;;  
-    * )
+    Server )    ;;  
+    * )         ;;
 esac
 
 
