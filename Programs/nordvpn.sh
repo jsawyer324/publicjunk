@@ -29,3 +29,5 @@ sudo usermod -aG nordvpn $USER
 #us5085 
 
 #Atlanta
+#us8194 185.93.0.113
+#us8203 92.119.17.117
