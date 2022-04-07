@@ -73,7 +73,7 @@ mount ${DRIVE}4 /mnt/home
 swapon ${DRIVE}2
 
 echo "drive config done"
-sleep 10
+
 
 #-------------------------
 
@@ -105,32 +105,21 @@ fi
 
 hypervisor=$(systemd-detect-virt)
     case $hypervisor in
-        kvm )   echo "KVM has been detected."
-                echo "Installing guest tools."
-                pacstrap /mnt qemu-guest-agent --noconfirm --needed >/dev/null
-                echo "Enabling specific services for the guest tools."
-                systemctl enable qemu-guest-agent --root=/mnt &>/dev/null
-                ;;
+        kvm )       echo "KVM has been detected."
+                    APPS+="qemu-guest-agent "
+                    SERVICES+="qemu-guest-agent "
+                    ;;
         vmware  )   echo "VMWare Workstation/ESXi has been detected."
-                    echo "Installing guest tools."
-                    pacstrap /mnt open-vm-tools --noconfirm --needed >/dev/null
-                    echo "Enabling specific services for the guest tools."
-                    systemctl enable vmtoolsd --root=/mnt &>/dev/null
-                    systemctl enable vmware-vmblock-fuse --root=/mnt &>/dev/null
+                    APPS+="open-vm-tools "
+                    SERVICES+="vmtoolsd vmware-vmblock-fuse "
                     ;;
         oracle )    echo "VirtualBox has been detected."
-                    echo "Installing guest tools."
                     APPS+="virtualbox-guest-utils xf86-video-vmware "
-                    echo "Enabling specific services for the guest tools."
                     SERVICES+="vboxservice "
                     ;;
         microsoft ) echo "Hyper-V has been detected."
-                    echo "Installing guest tools."
-                    pacstrap /mnt hyperv --noconfirm --needed >/dev/null
-                    echo "Enabling specific services for the guest tools."
-                    systemctl enable hv_fcopy_daemon --root=/mnt &>/dev/null
-                    systemctl enable hv_kvp_daemon --root=/mnt &>/dev/null
-                    systemctl enable hv_vss_daemon --root=/mnt &>/dev/null
+                    APPS+="hyperv "
+                    SERVICES+="hv_fcopy_daemon hv_kvp_daemon hv_vss_daemon "
                     ;;
         * ) ;;
     esac
@@ -138,13 +127,13 @@ hypervisor=$(systemd-detect-virt)
 
 gpu_type=$(lspci)
 if grep -E "NVIDIA|GeForce" <<< ${gpu_type}; then
-    pacstrap /mnt nvidia nvidia-settings nvidia-utils --noconfirm --needed
+    APPS+="nvidia nvidia-settings nvidia-utils "
 elif lspci | grep 'VGA' | grep -E "Radeon|AMD"; then
-    pacstrap /mnt xf86-video-amdgpu --noconfirm --needed 
+    APPS+="xf86-video-amdgpu "
 elif grep -E "Integrated Graphics Controller" <<< ${gpu_type}; then
-    pacstrap /mnt libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa --noconfirm --needed
+    APPS+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
 elif grep -E "Intel Corporation UHD" <<< ${gpu_type}; then
-    pacstrap /mnt libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa --noconfirm --needed
+    APPS+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
 fi
 
 #----------------------------
@@ -153,57 +142,60 @@ fi
 APPS+="efibootmgr grub "
 
 #admin
-#pacstrap /mnt nano sudo reflector htop git openssh --noconfirm --needed
+#APPS+="nano sudo reflector htop git openssh "
+#SERVICES+="sshd "
 APPS+="nano sudo "
-#systemctl enable sshd --root=/mnt
 
 #networking
-#pacstrap /mnt samba cifs-utils nfs-utils ntfs-3g rsync networkmanager --noconfirm --needed
+#APPS+="samba cifs-utils nfs-utils ntfs-3g rsync networkmanager "
 APPS+="networkmanager "
 SERVICES+="NetworkManager "
 
 
 #Other Drivers
-#pacstrap /mnt apcupsd broadcom-wl --noconfirm --needed
+#APPS+="apcupsd broadcom-wl "
 
 #software
-#pacstrap /mnt cmus mpv pianobar firefox --noconfirm --needed
+#APPS+="cmus mpv pianobar firefox "
 
 #Audio
-#pacstrap /mnt sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol --noconfirm --needed
+#APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol "
 
 #Bluetooth
-#pacstrap /mnt bluez bluez-utils bluedevil pulseaudio-bluetooth --noconfirm --needed
-#systemctl enable bluetooth --root=/mnt
+#APPS+="bluez bluez-utils bluedevil pulseaudio-bluetooth "
+#SERVICES+="bluetooth "
 
 #Xorg
 xorg="xorg-server xorg-apps xorg-xinit "
 
 case $DESKTOP in
     Plasma )    #KDE Plasma
-                pacstrap /mnt plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager kwallet-pam powerdevil gwenview spectacle okular dolphin $xorg --noconfirm --needed
-                #pacstrap /mnt plasma-desktop konsole kate dolphin filelight ark kcalc sddm plasma-pa plasma-nm kscreen --noconfirm --needed
-                systemctl enable sddm --root=/mnt
+                APPS+="plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager kwallet-pam powerdevil gwenview spectacle okular dolphin "
+                #APPS+="plasma-desktop konsole kate dolphin filelight ark kcalc sddm plasma-pa plasma-nm kscreen "
+                APPS+=$xorg
+                SERVICES+="sddm "
                 ;;
     Gnome )     echo "Gnome stuff here"
                 sleep 10
                 ;;
     XFCE )      #XFCE
-                APPS+="xfce4 xfce4-goodies lightdm lightdm-gtk-greeter "
-                APPS+=$xorg
+                APPS+="xfce4 xfce4-goodies lightdm lightdm-gtk-greeter "$xorg
                 SERVICES+="lightdm "
                 ;;
     i3 )        #i3
-                pacstrap /mnt i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty $xorg --noconfirm --needed
-                pacstrap /mnt noto-fonts ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font --noconfirm --needed
-                systemctl enable lightdm --root=/mnt
+                APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty "
+                APPS+="noto-fonts ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font "
+                APPS+=$xorg
+                SERVICES+="lightdm "
                 ;;
     Awesome )   #Awesome - wip
-                pacstrap /mnt awesome xterm xorg-twm xorg-xclock $xorg --noconfirm --needed
+                APPS+="awesome xterm xorg-twm xorg-xclock "
+                APPS+=$xorg
                 ;;
     LXQT )      #LXQT
-                pacstrap /mnt lxqt xdg-utils ttf-freefont sddm libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt $xorg --noconfirm --needed
-                systemctl enable sddm --root=/mnt
+                APPS+="lxqt xdg-utils ttf-freefont sddm libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt "
+                APPS+=$xorg
+                SERVICES+="sddm "
                 ;;
     Server )    ;;  
     * )         ;;
@@ -211,8 +203,8 @@ esac
 
 
 #vm programs
-APPS+="firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel "
-SERVICES+="ufw "
+#APPS+="firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel "
+#SERVICES+="ufw "
 
 #-------------------
 
@@ -269,8 +261,8 @@ arch-chroot /mnt /bin/bash -e <<EOF
 EOF
 
 
-echo "rebooting in 10 seconds"
-sleep 10
+#echo "rebooting in 10 seconds"
+#sleep 10
 
 umount -a
 
