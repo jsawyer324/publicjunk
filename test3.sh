@@ -63,6 +63,7 @@ mkdir /mnt/home
 mount ${DRIVE}4 /mnt/home
 swapon ${DRIVE}2
 
+#-------------------------
 
 echo "Setting ntp."
 timedatectl set-ntp true
@@ -71,20 +72,22 @@ echo "Initial Pacstrap."
 # enable options "color", "ParallelDownloads"
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
 
+
+
+#base
+BASEINSTALL+="base base-devel linux linux-firmware "
+
+
 #Detect Microcode
 CPU=$(grep vendor_id /proc/cpuinfo)
 if [[ $CPU == *"AuthenticAMD"* ]]; then
     print "An AMD CPU has been detected, the AMD microcode will be installed."
-    microcode="amd-ucode"
+    BASEINSTALL+="amd-ucode "
 else
     print "An Intel CPU has been detected, the Intel microcode will be installed."
-    microcode="intel-ucode"
+    BASEINSTALL+="intel-ucode "
 fi
 
-
-#base
-#pacstrap /mnt base linux linux-firmware base-devel --noconfirm --needed
-pacstrap /mnt base linux $microcode --noconfirm --needed
 
 #----------------------------
 
@@ -105,9 +108,9 @@ hypervisor=$(systemd-detect-virt)
                     ;;
         oracle )    echo "VirtualBox has been detected."
                     echo "Installing guest tools."
-                    pacstrap /mnt virtualbox-guest-utils xf86-video-vmware --noconfirm --needed >/dev/null
+                    APPS+="virtualbox-guest-utils xf86-video-vmware "
                     echo "Enabling specific services for the guest tools."
-                    systemctl enable vboxservice --root=/mnt &>/dev/null
+                    SERVICES+="vboxservice "
                     ;;
         microsoft ) echo "Hyper-V has been detected."
                     echo "Installing guest tools."
@@ -135,25 +138,18 @@ fi
 #----------------------------
 
 #grub
-pacstrap /mnt efibootmgr grub --noconfirm --needed
+APPS+="efibootmgr grub"
 
 #admin
 #pacstrap /mnt nano sudo reflector htop git openssh --noconfirm --needed
-pacstrap /mnt nano sudo --noconfirm --needed
+APPS+="nano sudo "
 #systemctl enable sshd --root=/mnt
 
 #networking
 #pacstrap /mnt samba cifs-utils nfs-utils ntfs-3g rsync networkmanager --noconfirm --needed
-pacstrap /mnt networkmanager --noconfirm --needed
-systemctl enable NetworkManager --root=/mnt
+APPS+="networkmanager "
+SERVICES+="NetworkManager "
 
-#VM Hosts
-#qemu
-#pacstrap /mnt qemu-guest-agent --noconfirm --needed
-#systemctl enable qemu-guest-agent --root=/mnt
-#virtualbox
-#pacstrap /mnt virtualbox-guest-utils xf86-video-vmware --noconfirm --needed
-#systemctl enable vboxservice --root=/mnt
 
 #Other Drivers
 #pacstrap /mnt apcupsd broadcom-wl --noconfirm --needed
@@ -170,7 +166,6 @@ systemctl enable NetworkManager --root=/mnt
 
 #Xorg
 xorg="xorg-server xorg-apps xorg-xinit "
-#pacstrap /mnt xorg-server xorg-apps xorg-xinit --noconfirm --needed
 
 case $DESKTOP in
     Plasma )    #KDE Plasma
@@ -182,8 +177,8 @@ case $DESKTOP in
                 sleep 10
                 ;;
     XFCE )      #XFCE
-                pacstrap /mnt xfce4 xfce4-goodies lightdm lightdm-gtk-greeter $xorg --noconfirm --needed
-                systemctl enable lightdm --root=/mnt
+                APPS+="xfce4 xfce4-goodies lightdm lightdm-gtk-greeter "$xorg
+                SERVICES+="lightdm "
                 ;;
     i3 )        #i3
                 pacstrap /mnt i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty $xorg --noconfirm --needed
@@ -203,8 +198,13 @@ esac
 
 
 #vm programs
-pacstrap /mnt firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel --noconfirm --needed
-#systemctl enable ufw --root=/mnt
+APPS+="firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel "
+SERVICES+="ufw "
+
+pacstrap /mnt $BASEINSTALL --noconfirm --needed
+pacstrap /mnt $APPS --noconfirm --needed
+systemctl enable $SERVICES --root=/mnt
+
 
 #---------
 
