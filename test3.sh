@@ -32,7 +32,9 @@ do
     DESKTOP=$DE
     break
 done
+clear
 
+#------------------------
 
 #wipe drive
 echo "Wiping Drive."
