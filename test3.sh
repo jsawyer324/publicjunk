@@ -138,7 +138,7 @@ fi
 #----------------------------
 
 #grub
-APPS+="efibootmgr grub"
+APPS+="efibootmgr grub "
 
 #admin
 #pacstrap /mnt nano sudo reflector htop git openssh --noconfirm --needed
@@ -177,7 +177,8 @@ case $DESKTOP in
                 sleep 10
                 ;;
     XFCE )      #XFCE
-                APPS+="xfce4 xfce4-goodies lightdm lightdm-gtk-greeter "$xorg
+                APPS+="xfce4 xfce4-goodies lightdm lightdm-gtk-greeter "
+                APPS+=$xorg
                 SERVICES+="lightdm "
                 ;;
     i3 )        #i3
@@ -201,10 +202,22 @@ esac
 APPS+="firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel "
 SERVICES+="ufw "
 
+echo "preparing baseinstall..."
+sleep 10
+
 pacstrap /mnt $BASEINSTALL --noconfirm --needed
+
+echo "preparing apps..."
+sleep 10
+
 pacstrap /mnt $APPS --noconfirm --needed
+
+echo "preparing services..."
+sleep 10
+
 systemctl enable $SERVICES --root=/mnt
 
+sleep 10
 
 #---------
 
