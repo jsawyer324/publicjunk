@@ -35,6 +35,12 @@ sudo ufw allow out from any to 185.247.70.187/24
 #Dallas us8996
 sudo ufw allow out to 209.58.146.171 port 1194 proto udp
 sudo ufw allow out from any to 209.58.146.171/24
+#StLouis us9436
+sudo ufw allow out to 148.72.164.64 port 1194 proto udp
+sudo ufw allow out from any to 148.72.164.64/24
+#StLouis us9597
+sudo ufw allow out to 148.72.165.191 port 1194 proto udp
+sudo ufw allow out from any to 148.72.165.191/24
 
 
 
