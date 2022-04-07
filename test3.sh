@@ -34,6 +34,15 @@ do
 done
 clear
 
+#Select Full or Min install
+PS3="Full or minimal install?: "
+select IT in full minimal
+do
+    INSTALLTYPE=$IT
+    break
+done
+clear
+
 #------------------------
 
 #wipe drive
@@ -205,24 +214,13 @@ esac
 APPS+="firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel "
 SERVICES+="ufw "
 
-echo "preparing baseinstall..."
-sleep 10
+#-------------------
 
 pacstrap /mnt $BASEINSTALL --noconfirm --needed
-
-echo "preparing apps..."
-sleep 10
-
 pacstrap /mnt $APPS --noconfirm --needed
-
-echo "preparing services..."
-sleep 10
-
 systemctl enable $SERVICES --root=/mnt
 
-sleep 10
-
-#---------
+#------------------
 
 echo "Generating fstab"
 genfstab -U /mnt >> /mnt/etc/fstab
