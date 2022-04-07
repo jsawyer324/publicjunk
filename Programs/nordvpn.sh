@@ -17,7 +17,9 @@ sudo usermod -aG nordvpn $USER
 
 
 #Dallas
-#us8121 
+#us8121 185.247.70.211
+#us8118 185.247.70.187
+#us8996 185.247.70.211
 
 #Denver
 #us9212 
