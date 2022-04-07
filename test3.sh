@@ -63,6 +63,9 @@ mkdir /mnt/home
 mount ${DRIVE}4 /mnt/home
 swapon ${DRIVE}2
 
+echo "drive config done"
+sleep 10
+
 #-------------------------
 
 echo "Setting ntp."
@@ -267,7 +270,9 @@ arch-chroot /mnt /bin/bash -e <<EOF
    
 EOF
 
-#sleep 20
+
+echo "rebooting in 10 seconds"
+sleep 10
 
 umount -a
 
