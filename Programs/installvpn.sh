@@ -16,7 +16,6 @@ sudo ufw default deny incoming
 sudo ufw allow out on tun0 from any to any
 
 #ip of vpn connection
-
 #Denver us5068
 sudo ufw allow out to 212.102.45.12 port 1194 proto udp
 sudo ufw allow out from any to 212.102.45.12/24
@@ -29,11 +28,14 @@ sudo ufw allow out from any to 185.93.0.113/24
 #Atlanta us8203
 sudo ufw allow out to 92.119.17.117 port 1194 proto udp
 sudo ufw allow out from any to 92.119.17.117/24
+#Dallas us8118
+sudo ufw allow out to 185.247.70.187 port 1194 proto udp
+sudo ufw allow out from any to 185.247.70.187/24
+#Dallas us8996
+sudo ufw allow out to 209.58.146.171 port 1194 proto udp
+sudo ufw allow out from any to 209.58.146.171/24
 
 
-
-sudo ufw allow out to 185.247.70.27 port 1194 proto udp
-sudo ufw allow out from any to 185.247.70.27/24
 
 sudo systemctl restart NetworkManager ufw
 
