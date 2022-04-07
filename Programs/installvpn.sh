@@ -2,8 +2,9 @@
 
 #import vpn
 #add creds
+#add dns to vpn 103.86.96.100, 103.86.99.100
 #change password to everyone
-#disable ipv6
+#disable ipv6 on vpn and lan
 #set lan to use vpn
 
 
