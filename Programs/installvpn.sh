@@ -7,6 +7,8 @@
 #disable ipv6 on vpn and lan
 #set lan to use vpn
 
+#for i in $(ls *.ovpn); do nmcli connection import type openvpn file $i; done
+#for i in $(ls *.ovpn); do nmcli con mod $i ipv4.dns "103.86.96.100, 103.86.99.100"; done
 
 
 sudo pacman -S networkmanager-openvpn network-manager-applet ufw --needed 
