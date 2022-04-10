@@ -175,8 +175,10 @@ case $DESKTOP in
                 APPS+=$xorg
                 SERVICES+="sddm "
                 ;;
-    Gnome )     echo "Gnome stuff here"
-                sleep 10
+    Gnome )     #Gnome
+                APPS+="gnome gnome-tweaks gnome-packagekit-plugin "
+                APPS+=$xorg
+                SERVICES+="gdm "
                 ;;
     XFCE )      #XFCE
                 APPS+="xfce4 xfce4-goodies lightdm lightdm-gtk-greeter "$xorg
