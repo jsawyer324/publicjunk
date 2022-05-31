@@ -264,7 +264,7 @@ EOF
 
 
 #echo "rebooting in 10 seconds"
-#sleep 10
+sleep 10
 
 umount -a
 
