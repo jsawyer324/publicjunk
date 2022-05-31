@@ -205,8 +205,8 @@ esac
 
 
 #vm programs
-#APPS+="firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel "
-#SERVICES+="ufw "
+APPS+="firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel "
+SERVICES+="ufw "
 
 #-------------------
 
