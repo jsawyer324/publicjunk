@@ -5,4 +5,4 @@ sh ./installprograms.sh
 chmod +x ./restartnetwork.sh
 cp ./restartnetwork.sh ~/Desktop
 
-#sh ./installvpn.sh
+sh ./installvpn.sh
