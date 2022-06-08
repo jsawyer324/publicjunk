@@ -228,6 +228,9 @@ arch-chroot /mnt locale-gen
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 
 # Bootloader Systemd Installation
+mkdir /mnt/boot
+mkdir /mnt/boot/efi
+mount -t vfat "${DRIVE}1" /mnt/boot/
 bootctl install --esp-path /mnt/boot
 cat <<EOF > /mnt/boot/loader/entries/arch.conf
 title Arch Linux
