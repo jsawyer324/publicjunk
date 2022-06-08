@@ -227,7 +227,14 @@ echo "Generating Locale."
 arch-chroot /mnt locale-gen
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 
-
+   #Configure Grub
+    echo "Configuring Grub."
+    mkdir /mnt/boot/efi
+    mount ${DRIVE}1 /mnt/boot/efi
+    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/mnt/boot/efi --recheck
+    grub-mkconfig -o /mnt/boot/grub/grub.cfg
+    
+    
 # Configuring the system.    
 arch-chroot /mnt /bin/bash -e <<EOF
     
@@ -253,11 +260,11 @@ arch-chroot /mnt /bin/bash -e <<EOF
    
     
    #Configure Grub
-    echo "Configuring Grub."
-    mkdir /boot/efi
-    mount ${DRIVE}1 /boot/efi
-    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
-    grub-mkconfig -o /boot/grub/grub.cfg
+    #echo "Configuring Grub."
+    #mkdir /boot/efi
+    #mount ${DRIVE}1 /boot/efi
+    #grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
+    #grub-mkconfig -o /boot/grub/grub.cfg
    
    
 EOF
