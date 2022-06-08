@@ -277,4 +277,4 @@ sleep 10
 
 umount -a
 
-reboot
+#reboot
