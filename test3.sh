@@ -227,12 +227,14 @@ echo "Generating Locale."
 arch-chroot /mnt locale-gen
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 
-   #Configure Grub
-    echo "Configuring Grub."
-    mkdir /mnt/boot/efi
-    mount ${DRIVE}1 /mnt/boot/efi
-    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/mnt/boot/efi --recheck
-    grub-mkconfig -o /mnt/boot/grub/grub.cfg
+# Bootloader Systemd Installation
+bootctl install --esp-path /mnt/boot
+cat <<EOF > /mnt/boot/loader/entries/arch.conf
+title Arch Linux
+linux /vmlinuz-linux
+initrd /initramfs-linux.img
+options root=${DRIVE}3 rw
+EOF
     
     
 # Configuring the system.    
