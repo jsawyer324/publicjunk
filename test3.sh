@@ -83,13 +83,13 @@ if [ $BOOTLOADER == "systemd" ]; then
 mkdir -p /mnt/boot
 mount ${DRIVE}1 /mnt/boot
 elif [ $BOOTLOADER == "grub" ]; then
-mkdir /mnt/boot/efi
+mkdir -p /mnt/boot/efi
 mount ${DRIVE}1 /mnt/boot/efi
 APPS+="efibootmgr grub "
 fi
 
 echo "drive config done"
-
+sleep 10
 
 #-------------------------
 
