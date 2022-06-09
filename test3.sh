@@ -233,24 +233,19 @@ sed -i 's/#en_US.UTF-8/en_US.UTF-8/g' /mnt/etc/locale.gen
 echo "Generating Locale."
 arch-chroot /mnt locale-gen
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
-
-# Bootloader Systemd Installation
-#bootctl --path=/mnt/boot$esp install
-#cat <<EOF > /mnt/boot/loader/entries/arch.conf
-#title Arch Linux
-#linux /vmlinuz-linux
-#initrd /initramfs-linux.img
-#options root=${DRIVE}3 rw
-#EOF
     
 #sleep 10
+
+    # Setting up timezone.
+    echo "Setting up the timezone."
+    ln -sf /mnt/usr/share/zoneinfo/America/Chicago /mnt/etc/localtime
     
 # Configuring the system.    
 arch-chroot /mnt /bin/bash -e <<EOF
     
     # Setting up timezone.
-    echo "Setting up the timezone."
-    ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
+    #echo "Setting up the timezone."
+    #ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
     
     # Setting up clock.
     echo "Setting up the system clock."
