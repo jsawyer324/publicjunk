@@ -2,7 +2,7 @@
 
 
 #config
-version="10"
+version="11"
 BOOTLOADER="systemd" #systemd or grub
 
 
@@ -101,7 +101,7 @@ echo "Initial Pacstrap."
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
 
 #base
-COREINSTALL+="base linux "
+COREINSTALL+="base linux base-devel "
 if [ $INSTALLTYPE != "minimal" ]; then
     COREINSTALL+="base-devel "
 fi
