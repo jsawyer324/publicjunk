@@ -2,7 +2,7 @@
 
 
 #config
-version="16"
+version="17"
 BOOTLOADER="systemd" #systemd or grub
 
 
@@ -226,7 +226,8 @@ SERVICES+="ufw "
 fi
 
 #-------------------
-echo "COREINSTALL..."
+
+echo -e " \nCOREINSTALL..."
 echo $COREINSTALL
 sleep 10
 pacstrap /mnt $COREINSTALL --noconfirm --needed
@@ -251,10 +252,14 @@ echo "Setting up the timezone."
 ln -sf /mnt/usr/share/zoneinfo/America/Chicago /mnt/etc/localtime
 
 #------------------
+
+echo " "
 echo "BASEINSTALL..."
 echo $BASEINSTALL
 sleep 10
 pacstrap /mnt $BASEINSTALL --noconfirm --needed
+
+echo " "
 echo "APPS..."
 echo $APPS
 sleep 10
@@ -302,8 +307,8 @@ EOF
 #sleep 10
 
 
-#umount -R /mnt
+umount -R /mnt
 
 #echo "waiting for reboot"
 
-#reboot
+reboot
