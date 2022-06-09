@@ -252,6 +252,14 @@ if [ $BOOTLOADER == "systemd" ]; then
     echo "Configuring Systemd-boot."
     bootctl --path=/mnt/boot$esp install
     echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${DRIVE}3 rw" >> /mnt/boot/loader/entries/arch.conf
+elif [ $BOOTLOADER == "grub" ]; then
+    echo "Configuring Grub."
+    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/mnt/boot/efi --recheck
+    echo "step 1 done"
+    sleep 10
+    arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+    echo "step 2 done"
+    sleep 10
 fi
 
 # Configuring the system.    
@@ -272,11 +280,11 @@ arch-chroot /mnt /bin/bash -e <<EOF
     #Set password
     echo -e "$USERPASS\n$USERPASS" | passwd $USERNAME
     
-    if [ $BOOTLOADER == "grub" ]; then
-        echo "Configuring Grub."
-        grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
-        grub-mkconfig -o /boot/grub/grub.cfg
-    fi
+    #if [ $BOOTLOADER == "grub" ]; then
+    #    echo "Configuring Grub."
+    #    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
+    #    grub-mkconfig -o /boot/grub/grub.cfg
+    #fi
    
    
 EOF
