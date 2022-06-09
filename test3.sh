@@ -229,16 +229,21 @@ echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 
 # Bootloader Systemd Installation
 mkdir /mnt/boot
-mkdir /mnt/boot/efi
-mount -t vfat "${DRIVE}1" /mnt/boot/
-bootctl install --esp-path /mnt/boot
-cat <<EOF > /mnt/boot/loader/entries/arch.conf
-title Arch Linux
-linux /vmlinuz-linux
-initrd /initramfs-linux.img
-options root=${DRIVE}3 rw
-EOF
+#mkdir /mnt/boot/efi
+#mount -t vfat "${DRIVE}1" /mnt/boot/
+mount "${DRIVE}1" /mnt/boot/
+
+sleep 10
+
+#bootctl install --esp-path /mnt/boot
+#cat <<EOF > /mnt/boot/loader/entries/arch.conf
+#title Arch Linux
+#linux /vmlinuz-linux
+#initrd /initramfs-linux.img
+#options root=${DRIVE}3 rw
+#EOF
     
+sleep 10
     
 # Configuring the system.    
 arch-chroot /mnt /bin/bash -e <<EOF
@@ -263,6 +268,15 @@ arch-chroot /mnt /bin/bash -e <<EOF
     #echo "Please set password for user "$USERNAME
     echo -e "$USERPASS\n$USERPASS" | passwd $USERNAME
    
+   
+    #bootctl install --esp-path /boot
+    bootctl --path=/boot$esp install
+    cat <<EOF > /boot/loader/entries/arch.conf
+    title Arch Linux
+    linux /vmlinuz-linux
+    initrd /initramfs-linux.img
+    options root=${DRIVE}3 rw
+    EOF
     
    #Configure Grub
     #echo "Configuring Grub."
