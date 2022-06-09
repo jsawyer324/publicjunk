@@ -28,18 +28,20 @@ clear
 
 #Select DE
 PS3="Select a DE [7]: "
+DEFAULT='7'
 select DE in Plasma Gnome XFCE i3 Awesome LXQT Server
 do
-    DESKTOP=${DE:-7}
+    DESKTOP=${DE:-$DEFAULT}
     break
 done
 clear
 
 #Select Full or Min install
 PS3="Full or minimal install? [1]: "
+DEFAULT='1'
 select IT in full minimal
 do
-    INSTALLTYPE=${IT:-1}
+    INSTALLTYPE=${IT:-$DEFAULT}
     break
 done
 clear
