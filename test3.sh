@@ -2,7 +2,7 @@
 
 
 #config
-version="12"
+version="14"
 BOOTLOADER="systemd" #systemd or grub
 
 
@@ -102,6 +102,7 @@ sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.co
 
 #base
 COREINSTALL+="base linux "
+
 if [ $INSTALLTYPE != "minimal" ]; then
     COREINSTALL+="base-devel "
 fi
@@ -301,8 +302,8 @@ EOF
 #sleep 10
 
 
-umount -R /mnt
+#umount -R /mnt
 
 #echo "waiting for reboot"
 
-reboot
+#reboot
