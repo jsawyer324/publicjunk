@@ -2,7 +2,7 @@
 
 
 #config
-version="22"
+version="23"
 BOOTLOADER="systemd" #systemd or grub
 
 
@@ -101,10 +101,6 @@ echo "Initial Pacstrap."
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
 
 echo "Updating Mirrors."
-#pacman -Syyy
-#pacman -S pacman-contrib --noconfirm
-#mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
-#curl -s "https://www.archlinux.org/mirrorlist/?country=US&protocol=https&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -n 5 - > /etc/pacman.d/mirrorlist
 reflector --save /etc/pacman.d/mirrorlist --country US --protocol https --score 10 --verbose
 
 #base
@@ -236,7 +232,7 @@ fi
 
 echo -e " \nCOREINSTALL..."
 echo $COREINSTALL
-sleep 10
+#sleep 10
 pacstrap /mnt $COREINSTALL --noconfirm --needed
 
 #------------------
@@ -260,16 +256,14 @@ ln -sf /mnt/usr/share/zoneinfo/America/Chicago /mnt/etc/localtime
 
 #------------------
 
-echo " "
-echo "BASEINSTALL..."
+echo -e "\nBASEINSTALL..."
 echo $BASEINSTALL
-sleep 10
+#sleep 10
 pacstrap /mnt $BASEINSTALL --noconfirm --needed
 
-echo " "
-echo "APPS..."
+echo -e "\nAPPS..."
 echo $APPS
-sleep 10
+#sleep 10
 pacstrap /mnt $APPS --noconfirm --needed
 systemctl enable $SERVICES --root=/mnt
 
@@ -309,13 +303,6 @@ arch-chroot /mnt /bin/bash -e <<EOF
    
 EOF
 
-
-#echo "rebooting in 10 seconds"
-#sleep 10
-
-
 umount -R /mnt
-
-#echo "waiting for reboot"
 
 reboot
