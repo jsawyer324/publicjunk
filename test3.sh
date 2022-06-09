@@ -230,8 +230,8 @@ echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 # Bootloader Systemd Installation
 mkdir /mnt/boot
 #mkdir /mnt/boot/efi
-#mount -t vfat "${DRIVE}1" /mnt/boot/
-mount "${DRIVE}1" /mnt/boot/
+#mount -t vfat "${DRIVE}1" /mnt/boot
+mount "${DRIVE}1" /mnt/boot
 
 sleep 10
 
@@ -275,7 +275,7 @@ arch-chroot /mnt /bin/bash -e <<EOF
     title Arch Linux
     linux /vmlinuz-linux
     initrd /initramfs-linux.img
-    options root=${DRIVE}3 rw
+    options root=${DRIVE}2 rw
     EOF
     
    #Configure Grub
