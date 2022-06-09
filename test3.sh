@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #config
-BOOTLOADER="systemd" #systemd or grub
+BOOTLOADER="grub" #systemd or grub
 
 
 clear
