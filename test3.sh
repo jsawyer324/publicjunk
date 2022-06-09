@@ -72,6 +72,8 @@ mount ${DRIVE}3 /mnt
 mkdir /mnt/home
 mount ${DRIVE}4 /mnt/home
 swapon ${DRIVE}2
+mkdir -p /mnt/boot
+mount ${DRIVE}1 /mnt/boot
 
 echo "drive config done"
 
@@ -229,13 +231,6 @@ arch-chroot /mnt locale-gen
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 
 # Bootloader Systemd Installation
-mkdir -p /mnt/boot
-#mkdir /mnt/boot/efi
-#mount -t vfat "${DRIVE}1" /mnt/boot
-mount ${DRIVE}1 /mnt/boot
-
-#sleep 10
-
 bootctl --path=/mnt/boot$esp install
 cat <<EOF > /mnt/boot/loader/entries/arch.conf
 title Arch Linux
@@ -272,12 +267,12 @@ arch-chroot /mnt /bin/bash -e <<EOF
    
     
     #bootctl --path=/boot$esp install
-    #cat <<-'EOF2' > /boot/loader/entries/arch.conf
+    #cat <<- "BOOT" > /boot/loader/entries/arch.conf
     #title Arch Linux
     #linux /vmlinuz-linux
     #initrd /initramfs-linux.img
     #options root=${DRIVE}3 rw
-    #EOF2
+    #BOOT
     
    #Configure Grub
     #echo "Configuring Grub."
