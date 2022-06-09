@@ -1,7 +1,6 @@
 #!/bin/sh
 
-echo "V 1"
-sleep 3
+version="2"
 
 #config
 BOOTLOADER="grub" #systemd or grub
@@ -10,6 +9,7 @@ BOOTLOADER="grub" #systemd or grub
 clear
 
 # Select disk.
+echo "Version "$version
 echo "Dont be dumb, the disk you choose will be erased!!"
 PS3="Select the disk you want to use: "
 select ENTRY in $(lsblk -dpnoNAME|grep -P "/dev/sd|nvme|vd");
