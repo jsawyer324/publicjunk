@@ -98,10 +98,10 @@ BASEINSTALL+="base base-devel linux linux-firmware "
 #Detect Microcode
 CPU=$(grep vendor_id /proc/cpuinfo)
 if [[ $CPU == *"AuthenticAMD"* ]]; then
-    print "An AMD CPU has been detected, the AMD microcode will be installed."
+    echo "An AMD CPU has been detected, the AMD microcode will be installed."
     BASEINSTALL+="amd-ucode "
 else
-    print "An Intel CPU has been detected, the Intel microcode will be installed."
+    echo "An Intel CPU has been detected, the Intel microcode will be installed."
     BASEINSTALL+="intel-ucode "
 fi
 
@@ -210,7 +210,7 @@ esac
 
 
 #vm programs
-if test $INSTALLTYPE=="miniarchvm" -a $hypervisor != "none" then
+if ($INSTALLTYPE=="miniarchvm" -a $hypervisor != "none"); then
 APPS+="firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel "
 SERVICES+="ufw "
 fi
@@ -306,4 +306,4 @@ umount -R /mnt
 
 echo "waiting for reboot"
 
-#reboot
+reboot
