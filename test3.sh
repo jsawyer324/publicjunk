@@ -236,7 +236,7 @@ mount ${DRIVE}1 /mnt/boot
 
 #sleep 10
 
-#bootctl --path=/mnt/boot$esp install
+bootctl --path=/mnt/boot$esp install
 cat <<EOF > /mnt/boot/loader/entries/arch.conf
 title Arch Linux
 linux /vmlinuz-linux
