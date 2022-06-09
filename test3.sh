@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version="2"
+version="3"
 
 #config
 BOOTLOADER="grub" #systemd or grub
