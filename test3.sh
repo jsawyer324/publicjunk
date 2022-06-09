@@ -267,25 +267,15 @@ arch-chroot /mnt /bin/bash -e <<EOF
     #Set password
     #echo "Please set password for user "$USERNAME
     echo -e "$USERPASS\n$USERPASS" | passwd $USERNAME
-   
-   
-    
-    #bootctl --path=/boot$esp install
-    #cat <<- "BOOT" > /boot/loader/entries/arch.conf
-    #title Arch Linux
-    #linux /vmlinuz-linux
-    #initrd /initramfs-linux.img
-    #options root=${DRIVE}3 rw
-    #BOOT
     
     # Bootloader Systemd Installation
-bootctl --path=/boot$esp install
-cat <<BOOTEF > /boot/loader/entries/arch.conf
-title Arch Linux
-linux /vmlinuz-linux
-initrd /initramfs-linux.img
-options root=${DRIVE}3 rw
-BOOTEF
+    bootctl --path=/boot$esp install
+    cat <<BOOTEF > /boot/loader/entries/arch.conf
+    title Arch Linux
+    linux /vmlinuz-linux
+    initrd /initramfs-linux.img
+    options root=${DRIVE}3 rw
+    BOOTEF
     
    #Configure Grub
     #echo "Configuring Grub."
