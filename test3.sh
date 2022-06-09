@@ -2,7 +2,7 @@
 
 
 #config
-version="18"
+version="19"
 BOOTLOADER="systemd" #systemd or grub
 
 
