@@ -248,25 +248,11 @@ echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 echo "Setting up the timezone."
 ln -sf /mnt/usr/share/zoneinfo/America/Chicago /mnt/etc/localtime
 
-# Bootloader Systemd Installation
-bootctl --path=/mnt/boot$esp install
-
-cat <<- 'BOOTEF' > /mnt/boot/loader/entries/arch.conf
-title Arch Linux
-linux /vmlinuz-linux
-initrd /initramfs-linux.img
-options root=${DRIVE}3 rw
-BOOTEF
-
 # Bootloader Installation
 if [ $BOOTLOADER == "systemd" ]; then
+    echo "Configuring Systemd-boot."
     bootctl --path=/mnt/boot$esp install
-    cat <<- 'BOOTEF' > /mnt/boot/loader/entries/arch.conf
-    title Arch Linux
-    linux /vmlinuz-linux
-    initrd /initramfs-linux.img
-    options root=${DRIVE}3 rw
-BOOTEF
+    echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${DRIVE}3 rw" >> /mnt/boot/loader/entries/arch.conf
 elif [ $BOOTLOADER == "grub" ]; then
     echo "Configuring Grub."
     grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/mnt/boot/efi --recheck
