@@ -264,11 +264,20 @@ arch-chroot /mnt /bin/bash -e <<EOF
     echo -e "$USERPASS\n$USERPASS" | passwd root
 
     #Create user
+    #echo "Creating User."
+    #useradd -m -G wheel $USERNAME
+    #Add user to sudoers
+    #sed -i 's/# %wheel ALL=(ALL/%wheel ALL=(ALL/' /etc/sudoers
+    #Set password
+    #echo -e "$USERPASS\n$USERPASS" | passwd $USERNAME
+ 
+    #Create user
     echo "Creating User."
     useradd -m -G wheel $USERNAME
     #Add user to sudoers
     sed -i 's/# %wheel ALL=(ALL/%wheel ALL=(ALL/' /etc/sudoers
     #Set password
+    #echo "Please set password for user "$USERNAME
     echo -e "$USERPASS\n$USERPASS" | passwd $USERNAME
     
     if [ $BOOTLOADER == "grub" ]; then
