@@ -252,10 +252,6 @@ if [ $BOOTLOADER == "systemd" ]; then
     echo "Configuring Systemd-boot."
     bootctl --path=/mnt/boot$esp install
     echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${DRIVE}3 rw" >> /mnt/boot/loader/entries/arch.conf
-elif [ $BOOTLOADER == "grub" ]; then
-    echo "Configuring Grub."
-    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/mnt/boot/efi --recheck
-    grub-mkconfig -o /mnt/boot/grub/grub.cfg
 fi
 
 # Configuring the system.    
@@ -274,30 +270,13 @@ arch-chroot /mnt /bin/bash -e <<EOF
     #Add user to sudoers
     sed -i 's/# %wheel ALL=(ALL/%wheel ALL=(ALL/' /etc/sudoers
     #Set password
-    #echo "Please set password for user "$USERNAME
     echo -e "$USERPASS\n$USERPASS" | passwd $USERNAME
     
-    # Bootloader Systemd Installation
-    #bootctl --path=/boot$esp install
-    #cat <<BOOTEF > /boot/loader/entries/arch.conf
-    #title Arch Linux
-    #linux /vmlinuz-linux
-    #initrd /initramfs-linux.img
-    #options root=${DRIVE}3 rw
-    #BOOTEF
-    
-   #Configure Grub
-    #echo "Configuring Grub."
-    #mkdir /boot/efi
-    #mount ${DRIVE}1 /boot/efi
-    #grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
-    #grub-mkconfig -o /boot/grub/grub.cfg
-    
-    #if [ $BOOTLOADER == "grub" ]; then
-    #   echo "Configuring Grub."
-    #   grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
-    #   grub-mkconfig -o /boot/grub/grub.cfg
-    #fi
+    if [ $BOOTLOADER == "grub" ]; then
+        echo "Configuring Grub."
+        grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
+        grub-mkconfig -o /boot/grub/grub.cfg
+    fi
    
    
 EOF
@@ -307,8 +286,8 @@ EOF
 #sleep 10
 
 
-#umount -R /mnt
+umount -R /mnt
 
 #echo "waiting for reboot"
 
-#reboot
+reboot
