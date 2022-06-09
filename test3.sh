@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version="3"
+version="4"
 
 #config
 BOOTLOADER="grub" #systemd or grub
@@ -262,14 +262,6 @@ arch-chroot /mnt /bin/bash -e <<EOF
     
     #echo "Please set root password."
     echo -e "$USERPASS\n$USERPASS" | passwd root
-
-    #Create user
-    #echo "Creating User."
-    #useradd -m -G wheel $USERNAME
-    #Add user to sudoers
-    #sed -i 's/# %wheel ALL=(ALL/%wheel ALL=(ALL/' /etc/sudoers
-    #Set password
-    #echo -e "$USERPASS\n$USERPASS" | passwd $USERNAME
  
     #Create user
     echo "Creating User."
@@ -277,7 +269,6 @@ arch-chroot /mnt /bin/bash -e <<EOF
     #Add user to sudoers
     sed -i 's/# %wheel ALL=(ALL/%wheel ALL=(ALL/' /etc/sudoers
     #Set password
-    #echo "Please set password for user "$USERNAME
     echo -e "$USERPASS\n$USERPASS" | passwd $USERNAME
     
     if [ $BOOTLOADER == "grub" ]; then
@@ -294,8 +285,8 @@ EOF
 #sleep 10
 
 
-#umount -R /mnt
+umount -R /mnt
 
 #echo "waiting for reboot"
 
-#reboot
+reboot
