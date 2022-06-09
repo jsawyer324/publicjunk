@@ -1,9 +1,9 @@
 #!/bin/sh
 
-version="4"
+version="5"
 
 #config
-BOOTLOADER="grub" #systemd or grub
+BOOTLOADER="systemd" #systemd or grub
 
 
 clear
