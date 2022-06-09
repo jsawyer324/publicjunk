@@ -2,7 +2,7 @@
 
 
 #config
-version="8"
+version="9"
 BOOTLOADER="systemd" #systemd or grub
 
 
@@ -101,8 +101,7 @@ echo "Initial Pacstrap."
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
 
 #base
-COREINSTALL+="base base-devel linux linux-firmware "
-
+COREINSTALL+="base base-devel linux "
 
 #Detect Microcode
 CPU=$(grep vendor_id /proc/cpuinfo)
@@ -113,7 +112,6 @@ else
     echo "An Intel CPU has been detected, the Intel microcode will be installed."
     BASEINSTALL+="intel-ucode "
 fi
-
 
 #----------------------------
 
@@ -135,7 +133,9 @@ hypervisor=$(systemd-detect-virt)
                     BASEINSTALL+="hyperv "
                     SERVICES+="hv_fcopy_daemon hv_kvp_daemon hv_vss_daemon "
                     ;;
-        * ) ;;
+        * )         echo "No hypervisor detected."
+                    COREINSTALL+="linux-firmware "
+                    ;;
     esac
 #----------------------------
 
@@ -222,7 +222,9 @@ SERVICES+="ufw "
 fi
 
 #-------------------
-
+echo "COREINSTALL..."
+echo $COREINSTALL
+sleep 10
 pacstrap /mnt $COREINSTALL --noconfirm --needed
 
 #------------------
