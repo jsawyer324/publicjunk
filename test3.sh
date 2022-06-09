@@ -14,6 +14,7 @@ done
 clear
 
 read -rp "Please enter the hostname: " HOSTNAME
+USERNAME=${USERNAME:-test}
 clear
 
 read -rp "Enter new username [james]:" USERNAME
@@ -228,7 +229,7 @@ arch-chroot /mnt locale-gen
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 
 # Bootloader Systemd Installation
-mkdir /mnt/boot
+mkdir -p /mnt/boot
 #mkdir /mnt/boot/efi
 #mount -t vfat "${DRIVE}1" /mnt/boot
 mount "${DRIVE}1" /mnt/boot
@@ -271,12 +272,12 @@ arch-chroot /mnt /bin/bash -e <<EOF
    
     #bootctl install --esp-path /boot
     bootctl --path=/boot$esp install
-    cat <<EOF > /boot/loader/entries/arch.conf
+    cat <<EOF2 > /boot/loader/entries/arch.conf
     title Arch Linux
     linux /vmlinuz-linux
     initrd /initramfs-linux.img
     options root=${DRIVE}2 rw
-    EOF
+    EOF2
     
    #Configure Grub
     #echo "Configuring Grub."
@@ -290,8 +291,8 @@ EOF
 
 
 #echo "rebooting in 10 seconds"
-sleep 10
+#sleep 10
 
-umount -a
+#umount -a
 
 #reboot
