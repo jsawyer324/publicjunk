@@ -2,7 +2,7 @@
 
 
 #config
-version="19"
+version="20"
 BOOTLOADER="systemd" #systemd or grub
 
 
@@ -100,6 +100,7 @@ echo "Initial Pacstrap."
 # enable options "color", "ParallelDownloads"
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
 
+echo "Updating Mirrors."
 pacman -Syyy
 pacman -S pacman-contrib --noconfirm
 mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
