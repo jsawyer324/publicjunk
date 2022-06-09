@@ -119,7 +119,7 @@ hypervisor=$(systemd-detect-virt)
                     SERVICES+="vmtoolsd vmware-vmblock-fuse "
                     ;;
         oracle )    echo "VirtualBox has been detected."
-                    BASEINSTALL+="virtualbox-guest-utils xf86-video-vmware "
+                    BASEINSTALL+="virtualbox-guest-utils "
                     SERVICES+="vboxservice "
                     ;;
         microsoft ) echo "Hyper-V has been detected."
@@ -141,8 +141,6 @@ elif grep -E "Intel Corporation UHD" <<< ${gpu_type}; then
     BASEINSTALL+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
 fi
 
-echo $BASEINSTALL
-sleep 20
 #----------------------------
 
 #grub
