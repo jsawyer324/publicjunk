@@ -1,8 +1,8 @@
 #!/bin/sh
 
-version="7"
 
 #config
+version="8"
 BOOTLOADER="systemd" #systemd or grub
 
 
@@ -153,9 +153,9 @@ fi
 #----------------------------
 
 #admin
-#APPS+="nano sudo reflector htop git openssh "
+#APPS+="nano reflector htop git openssh "
 #SERVICES+="sshd "
-APPS+="nano sudo "
+APPS+="nano "
 
 #networking
 #APPS+="samba cifs-utils nfs-utils ntfs-3g rsync networkmanager "
@@ -237,13 +237,21 @@ sed -i 's/#en_US.UTF-8/en_US.UTF-8/g' /mnt/etc/locale.gen
 echo "Generating Locale."
 arch-chroot /mnt locale-gen
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
+#LANGUAGE
+#LC_ALL
+#LC_MESSAGES
 
 echo "Setting up the timezone."
 ln -sf /mnt/usr/share/zoneinfo/America/Chicago /mnt/etc/localtime
 
 #------------------
-
+echo "BASEINSTALL..."
+echo $BASEINSTALL
+sleep 10
 pacstrap /mnt $BASEINSTALL --noconfirm --needed
+echo "APPS..."
+echo $APPS
+sleep 10
 pacstrap /mnt $APPS --noconfirm --needed
 systemctl enable $SERVICES --root=/mnt
 
