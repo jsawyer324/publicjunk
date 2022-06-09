@@ -249,9 +249,10 @@ echo "Setting up the timezone."
 ln -sf /mnt/usr/share/zoneinfo/America/Chicago /mnt/etc/localtime
 
 if [ $BOOTLOADER == "systemd" ]; then
+
     # Bootloader Systemd Installation
     bootctl --path=/mnt/boot$esp install
-    cat <<BOOTEF > /mnt/boot/loader/entries/arch.conf
+    cat <<- BOOTEF > /mnt/boot/loader/entries/arch.conf
     title Arch Linux
     linux /vmlinuz-linux
     initrd /initramfs-linux.img
