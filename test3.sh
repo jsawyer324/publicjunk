@@ -236,13 +236,13 @@ mount ${DRIVE}1 /mnt/boot
 
 #sleep 10
 
-#bootctl install --esp-path /mnt/boot
-#cat <<EOF > /mnt/boot/loader/entries/arch.conf
-#title Arch Linux
-#linux /vmlinuz-linux
-#initrd /initramfs-linux.img
-#options root=${DRIVE}3 rw
-#EOF
+#bootctl --path=/mnt/boot$esp install
+cat <<EOF > /mnt/boot/loader/entries/arch.conf
+title Arch Linux
+linux /vmlinuz-linux
+initrd /initramfs-linux.img
+options root=${DRIVE}3 rw
+EOF
     
 #sleep 10
     
@@ -270,14 +270,14 @@ arch-chroot /mnt /bin/bash -e <<EOF
     echo -e "$USERPASS\n$USERPASS" | passwd $USERNAME
    
    
-    #bootctl install --esp-path /boot
-    bootctl --path=/boot$esp install
-    cat <<-'EOF2' > /boot/loader/entries/arch.conf
-    title Arch Linux
-    linux /vmlinuz-linux
-    initrd /initramfs-linux.img
-    options root=${DRIVE}3 rw
-    EOF2
+    
+    #bootctl --path=/boot$esp install
+    #cat <<-'EOF2' > /boot/loader/entries/arch.conf
+    #title Arch Linux
+    #linux /vmlinuz-linux
+    #initrd /initramfs-linux.img
+    #options root=${DRIVE}3 rw
+    #EOF2
     
    #Configure Grub
     #echo "Configuring Grub."
