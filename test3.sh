@@ -111,19 +111,19 @@ fi
 hypervisor=$(systemd-detect-virt)
     case $hypervisor in
         kvm )       echo "KVM has been detected."
-                    APPS+="qemu-guest-agent "
+                    BASEINSTALL+="qemu-guest-agent "
                     SERVICES+="qemu-guest-agent "
                     ;;
         vmware  )   echo "VMWare Workstation/ESXi has been detected."
-                    APPS+="open-vm-tools "
+                    BASEINSTALL+="open-vm-tools "
                     SERVICES+="vmtoolsd vmware-vmblock-fuse "
                     ;;
         oracle )    echo "VirtualBox has been detected."
-                    APPS+="virtualbox-guest-utils xf86-video-vmware "
+                    BASEINSTALL+="virtualbox-guest-utils xf86-video-vmware "
                     SERVICES+="vboxservice "
                     ;;
         microsoft ) echo "Hyper-V has been detected."
-                    APPS+="hyperv "
+                    BASEINSTALL+="hyperv "
                     SERVICES+="hv_fcopy_daemon hv_kvp_daemon hv_vss_daemon "
                     ;;
         * ) ;;
@@ -132,13 +132,13 @@ hypervisor=$(systemd-detect-virt)
 
 gpu_type=$(lspci)
 if grep -E "NVIDIA|GeForce" <<< ${gpu_type}; then
-    APPS+="nvidia nvidia-settings nvidia-utils "
+    BASEINSTALL+="nvidia nvidia-settings nvidia-utils "
 elif lspci | grep 'VGA' | grep -E "Radeon|AMD"; then
-    APPS+="xf86-video-amdgpu "
+    BASEINSTALL+="xf86-video-amdgpu "
 elif grep -E "Integrated Graphics Controller" <<< ${gpu_type}; then
-    APPS+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
+    BASEINSTALL+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
 elif grep -E "Intel Corporation UHD" <<< ${gpu_type}; then
-    APPS+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
+    BASEINSTALL+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
 fi
 
 #----------------------------
@@ -301,5 +301,7 @@ EOF
 
 #umount -a
 umount -R /mnt
+
+echo "waiting for reboot"
 
 #reboot
