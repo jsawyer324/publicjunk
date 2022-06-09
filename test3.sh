@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version="6"
+version="7"
 
 #config
 BOOTLOADER="systemd" #systemd or grub
@@ -34,21 +34,19 @@ read -rsp "Enter new password for $USERNAME: " USERPASS
 clear
 
 #Select DE
-PS3="Select a DE [7]: "
-DEFAULT='7'
+PS3="Select a DE: "
 select DE in Plasma Gnome XFCE i3 Awesome LXQT Server
 do
-    DESKTOP=${DE:-$DEFAULT}
+    DESKTOP=$DE
     break
 done
 clear
 
 #Select Full or Min install
-PS3="Install Type? [1]: "
-DEFAULT='1'
+PS3="Install Type? : "
 select IT in full minimal miniarchvm
 do
-    INSTALLTYPE=${IT:-$DEFAULT}
+    INSTALLTYPE=$IT
     break
 done
 clear
@@ -102,10 +100,8 @@ echo "Initial Pacstrap."
 # enable options "color", "ParallelDownloads"
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
 
-
-
 #base
-BASEINSTALL+="base base-devel linux linux-firmware "
+COREINSTALL+="base base-devel linux linux-firmware "
 
 
 #Detect Microcode
@@ -227,9 +223,7 @@ fi
 
 #-------------------
 
-pacstrap /mnt $BASEINSTALL --noconfirm --needed
-pacstrap /mnt $APPS --noconfirm --needed
-systemctl enable $SERVICES --root=/mnt
+pacstrap /mnt $COREINSTALL --noconfirm --needed
 
 #------------------
 
@@ -246,6 +240,14 @@ echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 
 echo "Setting up the timezone."
 ln -sf /mnt/usr/share/zoneinfo/America/Chicago /mnt/etc/localtime
+
+#------------------
+
+pacstrap /mnt $BASEINSTALL --noconfirm --needed
+pacstrap /mnt $APPS --noconfirm --needed
+systemctl enable $SERVICES --root=/mnt
+
+#------------------
 
 # Bootloader Installation
 if [ $BOOTLOADER == "systemd" ]; then
