@@ -83,8 +83,8 @@ if [ $BOOTLOADER == "systemd" ]; then
 mkdir -p /mnt/boot
 mount ${DRIVE}1 /mnt/boot
 elif [ $BOOTLOADER == "grub" ]; then
-mkdir /boot/efi
-mount ${DRIVE}1 /boot/efi
+mkdir /mnt/boot/efi
+mount ${DRIVE}1 /mnt/boot/efi
 APPS+="efibootmgr grub "
 fi
 
