@@ -1,5 +1,8 @@
 #!/bin/sh
 
+echo "V 1"
+sleep 3
+
 #config
 BOOTLOADER="grub" #systemd or grub
 
@@ -282,8 +285,8 @@ EOF
 #sleep 10
 
 
-umount -R /mnt
+#umount -R /mnt
 
 #echo "waiting for reboot"
 
-reboot
+#reboot
