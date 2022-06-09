@@ -141,6 +141,8 @@ elif grep -E "Intel Corporation UHD" <<< ${gpu_type}; then
     BASEINSTALL+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
 fi
 
+echo $BASEINSTALL
+sleep 20
 #----------------------------
 
 #grub
