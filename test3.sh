@@ -14,7 +14,7 @@ done
 clear
 
 read -rp "Please enter the hostname: " HOSTNAME
-USERNAME=${USERNAME:-test}
+HOSTNAME=${HOSTNAME:-test}
 clear
 
 read -rp "Enter new username [james]:" USERNAME
@@ -234,7 +234,7 @@ mkdir -p /mnt/boot
 #mount -t vfat "${DRIVE}1" /mnt/boot
 mount ${DRIVE}1 /mnt/boot
 
-sleep 10
+#sleep 10
 
 #bootctl install --esp-path /mnt/boot
 #cat <<EOF > /mnt/boot/loader/entries/arch.conf
@@ -244,7 +244,7 @@ sleep 10
 #options root=${DRIVE}3 rw
 #EOF
     
-sleep 10
+#sleep 10
     
 # Configuring the system.    
 arch-chroot /mnt /bin/bash -e <<EOF
@@ -276,7 +276,7 @@ arch-chroot /mnt /bin/bash -e <<EOF
     title Arch Linux
     linux /vmlinuz-linux
     initrd /initramfs-linux.img
-    options root=${DRIVE}2 rw
+    options root=${DRIVE}3 rw
     EOF2
     
    #Configure Grub
