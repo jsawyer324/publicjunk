@@ -232,7 +232,7 @@ echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 mkdir -p /mnt/boot
 #mkdir /mnt/boot/efi
 #mount -t vfat "${DRIVE}1" /mnt/boot
-mount "${DRIVE}1" /mnt/boot
+mount ${DRIVE}1 /mnt/boot
 
 sleep 10
 
