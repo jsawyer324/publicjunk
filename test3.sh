@@ -307,9 +307,9 @@ EOF
 #echo "rebooting in 10 seconds"
 #sleep 10
 
-#umount -a
-umount -R /mnt
 
-echo "waiting for reboot"
+#umount -R /mnt
 
-reboot
+#echo "waiting for reboot"
+
+#reboot
