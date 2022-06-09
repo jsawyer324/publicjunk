@@ -2,7 +2,7 @@
 
 
 #config
-version="14"
+version="15"
 BOOTLOADER="systemd" #systemd or grub
 
 
@@ -157,9 +157,9 @@ fi
 #----------------------------
 
 #admin
-#APPS+="nano reflector htop git openssh "
+#APPS+="nano sudo reflector htop git openssh "
 #SERVICES+="sshd "
-APPS+="nano "
+APPS+="nano sudo"
 
 #networking
 #APPS+="samba cifs-utils nfs-utils ntfs-3g rsync networkmanager "
