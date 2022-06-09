@@ -2,7 +2,7 @@
 
 
 #config
-version="20"
+version="21"
 BOOTLOADER="systemd" #systemd or grub
 
 
@@ -101,11 +101,11 @@ echo "Initial Pacstrap."
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
 
 echo "Updating Mirrors."
-pacman -Syyy
-pacman -S pacman-contrib --noconfirm
-mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
-curl -s "https://www.archlinux.org/mirrorlist/?country=US&protocol=https&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -n 5 - > /etc/pacman.d/mirrorlist
-
+#pacman -Syyy
+#pacman -S pacman-contrib --noconfirm
+#mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+#curl -s "https://www.archlinux.org/mirrorlist/?country=US&protocol=https&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -n 5 - > /etc/pacman.d/mirrorlist
+reflector --save /etc/pacman.d/mirrorlist --country US --protocol https --score 10 --verbose
 
 #base
 COREINSTALL+="base linux "
