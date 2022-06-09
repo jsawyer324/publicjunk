@@ -233,13 +233,13 @@ arch-chroot /mnt locale-gen
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 
 # Bootloader Systemd Installation
-bootctl --path=/mnt/boot$esp install
-cat <<EOF > /mnt/boot/loader/entries/arch.conf
-title Arch Linux
-linux /vmlinuz-linux
-initrd /initramfs-linux.img
-options root=${DRIVE}3 rw
-EOF
+#bootctl --path=/mnt/boot$esp install
+#cat <<EOF > /mnt/boot/loader/entries/arch.conf
+#title Arch Linux
+#linux /vmlinuz-linux
+#initrd /initramfs-linux.img
+#options root=${DRIVE}3 rw
+#EOF
     
 #sleep 10
     
@@ -276,6 +276,15 @@ arch-chroot /mnt /bin/bash -e <<EOF
     #options root=${DRIVE}3 rw
     #BOOT
     
+    # Bootloader Systemd Installation
+bootctl --path=/boot$esp install
+cat <<BOOTEF > /boot/loader/entries/arch.conf
+title Arch Linux
+linux /vmlinuz-linux
+initrd /initramfs-linux.img
+options root=${DRIVE}3 rw
+BOOTEF
+    
    #Configure Grub
     #echo "Configuring Grub."
     #mkdir /boot/efi
@@ -291,5 +300,6 @@ EOF
 #sleep 10
 
 #umount -a
+umount -R /mnt
 
 #reboot
