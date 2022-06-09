@@ -13,7 +13,7 @@ do
 done
 clear
 
-read -rp "Please enter the hostname: " HOSTNAME
+read -rp "Please enter the hostname [test]: " HOSTNAME
 HOSTNAME=${HOSTNAME:-test}
 clear
 
@@ -27,19 +27,19 @@ read -rsp "Enter new password for $USERNAME: " USERPASS
 clear
 
 #Select DE
-PS3="Select a DE: "
+PS3="Select a DE [7]: "
 select DE in Plasma Gnome XFCE i3 Awesome LXQT Server
 do
-    DESKTOP=$DE
+    DESKTOP=${DE:-7}
     break
 done
 clear
 
 #Select Full or Min install
-PS3="Full or minimal install?: "
+PS3="Full or minimal install? [1]: "
 select IT in full minimal
 do
-    INSTALLTYPE=$IT
+    INSTALLTYPE=${IT:-1}
     break
 done
 clear
@@ -272,7 +272,7 @@ arch-chroot /mnt /bin/bash -e <<EOF
    
     #bootctl install --esp-path /boot
     bootctl --path=/boot$esp install
-    cat <<EOF2 > /boot/loader/entries/arch.conf
+    cat <<-'EOF2' > /boot/loader/entries/arch.conf
     title Arch Linux
     linux /vmlinuz-linux
     initrd /initramfs-linux.img
