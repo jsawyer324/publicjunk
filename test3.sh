@@ -37,9 +37,9 @@ done
 clear
 
 #Select Full or Min install
-PS3="Full or minimal install? [1]: "
+PS3="Install Type? [1]: "
 DEFAULT='1'
-select IT in full minimal
+select IT in full minimal miniarchvm
 do
     INSTALLTYPE=${IT:-$DEFAULT}
     break
@@ -210,8 +210,10 @@ esac
 
 
 #vm programs
-#APPS+="firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel "
-#SERVICES+="ufw "
+if test $INSTALLTYPE=="miniarchvm" -a $hypervisor != "none" then
+APPS+="firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel "
+SERVICES+="ufw "
+fi
 
 #-------------------
 
