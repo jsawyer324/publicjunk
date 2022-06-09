@@ -2,7 +2,7 @@
 
 
 #config
-version="9"
+version="10"
 BOOTLOADER="systemd" #systemd or grub
 
 
@@ -101,7 +101,10 @@ echo "Initial Pacstrap."
 sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
 
 #base
-COREINSTALL+="base base-devel linux "
+COREINSTALL+="base linux "
+if [ $INSTALLTYPE != "minimal" ]; then
+    COREINSTALL+="base-devel "
+fi
 
 #Detect Microcode
 CPU=$(grep vendor_id /proc/cpuinfo)
@@ -217,7 +220,7 @@ esac
 
 #vm programs
 if [ $INSTALLTYPE == "miniarchvm" ] && [ $hypervisor != "none" ]; then
-APPS+="firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel "
+APPS+="firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git "
 SERVICES+="ufw "
 fi
 
