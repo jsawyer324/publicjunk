@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version="5"
+version="6"
 
 #config
 BOOTLOADER="systemd" #systemd or grub
@@ -213,7 +213,8 @@ case $DESKTOP in
                 APPS+=$xorg
                 SERVICES+="sddm "
                 ;;
-    Server )    ;;  
+    Server )    #Server
+                ;;  
     * )         ;;
 esac
 
