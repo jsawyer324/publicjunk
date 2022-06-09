@@ -210,7 +210,7 @@ esac
 
 
 #vm programs
-if ($INSTALLTYPE=="miniarchvm" -a $hypervisor != "none"); then
+if [ $INSTALLTYPE == "miniarchvm" ] && [ $hypervisor != "none" ]; then
 APPS+="firefox torbrowser-launcher networkmanager-openvpn network-manager-applet ufw git base-devel "
 SERVICES+="ufw "
 fi
