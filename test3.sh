@@ -1,5 +1,9 @@
 #!/bin/sh
 
+#config
+BOOTLOADER="systemd" #systemd or grub
+
+
 clear
 
 # Select disk.
@@ -74,8 +78,15 @@ mount ${DRIVE}3 /mnt
 mkdir /mnt/home
 mount ${DRIVE}4 /mnt/home
 swapon ${DRIVE}2
+
+if [ $BOOTLOADER == "systemd" ]; then
 mkdir -p /mnt/boot
 mount ${DRIVE}1 /mnt/boot
+elif [ $BOOTLOADER == "grub" ]; then
+mkdir /boot/efi
+mount ${DRIVE}1 /boot/efi
+APPS+="efibootmgr grub "
+fi
 
 echo "drive config done"
 
@@ -233,19 +244,28 @@ sed -i 's/#en_US.UTF-8/en_US.UTF-8/g' /mnt/etc/locale.gen
 echo "Generating Locale."
 arch-chroot /mnt locale-gen
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
-    
-#sleep 10
 
-    # Setting up timezone.
-    echo "Setting up the timezone."
-    ln -sf /mnt/usr/share/zoneinfo/America/Chicago /mnt/etc/localtime
-    
+echo "Setting up the timezone."
+ln -sf /mnt/usr/share/zoneinfo/America/Chicago /mnt/etc/localtime
+
+if [ $BOOTLOADER == "systemd" ]; then
+    # Bootloader Systemd Installation
+    bootctl --path=/mnt/boot$esp install
+    cat <<BOOTEF > /mnt/boot/loader/entries/arch.conf
+    title Arch Linux
+    linux /vmlinuz-linux
+    initrd /initramfs-linux.img
+    options root=${DRIVE}3 rw
+    BOOTEF
+elif [ $BOOTLOADER == "grub" ]; then
+    #Configure Grub
+    echo "Configuring Grub."
+    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/mnt/boot/efi --recheck
+    grub-mkconfig -o /mnt/boot/grub/grub.cfg
+fi
+
 # Configuring the system.    
 arch-chroot /mnt /bin/bash -e <<EOF
-    
-    # Setting up timezone.
-    #echo "Setting up the timezone."
-    #ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
     
     # Setting up clock.
     echo "Setting up the system clock."
@@ -264,13 +284,13 @@ arch-chroot /mnt /bin/bash -e <<EOF
     echo -e "$USERPASS\n$USERPASS" | passwd $USERNAME
     
     # Bootloader Systemd Installation
-    bootctl --path=/boot$esp install
-    cat <<BOOTEF > /boot/loader/entries/arch.conf
-    title Arch Linux
-    linux /vmlinuz-linux
-    initrd /initramfs-linux.img
-    options root=${DRIVE}3 rw
-    BOOTEF
+    #bootctl --path=/boot$esp install
+    #cat <<BOOTEF > /boot/loader/entries/arch.conf
+    #title Arch Linux
+    #linux /vmlinuz-linux
+    #initrd /initramfs-linux.img
+    #options root=${DRIVE}3 rw
+    #BOOTEF
     
    #Configure Grub
     #echo "Configuring Grub."
