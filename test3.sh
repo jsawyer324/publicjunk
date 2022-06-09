@@ -2,7 +2,7 @@
 
 
 #config
-version="21"
+version="22"
 BOOTLOADER="systemd" #systemd or grub
 
 
