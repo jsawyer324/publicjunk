@@ -2,8 +2,8 @@
 
 
 #config
-version="24"
-BOOTLOADER="systemd" #systemd or grub
+version="25"
+BOOTLOADER="grub" #systemd or grub
 
 
 clear
