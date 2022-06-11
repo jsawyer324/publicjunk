@@ -2,7 +2,7 @@
 
 
 #config
-version="23"
+version="24"
 BOOTLOADER="systemd" #systemd or grub
 
 
@@ -61,7 +61,7 @@ sgdisk -Zo ${DRIVE}
 #partition disk
 echo "Partitioning Drive"
 sgdisk -n 1::+512M ${DRIVE} -t 1:ef00
-sgdisk -n 2::+2G ${DRIVE} -t 2:8200
+sgdisk -n 2::+4G ${DRIVE} -t 2:8200
 sgdisk -n 3::+10G ${DRIVE}
 sgdisk -n 4:: ${DRIVE}
 
@@ -160,27 +160,27 @@ fi
 #----------------------------
 
 #admin
-#APPS+="nano sudo reflector htop git openssh "
-#SERVICES+="sshd "
-APPS+="nano sudo "
+APPS+="nano sudo reflector htop git openssh "
+SERVICES+="sshd "
+#APPS+="nano sudo "
 
 #networking
-#APPS+="samba cifs-utils nfs-utils ntfs-3g rsync networkmanager "
-APPS+="networkmanager "
+APPS+="samba cifs-utils nfs-utils ntfs-3g rsync networkmanager "
+#APPS+="networkmanager "
 SERVICES+="NetworkManager "
 
 #Other Drivers
 #APPS+="apcupsd broadcom-wl "
 
 #software
-#APPS+="cmus mpv pianobar firefox "
+APPS+="cmus mpv pianobar firefox "
 
 #Audio
-#APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol "
+APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol "
 
 #Bluetooth
-#APPS+="bluez bluez-utils bluedevil pulseaudio-bluetooth "
-#SERVICES+="bluetooth "
+APPS+="bluez bluez-utils bluedevil pulseaudio-bluetooth "
+SERVICES+="bluetooth "
 
 #Xorg
 xorg="xorg-server xorg-apps xorg-xinit "
