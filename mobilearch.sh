@@ -71,7 +71,8 @@ pacstrap /mnt intel-ucode --noconfirm --needed
 #Nvidia
 #pacstrap /mnt nvidia nvidia-settings nvidia-utils apcupsd --noconfirm --needed
 #Intel
-pacstrap /mnt xf86-video-intel mesa --noconfirm --needed
+pacstrap /mnt libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa mesa --noconfirm --needed
+#pacstrap /mnt xf86-video-intel mesa --noconfirm --needed
 
 #----------------------------
 
