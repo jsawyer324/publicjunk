@@ -125,7 +125,7 @@ fi
 hypervisor=$(systemd-detect-virt)
     case $hypervisor in
         kvm )       echo "KVM has been detected."
-                    BASEINSTALL+="qemu-guest-agent "
+                    BASEINSTALL+="qemu-guest-agent spice-vdagent "
                     SERVICES+="qemu-guest-agent "
                     ;;
         vmware  )   echo "VMWare Workstation/ESXi has been detected."
