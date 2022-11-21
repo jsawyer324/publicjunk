@@ -160,8 +160,8 @@ fi
 #----------------------------
 
 #admin
-APPS+="nano sudo reflector htop git openssh "
-SERVICES+="sshd "
+APPS+="nano sudo reflector htop git openssh ntp "
+SERVICES+="sshd ntpd "
 #APPS+="nano sudo "
 
 #networking
