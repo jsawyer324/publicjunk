@@ -60,9 +60,9 @@ sgdisk -Zo ${DRIVE}
 
 #partition disk
 echo "Partitioning Drive"
-sgdisk -n 1::+512M ${DRIVE} -t 1:ef00
-sgdisk -n 2::+4G ${DRIVE} -t 2:8200
-sgdisk -n 3::+10G ${DRIVE}
+sgdisk -n 1::+1G ${DRIVE} -t 1:ef00
+sgdisk -n 2::+8G ${DRIVE} -t 2:8200
+sgdisk -n 3::+100G ${DRIVE}
 sgdisk -n 4:: ${DRIVE}
 
 
@@ -162,15 +162,13 @@ fi
 #admin
 APPS+="nano sudo reflector htop git openssh ntp "
 SERVICES+="sshd ntpd "
-#APPS+="nano sudo "
 
 #networking
 APPS+="samba cifs-utils nfs-utils ntfs-3g rsync networkmanager "
-#APPS+="networkmanager "
 SERVICES+="NetworkManager "
 
 #Other Drivers
-#APPS+="apcupsd broadcom-wl "
+APPS+="apcupsd broadcom-wl "
 
 #software
 APPS+="cmus mpv pianobar firefox "
@@ -187,7 +185,8 @@ xorg="xorg-server xorg-apps xorg-xinit "
 
 case $DESKTOP in
     Plasma )    #KDE Plasma
-                APPS+="plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager kwallet-pam powerdevil gwenview spectacle okular dolphin "
+                #APPS+="plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager kwallet-pam powerdevil gwenview spectacle okular dolphin "
+                APPS+="plasma-meta kde-graphics-meta kde-multimedia-meta kde-network-meta kde-system-meta kde-utilities-meta "
                 #APPS+="plasma-desktop konsole kate dolphin filelight ark kcalc sddm plasma-pa plasma-nm kscreen "
                 APPS+=$xorg
                 SERVICES+="sddm "
@@ -296,7 +295,7 @@ arch-chroot /mnt /bin/bash -e <<EOF
     
     if [ $BOOTLOADER == "grub" ]; then
         echo "Configuring Grub."
-        grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
+        grub-install --target=x86_64-efi  --bootloader-id=grub_990 --efi-directory=/boot/efi --recheck
         grub-mkconfig -o /boot/grub/grub.cfg
     fi
    
