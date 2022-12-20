@@ -171,7 +171,7 @@ SERVICES+="NetworkManager "
 APPS+="apcupsd broadcom-wl "
 
 #software
-APPS+="cmus mpv pianobar firefox "
+APPS+="cmus mpv pianobar firefox chromium "
 
 #Audio
 APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol "
