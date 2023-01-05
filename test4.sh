@@ -2,7 +2,7 @@
 
 
 #config
-version="1"
+version="2"
 BOOTLOADER="grub" #systemd or grub
 
 
@@ -79,6 +79,7 @@ mount ${DRIVE}3 /mnt
 mkdir /mnt/home
 mount ${DRIVE}4 /mnt/home
 swapon ${DRIVE}2
+sleep 10
 
 if [ $BOOTLOADER == "systemd" ]; then
 mkdir -p /mnt/boot
@@ -233,7 +234,7 @@ echo -e " \nCOREINSTALL..."
 echo $COREINSTALL
 #sleep 10
 pacstrap /mnt $COREINSTALL --noconfirm --needed
-
+sleep 10
 #------------------
 
 echo "Generating fstab"
@@ -259,6 +260,7 @@ echo -e "\nBASEINSTALL..."
 echo $BASEINSTALL
 #sleep 10
 pacstrap /mnt $BASEINSTALL --noconfirm --needed
+sleep 10
 
 echo -e "\nAPPS..."
 echo $APPS
@@ -302,6 +304,6 @@ arch-chroot /mnt /bin/bash -e <<EOF
    
 EOF
 
-umount -R /mnt
+#umount -R /mnt
 
-reboot
+#reboot
