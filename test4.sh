@@ -2,7 +2,7 @@
 
 
 #config
-version="2"
+version="3"
 BOOTLOADER="grub" #systemd or grub
 
 
@@ -14,7 +14,7 @@ echo "Dont be dumb, the disk you choose will be erased!!"
 PS3="Select the disk you want to use: "
 select ENTRY in $(lsblk -dpnoNAME|grep -P "/dev/sd|nvme|vd");
 do
-    DRIVE=$ENTRY
+    DRIVE=${ENTRY}p
     echo "Installing on $DRIVE"
     break
 done
