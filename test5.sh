@@ -7,6 +7,9 @@ BOOTLOADER="grub" #systemd or grub
 
 #funtions ----------------
 
+usersetup(){
+  
+}
 #main --------------------
 
 clear
