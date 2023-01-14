@@ -8,8 +8,23 @@ BOOTLOADER="grub" #systemd or grub
 #funtions ----------------
 
 usersetup(){
-  
+
+  set_password "PASSWORD"
 }
+
+set_password() {
+    read -rs -p "Please enter password: " PASSWORD1
+    echo -ne "\n"
+    read -rs -p "Please re-enter password: " PASSWORD2
+    echo -ne "\n"
+    if [[ "$PASSWORD1" == "$PASSWORD2" ]]; then
+        set_option "$1" "$PASSWORD1"
+    else
+        echo -ne "ERROR! Passwords do not match. \n"
+        set_password
+    fi
+}
+
 #main --------------------
 
 clear
