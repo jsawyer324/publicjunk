@@ -210,7 +210,7 @@ select_DE(){
 }
 core_setup(){
 
-    COREINSTALL+="base ${KERNEL}"
+    COREINSTALL+="base ${KERNEL} "
     if [ $INSTALLTYPE != "minimal" ]; then
         COREINSTALL+="base-devel "
     fi
