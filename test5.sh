@@ -1,14 +1,16 @@
 #!/bin/sh
 
 #config ------------------
-version="1"
+version="2"
 filesystem="ext4"
 KERNEL="linux"
 BOOTLOADER="grub" #systemd or grub
 
 
 #funtions ----------------
-
+version(){
+    echo "Version "$version
+}
 usersetup(){
 
     read -rp "Enter new username [james]:" USERNAME
@@ -57,7 +59,7 @@ format_drive(){
     #partition disk
     echo "Partitioning Drive"
     sgdisk -n 1::+1G ${DISK} -t 1:ef00
-    sgdisk -n 2::+8G ${DISK} -t 2:8200
+    sgdisk -n 2::+4G ${DISK} -t 2:8200
     sgdisk -n 3::+10G ${DISK}
     sgdisk -n 4:: ${DISK}
 
@@ -312,6 +314,7 @@ EOF
 
 # Get User details, name, pass
     clear
+    version
     usersetup
 # Get hostname
     clear
