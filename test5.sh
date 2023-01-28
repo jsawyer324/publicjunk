@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #config ------------------
-version="2"
+version="3"
 filesystem="ext4"
 KERNEL="linux"
 BOOTLOADER="grub" #systemd or grub
