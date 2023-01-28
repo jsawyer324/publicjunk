@@ -58,7 +58,7 @@ format_drive(){
     echo "Partitioning Drive"
     sgdisk -n 1::+1G ${DISK} -t 1:ef00
     sgdisk -n 2::+8G ${DISK} -t 2:8200
-    sgdisk -n 3::+100G ${DISK}
+    sgdisk -n 3::+10G ${DISK}
     sgdisk -n 4:: ${DISK}
 
     #format partition
