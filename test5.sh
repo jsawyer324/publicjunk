@@ -144,7 +144,7 @@ detect_GPU(){
 }
 set_kernel(){
 
-
+    KERNEL="linux"
 }
 select_DE(){
 
