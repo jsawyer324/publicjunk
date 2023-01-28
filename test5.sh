@@ -68,12 +68,16 @@ format_drive(){
     yes | mkfs.ext4 $PARTITION3
     yes | mkfs.ext4 $PARTITION4
 
+    sleep 10
+
     #mount partitions
     echo "Mounting Partitions"
     mount $PARTITION3 /mnt
     mkdir /mnt/home
     mount $PARTITION4 /mnt/home
     swapon $PARTITION2
+    
+    sleep 10
 }
 set_bootloader(){
     if [ $BOOTLOADER == "systemd" ]; then
@@ -234,6 +238,8 @@ app_setup(){
 
 }
 core_install(){
+    echo $COREINSTALL
+    sleep 10
     pacstrap /mnt $COREINSTALL --noconfirm --needed
 }
 config_install(){
@@ -254,7 +260,11 @@ config_install(){
 
 }
 base_install(){
+    echo $BASEINSTALL
+    sleep 10
     pacstrap /mnt $BASEINSTALL --noconfirm --needed
+    echo $APPS
+    sleep 10
     pacstrap /mnt $APPS --noconfirm --needed
     systemctl enable $SERVICES --root=/mnt
 }
