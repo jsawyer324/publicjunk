@@ -169,8 +169,7 @@ select_DE(){
 
     case $DESKTOP in
         Plasma )    #KDE Plasma
-                    APPS+="plasma-desktop plasma-pa plasma-nm plasma-systemmonitor kscreen sddm discover packagekit-qt5 ark filelight kate kcalc konsole kwalletmanager kwallet-pam powerdevil gwenview spectacle okular dolphin "
-                    #APPS+="plasma-desktop konsole kate dolphin filelight ark kcalc sddm plasma-pa plasma-nm kscreen "
+                    APPS+="plasma-meta kde-graphics-meta kde-multimedia-meta kde-network-meta kde-system-meta kde-utilities-meta "
                     APPS+=$xorg
                     SERVICES+="sddm "
                     ;;
@@ -180,7 +179,8 @@ select_DE(){
                     SERVICES+="gdm "
                     ;;
         XFCE )      #XFCE
-                    APPS+="xfce4 xfce4-goodies lightdm lightdm-gtk-greeter "$xorg
+                    APPS+="xfce4 xfce4-goodies lightdm lightdm-gtk-greeter "
+                    APPS+=$xorg
                     SERVICES+="lightdm "
                     ;;
         i3 )        #i3
