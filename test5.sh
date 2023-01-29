@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #config ------------------
-version="3"
+version="4"
 filesystem="ext4"
 KERNEL="linux"
 BOOTLOADER="grub" #systemd or grub
@@ -52,34 +52,31 @@ set_partitions(){
 }
 format_drive(){
     #wipe drive
-    echo "Wiping Drive."
+    echo "Wiping Drive -------------------"
     wipefs -af ${DISK}
     sgdisk -Zo ${DISK}
 
     #partition disk
-    echo "Partitioning Drive"
+    echo "Partitioning Drive -------------------"
     sgdisk -n 1::+1G ${DISK} -t 1:ef00
     sgdisk -n 2::+4G ${DISK} -t 2:8200
     sgdisk -n 3::+10G ${DISK}
     sgdisk -n 4:: ${DISK}
 
     #format partition
-    echo "Formatting Paritions"
+    echo "Formatting Paritions -------------------"
     mkfs.vfat -F32 $PARTITION1
     mkswap $PARTITION2
     yes | mkfs.ext4 $PARTITION3
     yes | mkfs.ext4 $PARTITION4
 
-    sleep 10
-
     #mount partitions
-    echo "Mounting Partitions"
+    echo "Mounting Partitions -------------------"
     mount $PARTITION3 /mnt
     mkdir /mnt/home
     mount $PARTITION4 /mnt/home
     swapon $PARTITION2
     
-    sleep 10
 }
 set_bootloader(){
     if [ $BOOTLOADER == "systemd" ]; then
