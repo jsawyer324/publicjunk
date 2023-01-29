@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-version="4"
+VERSION="4"
 FILESYSTEM="ext4"
 KERNEL="linux"
 BOOTLOADER="grub" #systemd or grub
@@ -9,7 +9,7 @@ BOOTLOADER="grub" #systemd or grub
 
 #funtions ----------------
 version(){
-    echo "Version "$version
+    echo "Version "$VERSION
 }
 usersetup(){
 
@@ -53,38 +53,38 @@ set_partitions(){
 format_drive(){
     #wipe drive
     echo "Wiping Drive -------------------"
-    wipefs -af ${DISK}
-    sgdisk -Zo ${DISK}
+    wipefs -af "${DISK}"
+    sgdisk -Zo "${DISK}"
 
     #partition disk
     echo "Partitioning Drive -------------------"
-    sgdisk -n 1::+1G ${DISK} -t 1:ef00
-    sgdisk -n 2::+4G ${DISK} -t 2:8200
-    sgdisk -n 3::+10G ${DISK}
-    sgdisk -n 4:: ${DISK}
+    sgdisk -n 1::+1G "${DISK}" -t 1:ef00
+    sgdisk -n 2::+4G "${DISK}" -t 2:8200
+    sgdisk -n 3::+10G "${DISK}"
+    sgdisk -n 4:: "${DISK}"
 
     #format partition
     echo "Formatting Paritions -------------------"
-    mkfs.vfat -F32 $PARTITION1
-    mkswap $PARTITION2
-    yes | mkfs.ext4 $PARTITION3
-    yes | mkfs.ext4 $PARTITION4
+    mkfs.vfat -F32 "$PARTITION1"
+    mkswap "$PARTITION2"
+    yes | mkfs.ext4 "$PARTITION3"
+    yes | mkfs.ext4 "$PARTITION4"
 
     #mount partitions
     echo "Mounting Partitions -------------------"
-    mount $PARTITION3 /mnt
+    mount "$PARTITION3" /mnt
     mkdir /mnt/home
-    mount $PARTITION4 /mnt/home
-    swapon $PARTITION2
+    mount "$PARTITION4" /mnt/home
+    swapon "$PARTITION2"
     
 }
 set_bootloader(){
     if [ $BOOTLOADER == "systemd" ]; then
     mkdir -p /mnt/boot
-    mount $PARTITION1 /mnt/boot
+    mount "$PARTITION1" /mnt/boot
     elif [ $BOOTLOADER == "grub" ]; then
     mkdir -p /mnt/boot/efi
-    mount $PARTITION1 /mnt/boot/efi
+    mount "$PARTITION1" /mnt/boot/efi
     APPS+="efibootmgr grub "
     fi
 }
@@ -140,13 +140,13 @@ detect_hypervisor(){
 }
 detect_GPU(){
     gpu_type=$(lspci)
-    if grep -E "NVIDIA|GeForce" <<< ${gpu_type}; then
+    if grep -E "NVIDIA|GeForce" <<< "${gpu_type}"; then
         BASEINSTALL+="nvidia nvidia-settings nvidia-utils "
     elif lspci | grep 'VGA' | grep -E "Radeon|AMD"; then
         BASEINSTALL+="xf86-video-amdgpu "
-    elif grep -E "Integrated Graphics Controller" <<< ${gpu_type}; then
+    elif grep -E "Integrated Graphics Controller" <<< "${gpu_type}"; then
         BASEINSTALL+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
-    elif grep -E "Intel Corporation UHD" <<< ${gpu_type}; then
+    elif grep -E "Intel Corporation UHD" <<< "${gpu_type}"; then
         BASEINSTALL+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
     fi
 }
@@ -213,7 +213,7 @@ select_DE(){
 core_setup(){
 
     COREINSTALL+="base ${KERNEL} "
-    if [ $INSTALLTYPE != "minimal" ]; then
+    if [ "$INSTALLTYPE" != "minimal" ]; then
         COREINSTALL+="base-devel "
     fi
 }
@@ -242,15 +242,15 @@ app_setup(){
 
 }
 core_install(){
-    echo $COREINSTALL
+    echo "$COREINSTALL"
     sleep 10
-    pacstrap /mnt $COREINSTALL --noconfirm --needed
+    pacstrap /mnt "$COREINSTALL" --noconfirm --needed
 }
 config_install(){
 
     genfstab -U /mnt >> /mnt/etc/fstab
 
-    echo ${HOSTNAME} > /mnt/etc/hostname
+    echo "${HOSTNAME}" > /mnt/etc/hostname
 
     sed -i 's/#en_US.UTF-8/en_US.UTF-8/g' /mnt/etc/locale.gen
 
@@ -264,13 +264,13 @@ config_install(){
 
 }
 base_install(){
-    echo $BASEINSTALL
+    echo "$BASEINSTALL"
     sleep 10
-    pacstrap /mnt $BASEINSTALL --noconfirm --needed
-    echo $APPS
+    pacstrap /mnt "$BASEINSTALL" --noconfirm --needed
+    echo "$APPS"
     sleep 10
-    pacstrap /mnt $APPS --noconfirm --needed
-    systemctl enable $SERVICES --root=/mnt
+    pacstrap /mnt "$APPS" --noconfirm --needed
+    systemctl enable "$SERVICES" --root=/mnt
 }
 config_system(){
     arch-chroot /mnt /bin/bash -e <<EOF
