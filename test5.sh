@@ -95,7 +95,7 @@ set_hostname(){
 set_time(){
     timedatectl set-ntp true
 }
-is_uefi(){
+uefi_check(){
     if [[ ! -d "/sys/firmware/efi" ]]; then
         UEFI=true
     fi
@@ -264,11 +264,11 @@ config_install(){
 
 }
 base_install(){
-    echo "$BASEINSTALL"
-    sleep 10
+    #echo "$BASEINSTALL"
+    #sleep 10
     pacstrap /mnt "$BASEINSTALL" --noconfirm --needed
-    echo "$APPS"
-    sleep 10
+    #echo "$APPS"
+    #sleep 10
     pacstrap /mnt "$APPS" --noconfirm --needed
     systemctl enable "$SERVICES" --root=/mnt
 }
@@ -311,6 +311,36 @@ bootloader_install(){
 
 EOF
 }
+bootloader_install2(){
+    if [[ $BOOTLOADER == "grub" ]]; then
+        install_grub_boot
+    else
+        install_systemd_boot
+    fi
+}
+
+install_grub_boot(){
+    if [[ $UEFI ]]; then
+    arch-chroot /mnt /bin/bash -e <<EOF
+
+    if [ $BOOTLOADER == "grub" ]; then
+        echo "Configuring Grub."
+        grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
+        grub-mkconfig -o /boot/grub/grub.cfg
+    fi
+
+EOF
+    fi
+}
+install_systemd_boot(){
+    if [[ $UEFI ]]; then
+        if [ $BOOTLOADER == "systemd" ]; then
+            echo "Configuring Systemd-boot."
+            bootctl --path=/mnt/boot$esp install
+            echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
+        fi
+    fi
+}
 
 #main --------------------
 
@@ -328,7 +358,7 @@ EOF
     clear
     select_DE
 # detect if UEFI or BIOS
-    is_uefi
+    uefi_check
 # detect cpu
     detect_CPU
 # detect gpu
@@ -363,7 +393,7 @@ EOF
 # create user
     config_system
 # bootloader
-    bootloader_install
+    bootloader_install2
 # reboot
     umount -R /mnt
     reboot
