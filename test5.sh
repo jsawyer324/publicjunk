@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="6"
+VERSION="7"
 FILESYSTEM="ext4"
 KERNEL="linux"
 BOOTLOADER="grub" #systemd or grub
@@ -400,5 +400,5 @@ install_systemd_boot(){
 # bootloader
     bootloader_install2
 # reboot
-    umount -R /mnt
-    reboot
+    #umount -R /mnt
+    #reboot
