@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="4"
+VERSION="5"
 FILESYSTEM="ext4"
 KERNEL="linux"
 BOOTLOADER="grub" #systemd or grub
@@ -242,8 +242,8 @@ app_setup(){
 
 }
 core_install(){
-    echo "$COREINSTALL"
-    sleep 10
+    #echo "$COREINSTALL"
+    #sleep 10
     pacstrap /mnt "$COREINSTALL" --noconfirm --needed
 }
 config_install(){
@@ -374,6 +374,7 @@ install_systemd_boot(){
 # format partition
 # mount partitions
     format_drive
+    sleep 10
 #set bootloader
     set_bootloader
 # timedatectl
