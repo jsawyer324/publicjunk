@@ -327,6 +327,8 @@ EOF
 # Select DE & type (full, min etc for software bundles)
     clear
     select_DE
+# detect if UEFI or BIOS
+    is_uefi
 # detect cpu
     detect_CPU
 # detect gpu
