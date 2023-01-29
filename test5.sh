@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="5"
+VERSION="6"
 FILESYSTEM="ext4"
 KERNEL="linux"
 BOOTLOADER="grub" #systemd or grub
@@ -242,7 +242,7 @@ app_setup(){
 
 }
 core_install(){
-    #echo "$COREINSTALL"
+    echo "$COREINSTALL"
     #sleep 10
     pacstrap /mnt "$COREINSTALL" --noconfirm --needed
 }
@@ -264,10 +264,10 @@ config_install(){
 
 }
 base_install(){
-    #echo "$BASEINSTALL"
+    echo "$BASEINSTALL"
     #sleep 10
     pacstrap /mnt "$BASEINSTALL" --noconfirm --needed
-    #echo "$APPS"
+    echo "$APPS"
     #sleep 10
     pacstrap /mnt "$APPS" --noconfirm --needed
     systemctl enable "$SERVICES" --root=/mnt
@@ -377,14 +377,18 @@ install_systemd_boot(){
     sleep 10
 #set bootloader
     set_bootloader
+    sleep 10
 # timedatectl
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
     setup_pacman
 # core install
     core_setup
+    sleep 10
     app_setup
+    sleep 10
     core_install
+    sleep 10
 # genfstab, hostname, timezones
     config_install
 # Install DE and apps
