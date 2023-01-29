@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
 #config ------------------
 version="4"
-filesystem="ext4"
+FILESYSTEM="ext4"
 KERNEL="linux"
 BOOTLOADER="grub" #systemd or grub
 
@@ -297,7 +297,7 @@ bootloader_install(){
     if [ $BOOTLOADER == "systemd" ]; then
         echo "Configuring Systemd-boot."
         bootctl --path=/mnt/boot$esp install
-        echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${DRIVE}3 rw" >> /mnt/boot/loader/entries/arch.conf
+        echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
     fi
 
     arch-chroot /mnt /bin/bash -e <<EOF
@@ -366,5 +366,4 @@ EOF
     bootloader_install
 # reboot
     umount -R /mnt
-
     reboot
