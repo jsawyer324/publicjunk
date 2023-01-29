@@ -95,6 +95,11 @@ set_hostname(){
 set_time(){
     timedatectl set-ntp true
 }
+is_uefi(){
+    if [[ ! -d "/sys/firmware/efi" ]]; then
+        UEFI=true
+    fi
+}
 setup_pacman(){
     sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
     reflector --save /etc/pacman.d/mirrorlist --country US --protocol https --score 10 --verbose
