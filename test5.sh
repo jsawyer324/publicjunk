@@ -3,7 +3,8 @@
 #config ------------------
 VERSION="16"
 FILESYSTEM="ext4"
-KERNEL="linux"
+KERNEL="linux "
+TIMEZONE="America/Chicago"
 BOOTLOADER="systemd" #systemd or grub
 
 
@@ -146,9 +147,7 @@ detect_GPU(){
     fi
 }
 set_kernel(){
-
     KERNEL="linux"
-    
 }
 select_DE(){
 
@@ -214,31 +213,28 @@ core_setup(){
 }
 app_setup(){
 
-    APPS+="nano sudo reflector htop git openssh ntp "
-    SERVICES+="sshd ntpd "
+    #General
+        APPS+="nano sudo reflector htop git openssh ntp "
+        SERVICES+="sshd ntpd "
 
     #networking
-    APPS+="samba cifs-utils nfs-utils ntfs-3g rsync networkmanager "
-    SERVICES+="NetworkManager "
+        APPS+="samba cifs-utils nfs-utils ntfs-3g rsync networkmanager "
+        SERVICES+="NetworkManager "
 
     #Other Drivers
-    #APPS+="apcupsd broadcom-wl "
+        #APPS+="apcupsd broadcom-wl "
 
     #software
-    APPS+="cmus mpv pianobar firefox "
+        APPS+="cmus mpv pianobar firefox "
 
     #Audio
-    APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol "
+        APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol "
 
     #Bluetooth
-    APPS+="bluez bluez-utils bluedevil pulseaudio-bluetooth "
-    SERVICES+="bluetooth "
+        APPS+="bluez bluez-utils bluedevil pulseaudio-bluetooth "
+        SERVICES+="bluetooth "
 
 
-}
-core_install(){
-    echo $COREINSTALL
-    pacstrap /mnt $COREINSTALL --noconfirm --needed
 }
 config_install(){
 
@@ -254,8 +250,12 @@ config_install(){
     #LC_ALL
     #LC_MESSAGES
 
-    ln -sf /mnt/usr/share/zoneinfo/America/Chicago /mnt/etc/localtime
+    ln -sf /mnt/usr/share/zoneinfo/$TIMEZONE /mnt/etc/localtime
 
+}
+core_install(){
+    echo $COREINSTALL
+    pacstrap /mnt $COREINSTALL --noconfirm --needed
 }
 base_install(){
     echo $BASEINSTALL
@@ -291,11 +291,9 @@ bootloader_install(){
         install_systemd_boot
     fi
 }
-
 install_grub_boot(){
     if [[ $UEFI ]]; then
     arch-chroot /mnt /bin/bash -e <<EOF
-        echo "Configuring Grub."
         grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
         grub-mkconfig -o /boot/grub/grub.cfg
 
@@ -307,7 +305,6 @@ EOF
 }
 install_systemd_boot(){
     if [[ $UEFI ]]; then
-            echo "Configuring Systemd-boot."
             bootctl --path=/mnt/boot install
             echo -e "default  arch \ntimeout  3 \neditor   no" >> /mnt/boot/loader/loader.conf
             echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
@@ -331,11 +328,10 @@ install_systemd_boot(){
 # Select DE & type (full, min etc for software bundles)
     clear
     select_DE
-# detect cpu
+    app_setup
+# detect cpu, gpu, hypervisor
     detect_CPU
-# detect gpu
     detect_GPU
-# detect vm
     detect_hypervisor
 # Select disk.
     clear
@@ -353,7 +349,6 @@ install_systemd_boot(){
     setup_pacman
 # core install
     core_setup
-    app_setup
     core_install
     #sleep 10
 # genfstab, hostname, timezones
