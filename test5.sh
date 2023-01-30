@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="8"
+VERSION="9"
 FILESYSTEM="ext4"
 KERNEL="linux"
 BOOTLOADER="grub" #systemd or grub
@@ -242,8 +242,8 @@ app_setup(){
 
 }
 core_install(){
-    echo "${COREINSTALL}"
-    pacstrap /mnt "${COREINSTALL}" --noconfirm --needed
+    echo $COREINSTALL
+    pacstrap /mnt $COREINSTALL --noconfirm --needed
 }
 config_install(){
 
@@ -263,11 +263,11 @@ config_install(){
 
 }
 base_install(){
-    echo "${BASEINSTALL}"
-    pacstrap /mnt "${BASEINSTALL}" --noconfirm --needed
+    echo $BASEINSTALL
+    pacstrap /mnt $BASEINSTALL --noconfirm --needed
     echo "${APPS}"
-    pacstrap /mnt "${APPS}" --noconfirm --needed
-    systemctl enable "${SERVICES}" --root=/mnt
+    pacstrap /mnt $APPS --noconfirm --needed
+    systemctl enable $SERVICES --root=/mnt
 }
 config_system(){
     arch-chroot /mnt /bin/bash -e <<EOF
