@@ -96,7 +96,7 @@ set_time(){
     timedatectl set-ntp true
 }
 uefi_check(){
-    if [[ ! -d "/sys/firmware/efi" ]]; then
+    if [[ -d "/sys/firmware/efi" ]]; then
         UEFI=true
     fi
 }
