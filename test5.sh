@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="9"
+VERSION="10"
 FILESYSTEM="ext4"
 KERNEL="linux"
 BOOTLOADER="grub" #systemd or grub
@@ -65,26 +65,26 @@ format_drive(){
 
     #format partition
     echo "Formatting Paritions -------------------"
-    mkfs.vfat -F32 "$PARTITION1"
-    mkswap "$PARTITION2"
-    yes | mkfs.ext4 "$PARTITION3"
-    yes | mkfs.ext4 "$PARTITION4"
+    mkfs.vfat -F32 $PARTITION1
+    mkswap $PARTITION2
+    yes | mkfs.ext4 $PARTITION3
+    yes | mkfs.ext4 $PARTITION4
 
     #mount partitions
     echo "Mounting Partitions -------------------"
-    mount "${PARTITION3}" /mnt
+    mount $PARTITION3 /mnt
     mkdir /mnt/home
-    mount "${PARTITION4}" /mnt/home
-    swapon "${PARTITION2}"
+    mount $PARTITION4 /mnt/home
+    swapon $PARTITION2
     
 }
 set_bootloader(){
     if [ $BOOTLOADER == "systemd" ]; then
     mkdir -p /mnt/boot
-    mount "${PARTITION1}" /mnt/boot
+    mount $PARTITION1 /mnt/boot
     elif [ $BOOTLOADER == "grub" ]; then
     mkdir -p /mnt/boot/efi
-    mount "${PARTITION1}" /mnt/boot/efi
+    mount $PARTITION1 /mnt/boot/efi
     APPS+="efibootmgr grub "
     fi
 }
