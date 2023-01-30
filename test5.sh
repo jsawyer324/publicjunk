@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="10"
+VERSION="12"
 FILESYSTEM="ext4"
 KERNEL="linux"
-BOOTLOADER="grub" #systemd or grub
+BOOTLOADER="systemd" #systemd or grub
 
 
 #funtions ----------------
@@ -12,10 +12,8 @@ version(){
     echo "Version "$VERSION
 }
 usersetup(){
-
     read -rp "Enter new username [james]:" USERNAME
     USERNAME=${USERNAME:-james}
-
     set_password "PASSWORD"
 }
 set_password() {
@@ -82,6 +80,8 @@ set_bootloader(){
     if [ $BOOTLOADER == "systemd" ]; then
     mkdir -p /mnt/boot
     mount $PARTITION1 /mnt/boot
+    APPS+="bootctl "
+    SERVICES+="systemd-boot-update "
     elif [ $BOOTLOADER == "grub" ]; then
     mkdir -p /mnt/boot/efi
     mount $PARTITION1 /mnt/boot/efi
@@ -107,33 +107,31 @@ setup_pacman(){
 detect_CPU(){
     CPU=$(grep vendor_id /proc/cpuinfo)
     if [[ $CPU == *"AuthenticAMD"* ]]; then
-        echo "An AMD CPU has been detected, the AMD microcode will be installed."
         BASEINSTALL+="amd-ucode "
     else
-        echo "An Intel CPU has been detected, the Intel microcode will be installed."
         BASEINSTALL+="intel-ucode "
     fi
 }
 detect_hypervisor(){
     hypervisor=$(systemd-detect-virt)
     case $hypervisor in
-        kvm )       echo "KVM has been detected."
+        kvm )       
                     BASEINSTALL+="qemu-guest-agent spice-vdagent "
                     SERVICES+="qemu-guest-agent "
                     ;;
-        vmware  )   echo "VMWare Workstation/ESXi has been detected."
+        vmware  )   
                     BASEINSTALL+="open-vm-tools "
                     SERVICES+="vmtoolsd vmware-vmblock-fuse "
                     ;;
-        oracle )    echo "VirtualBox has been detected."
+        oracle )    
                     BASEINSTALL+="virtualbox-guest-utils "
                     SERVICES+="vboxservice "
                     ;;
-        microsoft ) echo "Hyper-V has been detected."
+        microsoft ) 
                     BASEINSTALL+="hyperv "
                     SERVICES+="hv_fcopy_daemon hv_kvp_daemon hv_vss_daemon "
                     ;;
-        * )         echo "No hypervisor detected."
+        * )         
                     COREINSTALL+="linux-firmware "
                     ;;
     esac
@@ -290,25 +288,6 @@ config_system(){
 EOF
 }
 bootloader_install(){
-
-    if [ $BOOTLOADER == "systemd" ]; then
-        echo "Configuring Systemd-boot."
-        bootctl --path=/mnt/boot$esp install
-        echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
-    fi
-
-    arch-chroot /mnt /bin/bash -e <<EOF
-
-    if [ $BOOTLOADER == "grub" ]; then
-        echo "Configuring Grub."
-        grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
-        grub-mkconfig -o /boot/grub/grub.cfg
-    fi
-
-
-EOF
-}
-bootloader_install2(){
     if [[ $BOOTLOADER == "grub" ]]; then
         install_grub_boot
     else
@@ -319,23 +298,19 @@ bootloader_install2(){
 install_grub_boot(){
     if [[ $UEFI ]]; then
     arch-chroot /mnt /bin/bash -e <<EOF
-
-    if [ $BOOTLOADER == "grub" ]; then
         echo "Configuring Grub."
         grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
         grub-mkconfig -o /boot/grub/grub.cfg
-    fi
 
 EOF
     fi
 }
 install_systemd_boot(){
     if [[ $UEFI ]]; then
-        if [ $BOOTLOADER == "systemd" ]; then
             echo "Configuring Systemd-boot."
-            bootctl --path=/mnt/boot$esp install
+            bootctl --path=/mnt/boot install
+            echo -e "default  arch \ntimeout  5 \neditor   no" >> /mnt/boot/loader/loader.conf
             echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
-        fi
     fi
 }
 
@@ -366,15 +341,12 @@ install_systemd_boot(){
     clear
     set_drive
     set_partitions
-# wipe drive
-# partition disk
-# format partition
-# mount partitions
+# wipe drive, partition disk, format partition, mount partitions
     format_drive
-    sleep 10
+    #sleep 10
 #set bootloader
     set_bootloader
-    sleep 10
+    #sleep 10
 # timedatectl
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
@@ -383,18 +355,18 @@ install_systemd_boot(){
     core_setup
     app_setup
     core_install
-    sleep 10
+    #sleep 10
 # genfstab, hostname, timezones
     config_install
 # Install DE and apps
     base_install
-    sleep 10
+    #sleep 10
 # arch-chroot
 # set root
 # create user
     config_system
 # bootloader
-    bootloader_install2
+    bootloader_install
 # reboot
-    #umount -R /mnt
-    #reboot
+    umount -R /mnt
+    reboot
