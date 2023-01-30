@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="13"
+VERSION="14"
 FILESYSTEM="ext4"
 KERNEL="linux"
 BOOTLOADER="systemd" #systemd or grub
@@ -78,14 +78,14 @@ format_drive(){
 }
 set_bootloader(){
     if [ $BOOTLOADER == "systemd" ]; then
-    mkdir -p /mnt/boot
-    mount $PARTITION1 /mnt/boot
-    APPS+="bootctl "
-    SERVICES+="systemd-boot-update "
+        mkdir -p /mnt/boot
+        mount $PARTITION1 /mnt/boot
+        #APPS+="bootctl "
+        #SERVICES+="systemd-boot-update "
     elif [ $BOOTLOADER == "grub" ]; then
-    mkdir -p /mnt/boot/efi
-    mount $PARTITION1 /mnt/boot/efi
-    APPS+="efibootmgr grub "
+        mkdir -p /mnt/boot/efi
+        mount $PARTITION1 /mnt/boot/efi
+        APPS+="efibootmgr grub "
     fi
 }
 set_hostname(){
