@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="12"
+VERSION="13"
 FILESYSTEM="ext4"
 KERNEL="linux"
 BOOTLOADER="systemd" #systemd or grub
