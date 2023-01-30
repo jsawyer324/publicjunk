@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="17"
+VERSION="18"
 FILESYSTEM="ext4"
 KERNEL="linux "
 TIMEZONE="America/Chicago"
-BOOTLOADER="systemd" #systemd or grub
+BOOTLOADER="grub" #systemd or grub
 
 
 #funtions ----------------
@@ -293,11 +293,18 @@ bootloader_install(){
 }
 install_grub_boot(){
     if [[ $UEFI ]]; then
-    arch-chroot /mnt /bin/bash -e <<EOF
-        grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
-        grub-mkconfig -o /boot/grub/grub.cfg
+    
+    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/mnt/boot/efi --recheck
+    grub-mkconfig -o /mnt/boot/grub/grub.cfg
+    
+    
+    
+    
+    #arch-chroot /mnt /bin/bash -e <<EOF
+    #    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
+    #    grub-mkconfig -o /boot/grub/grub.cfg
 
-EOF
+#EOF
     else
         echo "bios boot grub"
         sleep 10
