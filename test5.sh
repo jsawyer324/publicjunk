@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="18"
+VERSION="19"
 FILESYSTEM="ext4"
 KERNEL="linux "
 TIMEZONE="America/Chicago"
@@ -264,6 +264,10 @@ base_install(){
     pacstrap /mnt $APPS --noconfirm --needed
     systemctl enable $SERVICES --root=/mnt
 }
+install_all(){
+    pacstrap /mnt $COREINSTALL $BASEINSTALL $APPS --noconfirm --needed
+    systemctl enable $SERVICES --root=/mnt
+}
 config_system(){
     arch-chroot /mnt /bin/bash -e <<EOF
 
@@ -293,18 +297,11 @@ bootloader_install(){
 }
 install_grub_boot(){
     if [[ $UEFI ]]; then
-    
-    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/mnt/boot/efi --recheck
-    grub-mkconfig -o /mnt/boot/grub/grub.cfg
-    
-    
-    
-    
-    #arch-chroot /mnt /bin/bash -e <<EOF
-    #    grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
-    #    grub-mkconfig -o /boot/grub/grub.cfg
 
-#EOF
+    arch-chroot /mnt /bin/bash -e <<EOF
+        grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
+        grub-mkconfig -o /boot/grub/grub.cfg 
+EOF
     else
         echo "bios boot grub"
         sleep 10
@@ -359,10 +356,11 @@ install_systemd_boot(){
     core_install
     #sleep 10
 # genfstab, hostname, timezones
-    config_install
+    #config_install
 # Install DE and apps
-    base_install
+    #base_install
     #sleep 10
+    install_all
 # arch-chroot
 # set root
 # create user
