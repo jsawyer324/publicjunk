@@ -7,7 +7,6 @@ KERNEL="linux "
 TIMEZONE="America/Chicago"
 BOOTLOADER="grub" #systemd or grub
 
-
 #funtions ----------------
 version(){
     echo "Version "$VERSION
@@ -152,7 +151,6 @@ set_kernel(){
     KERNEL="linux"
 }
 select_DE(){
-
     PS3="Select a DE: "
     select DE in Plasma Gnome XFCE i3 Awesome LXQT Server
     do
@@ -161,37 +159,31 @@ select_DE(){
     done
 
     #Xorg
-    xorg="xorg-server xorg-apps xorg-xinit "
+    xorg="xorg-server xorg-apps xorg-xinit"
 
     case $DESKTOP in
         Plasma )    #KDE Plasma
-                    APPS+="plasma-meta kde-graphics-meta kde-multimedia-meta kde-network-meta kde-system-meta kde-utilities-meta "
-                    APPS+=$xorg
+                    APPS+="plasma-meta kde-graphics-meta kde-multimedia-meta kde-network-meta kde-system-meta kde-utilities-meta ${xorg} "
                     SERVICES+="sddm "
                     ;;
         Gnome )     #Gnome
-                    APPS+="gnome gnome-tweaks gnome-packagekit-plugin "
-                    APPS+=$xorg
+                    APPS+="gnome gnome-tweaks gnome-packagekit-plugin ${xorg} "
                     SERVICES+="gdm "
                     ;;
         XFCE )      #XFCE
-                    APPS+="xfce4 xfce4-goodies lightdm lightdm-gtk-greeter "
-                    APPS+=$xorg
+                    APPS+="xfce4 xfce4-goodies lightdm lightdm-gtk-greeter ${xorg} "
                     SERVICES+="lightdm "
                     ;;
         i3 )        #i3
-                    APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty "
+                    APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty ${xorg} "
                     APPS+="noto-fonts ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font "
-                    APPS+=$xorg
                     SERVICES+="lightdm "
                     ;;
         Awesome )   #Awesome - wip
-                    APPS+="awesome xterm xorg-twm xorg-xclock "
-                    APPS+=$xorg
+                    APPS+="awesome xterm xorg-twm xorg-xclock ${xorg} "
                     ;;
         LXQT )      #LXQT
-                    APPS+="lxqt xdg-utils ttf-freefont sddm libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt "
-                    APPS+=$xorg
+                    APPS+="lxqt xdg-utils ttf-freefont sddm libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt ${xorg} "
                     SERVICES+="sddm "
                     ;;
         Server )    #Server
@@ -207,7 +199,6 @@ select_DE(){
     done
 }
 core_setup(){
-
     COREINSTALL+="base ${KERNEL} "
     if [ "${INSTALLTYPE}" != "minimal" ]; then
         COREINSTALL+="base-devel "
@@ -255,17 +246,6 @@ config_install(){
 
     ln -sf /mnt/usr/share/zoneinfo/$TIMEZONE /mnt/etc/localtime
 
-}
-core_install(){
-    echo $COREINSTALL
-    pacstrap /mnt $COREINSTALL --noconfirm --needed
-}
-base_install(){
-    echo $BASEINSTALL
-    pacstrap /mnt $BASEINSTALL --noconfirm --needed
-    echo "${APPS}"
-    pacstrap /mnt $APPS --noconfirm --needed
-    systemctl enable $SERVICES --root=/mnt
 }
 install_all(){
     pacstrap /mnt $COREINSTALL $BASEINSTALL $APPS --noconfirm --needed
@@ -346,30 +326,21 @@ install_systemd_boot(){
     set_partitions
 # wipe drive, partition disk, format partition, mount partitions
     format_drive
-    #sleep 10
 #set bootloader, detect if UEFI or BIOS
     set_bootloader
-    #sleep 10
 # timedatectl
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
     setup_pacman
-# core install
+# core install, Install DE and apps
     core_setup
-    #core_install
     install_all
-    #sleep 10
 # genfstab, hostname, timezones
     config_install
-# Install DE and apps
-    #base_install
-    #sleep 10
-# arch-chroot
-# set root
-# create user
+# arch-chroot, set root, create user
     config_system
 # bootloader
     bootloader_install
 # reboot
-    #umount -R /mnt
-    #reboot
+    umount -R /mnt
+    reboot
