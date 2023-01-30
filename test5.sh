@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="14"
+VERSION="15"
 FILESYSTEM="ext4"
 KERNEL="linux"
 BOOTLOADER="systemd" #systemd or grub
@@ -81,7 +81,7 @@ set_bootloader(){
         mkdir -p /mnt/boot
         mount $PARTITION1 /mnt/boot
         #APPS+="bootctl "
-        #SERVICES+="systemd-boot-update "
+        SERVICES+="systemd-boot-update "
     elif [ $BOOTLOADER == "grub" ]; then
         mkdir -p /mnt/boot/efi
         mount $PARTITION1 /mnt/boot/efi
@@ -309,7 +309,7 @@ install_systemd_boot(){
     if [[ $UEFI ]]; then
             echo "Configuring Systemd-boot."
             bootctl --path=/mnt/boot install
-            echo -e "default  arch \ntimeout  5 \neditor   no" >> /mnt/boot/loader/loader.conf
+            echo -e "default  arch \ntimeout  3 \neditor   no" >> /mnt/boot/loader/loader.conf
             echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
     fi
 }
