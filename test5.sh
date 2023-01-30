@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="19"
+VERSION="20"
 FILESYSTEM="ext4"
 KERNEL="linux "
 TIMEZONE="America/Chicago"
@@ -353,14 +353,14 @@ install_systemd_boot(){
     setup_pacman
 # core install
     core_setup
-    core_install
+    #core_install
+    install_all
     #sleep 10
 # genfstab, hostname, timezones
-    #config_install
+    config_install
 # Install DE and apps
     #base_install
     #sleep 10
-    install_all
 # arch-chroot
 # set root
 # create user
