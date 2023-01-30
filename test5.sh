@@ -112,6 +112,7 @@ detect_CPU(){
 }
 detect_hypervisor(){
     hypervisor=$(systemd-detect-virt)
+    HWTYPE="vm"
     case $hypervisor in
         kvm )       
                     BASEINSTALL+="qemu-guest-agent spice-vdagent "
@@ -131,6 +132,7 @@ detect_hypervisor(){
                     ;;
         * )         
                     COREINSTALL+="linux-firmware "
+                    HWTYPE="metal"
                     ;;
     esac
 }
@@ -213,28 +215,29 @@ core_setup(){
 }
 app_setup(){
 
-    #General
-        APPS+="nano sudo reflector htop git openssh ntp "
-        SERVICES+="sshd ntpd "
-
-    #networking
-        APPS+="samba cifs-utils nfs-utils ntfs-3g rsync networkmanager "
-        SERVICES+="NetworkManager "
-
-    #Other Drivers
-        #APPS+="apcupsd broadcom-wl "
-
-    #software
-        APPS+="cmus mpv pianobar firefox "
-
-    #Audio
-        APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol "
-
-    #Bluetooth
-        APPS+="bluez bluez-utils bluedevil pulseaudio-bluetooth "
-        SERVICES+="bluetooth "
-
-
+    if [[ $IT == "full" ]]; then
+        #networking
+            APPS+="samba cifs-utils nfs-utils ntfs-3g rsync networkmanager "
+            SERVICES+="NetworkManager "
+    fi
+    if [[ $IT == "full" ]] || [[ $IT == "miniarchvm" ]]; then
+        #General
+            APPS+="nano sudo reflector htop git openssh ntp "
+            SERVICES+="sshd ntpd "
+        if [[ $DESKTOP != "Server" ]]; then
+            #software
+                APPS+="cmus mpv pianobar firefox "
+            #Audio
+                APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol "
+        fi
+        if [[ $HWTYPE == "metal" ]]; then
+            #Bluetooth
+                APPS+="bluez bluez-utils bluedevil pulseaudio-bluetooth "
+                SERVICES+="bluetooth "
+            #Other Drivers
+                APPS+="apcupsd broadcom-wl "
+        fi
+    fi
 }
 config_install(){
 
