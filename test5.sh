@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="15"
+VERSION="16"
 FILESYSTEM="ext4"
 KERNEL="linux"
 BOOTLOADER="systemd" #systemd or grub
@@ -77,10 +77,12 @@ format_drive(){
     
 }
 set_bootloader(){
+    if [[ -d "/sys/firmware/efi" ]]; then
+        UEFI=true
+    fi
     if [ $BOOTLOADER == "systemd" ]; then
         mkdir -p /mnt/boot
         mount $PARTITION1 /mnt/boot
-        #APPS+="bootctl "
         SERVICES+="systemd-boot-update "
     elif [ $BOOTLOADER == "grub" ]; then
         mkdir -p /mnt/boot/efi
@@ -94,11 +96,6 @@ set_hostname(){
 }
 set_time(){
     timedatectl set-ntp true
-}
-uefi_check(){
-    if [[ -d "/sys/firmware/efi" ]]; then
-        UEFI=true
-    fi
 }
 setup_pacman(){
     sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
@@ -303,6 +300,9 @@ install_grub_boot(){
         grub-mkconfig -o /boot/grub/grub.cfg
 
 EOF
+    else
+        echo "bios boot grub"
+        sleep 10
     fi
 }
 install_systemd_boot(){
@@ -311,6 +311,8 @@ install_systemd_boot(){
             bootctl --path=/mnt/boot install
             echo -e "default  arch \ntimeout  3 \neditor   no" >> /mnt/boot/loader/loader.conf
             echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
+    else
+        install_grub_boot
     fi
 }
 
@@ -329,8 +331,6 @@ install_systemd_boot(){
 # Select DE & type (full, min etc for software bundles)
     clear
     select_DE
-# detect if UEFI or BIOS
-    uefi_check
 # detect cpu
     detect_CPU
 # detect gpu
@@ -344,7 +344,7 @@ install_systemd_boot(){
 # wipe drive, partition disk, format partition, mount partitions
     format_drive
     #sleep 10
-#set bootloader
+#set bootloader, detect if UEFI or BIOS
     set_bootloader
     #sleep 10
 # timedatectl
