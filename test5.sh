@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="7"
+VERSION="8"
 FILESYSTEM="ext4"
 KERNEL="linux"
 BOOTLOADER="grub" #systemd or grub
@@ -72,19 +72,19 @@ format_drive(){
 
     #mount partitions
     echo "Mounting Partitions -------------------"
-    mount "$PARTITION3" /mnt
+    mount "${PARTITION3}" /mnt
     mkdir /mnt/home
-    mount "$PARTITION4" /mnt/home
-    swapon "$PARTITION2"
+    mount "${PARTITION4}" /mnt/home
+    swapon "${PARTITION2}"
     
 }
 set_bootloader(){
     if [ $BOOTLOADER == "systemd" ]; then
     mkdir -p /mnt/boot
-    mount "$PARTITION1" /mnt/boot
+    mount "${PARTITION1}" /mnt/boot
     elif [ $BOOTLOADER == "grub" ]; then
     mkdir -p /mnt/boot/efi
-    mount "$PARTITION1" /mnt/boot/efi
+    mount "${PARTITION1}" /mnt/boot/efi
     APPS+="efibootmgr grub "
     fi
 }
@@ -213,7 +213,7 @@ select_DE(){
 core_setup(){
 
     COREINSTALL+="base ${KERNEL} "
-    if [ "$INSTALLTYPE" != "minimal" ]; then
+    if [ "${INSTALLTYPE}" != "minimal" ]; then
         COREINSTALL+="base-devel "
     fi
 }
@@ -242,9 +242,8 @@ app_setup(){
 
 }
 core_install(){
-    echo "$COREINSTALL"
-    #sleep 10
-    pacstrap /mnt "$COREINSTALL" --noconfirm --needed
+    echo "${COREINSTALL}"
+    pacstrap /mnt "${COREINSTALL}" --noconfirm --needed
 }
 config_install(){
 
@@ -264,13 +263,11 @@ config_install(){
 
 }
 base_install(){
-    echo "$BASEINSTALL"
-    #sleep 10
-    pacstrap /mnt "$BASEINSTALL" --noconfirm --needed
-    echo "$APPS"
-    #sleep 10
-    pacstrap /mnt "$APPS" --noconfirm --needed
-    systemctl enable "$SERVICES" --root=/mnt
+    echo "${BASEINSTALL}"
+    pacstrap /mnt "${BASEINSTALL}" --noconfirm --needed
+    echo "${APPS}"
+    pacstrap /mnt "${APPS}" --noconfirm --needed
+    systemctl enable "${SERVICES}" --root=/mnt
 }
 config_system(){
     arch-chroot /mnt /bin/bash -e <<EOF
@@ -384,15 +381,14 @@ install_systemd_boot(){
     setup_pacman
 # core install
     core_setup
-    sleep 10
     app_setup
-    sleep 10
     core_install
     sleep 10
 # genfstab, hostname, timezones
     config_install
 # Install DE and apps
     base_install
+    sleep 10
 # arch-chroot
 # set root
 # create user
