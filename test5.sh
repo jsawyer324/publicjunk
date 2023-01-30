@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="16"
+VERSION="17"
 FILESYSTEM="ext4"
 KERNEL="linux "
 TIMEZONE="America/Chicago"
