@@ -368,5 +368,5 @@ install_systemd_boot(){
 # bootloader
     bootloader_install
 # reboot
-    umount -R /mnt
-    reboot
+    #umount -R /mnt
+    #reboot
