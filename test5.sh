@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="22"
+VERSION="23"
 FILESYSTEM="ext4"
 KERNEL="linux "
 TIMEZONE="America/Chicago"
@@ -88,6 +88,25 @@ set_bootloader(){
         mkdir -p /mnt/boot/efi
         mount $PARTITION1 /mnt/boot/efi
         APPS+="efibootmgr grub "
+    fi
+}
+set_bootloader2(){
+    if [[ -d "/sys/firmware/efi" ]]; then
+        UEFI=true
+            if [ $BOOTLOADER == "systemd" ]; then
+            mkdir -p /mnt/boot
+            mount $PARTITION1 /mnt/boot
+            SERVICES+="systemd-boot-update "
+        elif [ $BOOTLOADER == "grub" ]; then
+            mkdir -p /mnt/boot/efi
+            mount $PARTITION1 /mnt/boot/efi
+            APPS+="efibootmgr grub "
+        fi
+    else
+        BOOTLOADER="grub"
+        mkdir -p /mnt/boot
+        mount $PARTITION1 /mnt/boot
+        APPS+="grub "
     fi
 }
 set_hostname(){
@@ -281,23 +300,21 @@ bootloader_install(){
 install_grub_boot(){
     if [[ $UEFI ]]; then
 
-    arch-chroot /mnt /bin/bash -e <<EOF
-        grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
-        grub-mkconfig -o /boot/grub/grub.cfg 
+        arch-chroot /mnt /bin/bash -e <<EOF
+            grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
+            grub-mkconfig -o /boot/grub/grub.cfg 
 EOF
     else
-        echo "bios boot grub"
-        sleep 10
+        arch-chroot /mnt /bin/bash -e <<EOF
+            grub-install --target=i386-pc --recheck ${DISK}
+            grub-mkconfig -o /boot/grub/grub.cfg
+EOF
     fi
 }
 install_systemd_boot(){
-    if [[ $UEFI ]]; then
-            bootctl --path=/mnt/boot install
-            echo -e "default  arch \ntimeout  3 \neditor   no" >> /mnt/boot/loader/loader.conf
-            echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
-    else
-        install_grub_boot
-    fi
+    bootctl --path=/mnt/boot install
+    echo -e "default  arch \ntimeout  3 \neditor   no" >> /mnt/boot/loader/loader.conf
+    echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
 }
 
 #main --------------------
@@ -327,7 +344,7 @@ install_systemd_boot(){
 # wipe drive, partition disk, format partition, mount partitions
     format_drive
 #set bootloader, detect if UEFI or BIOS
-    set_bootloader
+    set_bootloader2
 # timedatectl
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
@@ -342,5 +359,5 @@ install_systemd_boot(){
 # bootloader
     bootloader_install
 # reboot
-    umount -R /mnt
-    reboot
+    #umount -R /mnt
+    #reboot
