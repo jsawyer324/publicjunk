@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="30"
+VERSION="31"
 FILESYSTEM="ext4"
 KERNEL="linux "
 TIMEZONE="America/Chicago"
@@ -92,7 +92,7 @@ set_bootloader(){
     else
         BOOTLOADER="grub"
         mkdir -p /mnt/boot
-        mount $PARTITION1 /mnt/boot
+        #mount $PARTITION1 /mnt/boot
         APPS+="grub "
     fi
 }
