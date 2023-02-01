@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="25"
+VERSION="29"
 FILESYSTEM="ext4"
 KERNEL="linux "
 TIMEZONE="America/Chicago"
-BOOTLOADER="grub" #systemd or grub
+BOOTLOADER="systemd" #systemd or grub
 
 #funtions ----------------
 version(){
@@ -56,8 +56,8 @@ format_drive(){
 
     #partition disk
     echo "Partitioning Drive -------------------"
-    sgdisk -n 1::+1G "${DISK}" -t 1:ef02
-    #sgdisk -n 1::+1G "${DISK}" -t 1:ef00
+    sgdisk -n 1::+1G "${DISK}" -t 1:ef02   #for bios
+    #sgdisk -n 1::+1G "${DISK}" -t 1:ef00    #for uefi
     sgdisk -n 2::+4G "${DISK}" -t 2:8200
     sgdisk -n 3::+10G "${DISK}"
     sgdisk -n 4:: "${DISK}"
@@ -78,20 +78,6 @@ format_drive(){
     
 }
 set_bootloader(){
-    if [[ -d "/sys/firmware/efi" ]]; then
-        UEFI=true
-    fi
-    if [ $BOOTLOADER == "systemd" ]; then
-        mkdir -p /mnt/boot
-        mount $PARTITION1 /mnt/boot
-        SERVICES+="systemd-boot-update "
-    elif [ $BOOTLOADER == "grub" ]; then
-        mkdir -p /mnt/boot/efi
-        mount $PARTITION1 /mnt/boot/efi
-        APPS+="efibootmgr grub "
-    fi
-}
-set_bootloader2(){
     if [[ -d "/sys/firmware/efi" ]]; then
         UEFI=true
             if [ $BOOTLOADER == "systemd" ]; then
@@ -174,7 +160,7 @@ select_DE(){
     PS3="Select a DE [Server]: "
     select DE in Plasma Gnome XFCE i3 Awesome LXQT Server
     do
-        DESKTOP=${DE:-7}
+        DESKTOP=$DE
         break
     done
 
@@ -214,7 +200,7 @@ select_DE(){
     PS3="Install Type? [minimal]: "
     select IT in full minimal miniarchvm
     do
-        INSTALLTYPE=${IT:-2}
+        INSTALLTYPE=$IT
         break
     done
 }
@@ -306,8 +292,10 @@ install_grub_boot(){
             grub-mkconfig -o /boot/grub/grub.cfg 
 EOF
     else
+        grub-install --boot-directory=/mnt/boot ${DISK}
+
         arch-chroot /mnt /bin/bash -e <<EOF
-            grub-install --target=i386-pc --recheck ${DISK}
+
             grub-mkconfig -o /boot/grub/grub.cfg
 EOF
     fi
@@ -345,7 +333,7 @@ install_systemd_boot(){
 # wipe drive, partition disk, format partition, mount partitions
     format_drive
 #set bootloader, detect if UEFI or BIOS
-    set_bootloader2
+    set_bootloader
 # timedatectl
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
