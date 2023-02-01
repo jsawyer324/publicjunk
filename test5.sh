@@ -64,7 +64,7 @@ format_drive(){
 
     #format partition
     echo "Formatting Paritions -------------------"
-    mkfs.vfat -F32 $PARTITION1
+    #mkfs.vfat -F32 $PARTITION1
     mkswap $PARTITION2
     yes | mkfs.ext4 $PARTITION3
     yes | mkfs.ext4 $PARTITION4
