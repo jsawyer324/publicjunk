@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="32"
+VERSION="34"
 FILESYSTEM="ext4"
 KERNEL="linux "
 TIMEZONE="America/Chicago"
-BOOTLOADER="systemd" #systemd or grub
+BOOTLOADER="grub" #systemd or grub
 
 #funtions ----------------
 version(){
@@ -215,6 +215,7 @@ select_DE(){
                     ;;
         Server )    #Server
                     ;;
+        "" )        ;;
         * )         ;;
     esac
 
@@ -316,9 +317,7 @@ install_grub_boot(){
 EOF
     else
         grub-install --boot-directory=/mnt/boot ${DISK}
-
         arch-chroot /mnt /bin/bash -e <<EOF
-
             grub-mkconfig -o /boot/grub/grub.cfg
 EOF
     fi
@@ -373,5 +372,5 @@ install_systemd_boot(){
 # bootloader
     bootloader_install
 # reboot
-    #umount -R /mnt
-    #reboot
+    umount -R /mnt
+    reboot
