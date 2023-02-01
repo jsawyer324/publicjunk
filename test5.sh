@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="31"
+VERSION="32"
 FILESYSTEM="ext4"
 KERNEL="linux "
 TIMEZONE="America/Chicago"
@@ -35,6 +35,19 @@ set_drive(){
         break
     done
 }
+choose_bootloader(){
+    if [[ -d "/sys/firmware/efi" ]]; then
+        UEFI=true
+        if [ $BOOTLOADER == "systemd" ]; then
+            SERVICES+="systemd-boot-update "
+        elif [ $BOOTLOADER == "grub" ]; then
+            APPS+="efibootmgr grub "
+        fi
+    else
+        BOOTLOADER="grub"
+        APPS+="grub "
+    fi
+}
 set_partitions(){
     if [[ "${DISK}" =~ "nvme" ]]; then
         PARTITION1=${DISK}p1
@@ -56,15 +69,20 @@ format_drive(){
 
     #partition disk
     echo "Partitioning Drive -------------------"
-    sgdisk -n 1::+1G "${DISK}" -t 1:ef02   #for bios
-    #sgdisk -n 1::+1G "${DISK}" -t 1:ef00    #for uefi
+    if [[ -d "/sys/firmware/efi" ]]; then
+        sgdisk -n 1::+1G "${DISK}" -t 1:ef00    #for uefi
+    else
+        sgdisk -n 1::+1G "${DISK}" -t 1:ef02   #for bios
+    fi
     sgdisk -n 2::+4G "${DISK}" -t 2:8200
     sgdisk -n 3::+10G "${DISK}"
     sgdisk -n 4:: "${DISK}"
 
     #format partition
     echo "Formatting Paritions -------------------"
-    #mkfs.vfat -F32 $PARTITION1
+    if [[ -d "/sys/firmware/efi" ]]; then
+        mkfs.vfat -F32 $PARTITION1
+    fi
     mkswap $PARTITION2
     yes | mkfs.ext4 $PARTITION3
     yes | mkfs.ext4 $PARTITION4
@@ -83,17 +101,20 @@ set_bootloader(){
             if [ $BOOTLOADER == "systemd" ]; then
             mkdir -p /mnt/boot
             mount $PARTITION1 /mnt/boot
-            SERVICES+="systemd-boot-update "
         elif [ $BOOTLOADER == "grub" ]; then
             mkdir -p /mnt/boot/efi
             mount $PARTITION1 /mnt/boot/efi
-            APPS+="efibootmgr grub "
         fi
     else
-        BOOTLOADER="grub"
         mkdir -p /mnt/boot
-        #mount $PARTITION1 /mnt/boot
-        APPS+="grub "
+    fi
+}
+set_bootloader2(){
+    mkdir -p /mnt/boot/efi
+    if [ $BOOTLOADER == "systemd" ]; then
+        mount $PARTITION1 /mnt/boot
+    elif [[ -d "/sys/firmware/efi" ]]; then
+        mount $PARTITION1 /mnt/boot/efi
     fi
 }
 set_hostname(){
@@ -211,6 +232,10 @@ core_setup(){
     fi
 }
 app_setup(){
+    
+    #General
+        APPS+="nano sudo reflector htop git openssh ntp "
+        SERVICES+="sshd ntpd "
 
     if [[ $IT == "full" ]]; then
         #networking
@@ -218,9 +243,7 @@ app_setup(){
             SERVICES+="NetworkManager "
     fi
     if [[ $IT == "full" ]] || [[ $IT == "miniarchvm" ]]; then
-        #General
-            APPS+="nano sudo reflector htop git openssh ntp "
-            SERVICES+="sshd ntpd "
+        
         if [[ $DESKTOP != "Server" ]]; then
             #software
                 APPS+="cmus mpv pianobar firefox "
@@ -326,6 +349,8 @@ install_systemd_boot(){
     detect_CPU
     detect_GPU
     detect_hypervisor
+# Choose bootloader
+    choose_bootloader
 # Select disk.
     clear
     set_drive
@@ -333,7 +358,7 @@ install_systemd_boot(){
 # wipe drive, partition disk, format partition, mount partitions
     format_drive
 #set bootloader, detect if UEFI or BIOS
-    set_bootloader
+    set_bootloader2
 # timedatectl
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
