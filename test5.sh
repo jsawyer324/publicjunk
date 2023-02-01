@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="23"
+VERSION="24"
 FILESYSTEM="ext4"
 KERNEL="linux "
 TIMEZONE="America/Chicago"
@@ -56,7 +56,8 @@ format_drive(){
 
     #partition disk
     echo "Partitioning Drive -------------------"
-    sgdisk -n 1::+1G "${DISK}" -t 1:ef00
+    sgdisk -n 1::+1M "${DISK}" -t 1:ef02
+    #sgdisk -n 1::+1G "${DISK}" -t 1:ef00
     sgdisk -n 2::+4G "${DISK}" -t 2:8200
     sgdisk -n 3::+10G "${DISK}"
     sgdisk -n 4:: "${DISK}"
@@ -170,10 +171,10 @@ set_kernel(){
     KERNEL="linux"
 }
 select_DE(){
-    PS3="Select a DE: "
+    PS3="Select a DE [Server]: "
     select DE in Plasma Gnome XFCE i3 Awesome LXQT Server
     do
-        DESKTOP=$DE
+        DESKTOP=${DE:-Server}
         break
     done
 
@@ -210,10 +211,10 @@ select_DE(){
         * )         ;;
     esac
 
-    PS3="Install Type? : "
+    PS3="Install Type? [minimal]: "
     select IT in full minimal miniarchvm
     do
-        INSTALLTYPE=$IT
+        INSTALLTYPE=${IT:-minimal}
         break
     done
 }
