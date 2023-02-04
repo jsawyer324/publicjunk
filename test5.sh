@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="34"
+VERSION="35"
 FILESYSTEM="ext4"
-KERNEL="linux "
+KERNEL="linux"
 TIMEZONE="America/Chicago"
 BOOTLOADER="grub" #systemd or grub
 
@@ -27,7 +27,8 @@ set_password() {
     fi
 }
 set_drive(){
-    echo "Dont be dumb, the disk you choose will be erased!!"
+    lsblk -dpno NAME,MODEL
+    echo -ne "\nDont be dumb, the disk you choose will be erased!!\n\n"
     PS3="Select the disk you want to use: "
     select ENTRY in $(lsblk -dpno NAME|grep -P "/dev/sd|nvme|vd");
     do
@@ -110,10 +111,11 @@ set_bootloader(){
     fi
 }
 set_bootloader2(){
-    mkdir -p /mnt/boot/efi
+    mkdir -p /mnt/boot
     if [ $BOOTLOADER == "systemd" ]; then
         mount $PARTITION1 /mnt/boot
     elif [[ -d "/sys/firmware/efi" ]]; then
+        mkdir -p /mnt/boot/efi
         mount $PARTITION1 /mnt/boot/efi
     fi
 }
