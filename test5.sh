@@ -1,11 +1,14 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="35"
+VERSION="36"
 FILESYSTEM="ext4"
 KERNEL="linux"
 TIMEZONE="America/Chicago"
 BOOTLOADER="grub" #systemd or grub
+SIZE_SWAP="8G"
+SIZE_ROOT="15G"
+
 
 #funtions ----------------
 version(){
@@ -63,6 +66,40 @@ set_partitions(){
     fi
 }
 format_drive(){
+    #wipe drive
+    echo "Wiping Drive -------------------"
+    wipefs -af "${DISK}"
+    sgdisk -Zo "${DISK}"
+
+    #partition disk
+    echo "Partitioning Drive -------------------"
+    if [[ -d "/sys/firmware/efi" ]]; then
+        sgdisk -n 1::+1G "${DISK}" -t 1:ef00    #for uefi
+    else
+        sgdisk -n 1::+1G "${DISK}" -t 1:ef02   #for bios
+    fi
+    sgdisk -n 2::+"${SIZE_SWAP}" "${DISK}" -t 2:8200
+    sgdisk -n 3::+"${SIZE_ROOT}" "${DISK}"
+    sgdisk -n 4:: "${DISK}"
+
+    #format partition
+    echo "Formatting Paritions -------------------"
+    if [[ -d "/sys/firmware/efi" ]]; then
+        mkfs.vfat -F32 $PARTITION1
+    fi
+    mkswap $PARTITION2
+    yes | mkfs.ext4 $PARTITION3
+    yes | mkfs.ext4 $PARTITION4
+
+    #mount partitions
+    echo "Mounting Partitions -------------------"
+    mount $PARTITION3 /mnt
+    mkdir /mnt/home
+    mount $PARTITION4 /mnt/home
+    swapon $PARTITION2
+    
+}
+old_format_drive(){
     #wipe drive
     echo "Wiping Drive -------------------"
     wipefs -af "${DISK}"
