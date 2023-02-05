@@ -1,13 +1,13 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="36"
+VERSION="37"
 FILESYSTEM="ext4"
 KERNEL="linux"
 TIMEZONE="America/Chicago"
 BOOTLOADER="grub" #systemd or grub
 SIZE_SWAP="8G"
-SIZE_ROOT="15G"
+SIZE_ROOT="120G"
 
 
 #funtions ----------------
