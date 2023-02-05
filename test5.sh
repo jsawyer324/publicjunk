@@ -11,25 +11,25 @@ SIZE_ROOT="120G"
 
 
 #funtions ----------------
-version(){
+show_version(){
     echo "Version "$VERSION
 }
-usersetup(){
+get_usersetup(){
     read -rp "Enter new username [james]:" USERNAME
     USERNAME=${USERNAME:-james}
-    set_password "PASSWORD"
+    get_password "PASSWORD"
 }
-set_password() {
+get_password() {
     read -rs -p "Please enter password: " PASSWORD1
     echo -ne "\n"
     read -rs -p "Please re-enter password: " PASSWORD2
     echo -ne "\n"
     if [[ "$PASSWORD1" != "$PASSWORD2" ]]; then
         echo -ne "ERROR! Passwords do not match. \n"
-        set_password
+        get_password
     fi
 }
-set_drive(){
+get_drive(){
     lsblk -dpno NAME,MODEL
     echo -ne "\nDont be dumb, the disk you choose will be erased!!\n\n"
     PS3="Select the disk you want to use: "
@@ -99,55 +99,7 @@ format_drive(){
     swapon $PARTITION2
     
 }
-old_format_drive(){
-    #wipe drive
-    echo "Wiping Drive -------------------"
-    wipefs -af "${DISK}"
-    sgdisk -Zo "${DISK}"
-
-    #partition disk
-    echo "Partitioning Drive -------------------"
-    if [[ -d "/sys/firmware/efi" ]]; then
-        sgdisk -n 1::+1G "${DISK}" -t 1:ef00    #for uefi
-    else
-        sgdisk -n 1::+1G "${DISK}" -t 1:ef02   #for bios
-    fi
-    sgdisk -n 2::+4G "${DISK}" -t 2:8200
-    sgdisk -n 3::+10G "${DISK}"
-    sgdisk -n 4:: "${DISK}"
-
-    #format partition
-    echo "Formatting Paritions -------------------"
-    if [[ -d "/sys/firmware/efi" ]]; then
-        mkfs.vfat -F32 $PARTITION1
-    fi
-    mkswap $PARTITION2
-    yes | mkfs.ext4 $PARTITION3
-    yes | mkfs.ext4 $PARTITION4
-
-    #mount partitions
-    echo "Mounting Partitions -------------------"
-    mount $PARTITION3 /mnt
-    mkdir /mnt/home
-    mount $PARTITION4 /mnt/home
-    swapon $PARTITION2
-    
-}
 set_bootloader(){
-    if [[ -d "/sys/firmware/efi" ]]; then
-        UEFI=true
-            if [ $BOOTLOADER == "systemd" ]; then
-            mkdir -p /mnt/boot
-            mount $PARTITION1 /mnt/boot
-        elif [ $BOOTLOADER == "grub" ]; then
-            mkdir -p /mnt/boot/efi
-            mount $PARTITION1 /mnt/boot/efi
-        fi
-    else
-        mkdir -p /mnt/boot
-    fi
-}
-set_bootloader2(){
     mkdir -p /mnt/boot
     if [ $BOOTLOADER == "systemd" ]; then
         mount $PARTITION1 /mnt/boot
@@ -271,6 +223,9 @@ core_setup(){
         COREINSTALL+="base-devel "
     fi
 }
+confirm_settings(){
+    echo "confirm"
+}
 app_setup(){
     
     #General
@@ -296,6 +251,7 @@ app_setup(){
                 SERVICES+="bluetooth "
             #Other Drivers
                 APPS+="apcupsd broadcom-wl "
+                SERVICES+="apcupsd "
         fi
     fi
 }
@@ -369,13 +325,16 @@ install_systemd_boot(){
 
 #main --------------------
 
-# Get User details, name, pass
+# detect cpu, gpu, hypervisor
+    detect_CPU
+    detect_GPU
+    detect_hypervisor
+# Customize User details, name, pass, hostname
     clear
-    version
-    usersetup
-# Get hostname
+    show_version
+    get_usersetup
     clear
-    set_hostname
+    get_hostname
 # pick kernel
     clear
     set_kernel
@@ -383,20 +342,20 @@ install_systemd_boot(){
     clear
     select_DE
     app_setup
-# detect cpu, gpu, hypervisor
-    detect_CPU
-    detect_GPU
-    detect_hypervisor
-# Choose bootloader
+# Choose bootloader, detect if UEFI or BIOS
     choose_bootloader
 # Select disk.
     clear
-    set_drive
+    get_drive
     set_partitions
+#confirm settings
+    clear
+    confirm_settings
 # wipe drive, partition disk, format partition, mount partitions
+    clear
     format_drive
-#set bootloader, detect if UEFI or BIOS
-    set_bootloader2
+#set bootloader
+    set_bootloader
 # timedatectl
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
