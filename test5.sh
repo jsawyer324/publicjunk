@@ -148,7 +148,7 @@ detect_hypervisor(){
                     SERVICES+="hv_fcopy_daemon hv_kvp_daemon hv_vss_daemon "
                     ;;
         * )         
-                    COREINSTALL+="linux-firmware "
+                    COREINSTALL+="linux-firmware linux-headers "
                     HWTYPE="metal"
                     ;;
     esac
@@ -218,7 +218,7 @@ select_DE(){
     done
 }
 core_setup(){
-    COREINSTALL+="base ${KERNEL} "
+    COREINSTALL+="base ${KERNEL} linux-firmware "
     if [ "${INSTALLTYPE}" != "minimal" ]; then
         COREINSTALL+="base-devel "
     fi
