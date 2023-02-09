@@ -244,6 +244,8 @@ app_setup(){
                 APPS+="cmus mpv pianobar firefox "
             #Audio
                 APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol "
+            #General
+                APPS+="xdg-user-dirs "
         fi
         if [[ $HWTYPE == "metal" ]]; then
             #Bluetooth
