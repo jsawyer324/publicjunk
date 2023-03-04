@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="37"
-FILESYSTEM="ext4"
+VERSION="38"
+#FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
 BOOTLOADER="grub" #systemd or grub
@@ -353,8 +353,11 @@ install_systemd_boot(){
 #confirm settings
     clear
     confirm_settings
-# wipe drive, partition disk, format partition, mount partitions
     clear
+
+#------- all setup done, installing now  -------
+
+# wipe drive, partition disk, format partition, mount partitions
     format_drive
 #set bootloader
     set_bootloader
