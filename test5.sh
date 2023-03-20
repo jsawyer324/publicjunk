@@ -271,7 +271,7 @@ config_install(){
     #LC_ALL
     #LC_MESSAGES
 
-    ln -sf /mnt/usr/share/zoneinfo/$TIMEZONE /mnt/etc/localtime
+    #ln -sf /mnt/usr/share/zoneinfo/$TIMEZONE /mnt/etc/localtime
 
 }
 install_all(){
@@ -280,6 +280,9 @@ install_all(){
 }
 config_system(){
     arch-chroot /mnt /bin/bash -e <<EOF
+
+        #set timezone
+        ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
         # Setting up clock.
         echo "Setting up the system clock."
