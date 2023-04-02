@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="38"
+VERSION="39"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -170,7 +170,7 @@ set_kernel(){
 }
 select_DE(){
     PS3="Select a DE [Server]: "
-    select DE in Plasma Gnome XFCE i3 Awesome LXQT Server
+    select DE in Plasma PlasmaMeta Gnome XFCE i3 Awesome LXQT Server
     do
         DESKTOP=$DE
         break
@@ -181,6 +181,12 @@ select_DE(){
 
     case $DESKTOP in
         Plasma )    #KDE Plasma
+                    APPS+="gwenview okular spectacle elisa kdeconnect kio-extras dolphin ark filelight kate kcalc kcharselect kdialog 
+                    konsole kwalletmanager print-manager bluedevil kinfocenter kscreen kwallet-pam oxygen-sounds plasma-desktop 
+                    plasma-disks plasma-nm plasma-pa plasma-systemmonitor powerdevil xdg-desktop-portal-kde sddm sddm-kcm ${xorg} "
+                    SERVICES+="sddm "
+                    ;;
+        PlasmaMeta )    #KDE Plasma
                     APPS+="plasma-meta kde-graphics-meta kde-multimedia-meta kde-network-meta kde-system-meta kde-utilities-meta ${xorg} "
                     SERVICES+="sddm "
                     ;;
@@ -270,8 +276,6 @@ config_install(){
     #LANGUAGE
     #LC_ALL
     #LC_MESSAGES
-
-    #ln -sf /mnt/usr/share/zoneinfo/$TIMEZONE /mnt/etc/localtime
 
 }
 install_all(){
