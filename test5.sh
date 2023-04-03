@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="39"
+VERSION="40"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -108,7 +108,7 @@ set_bootloader(){
         mount $PARTITION1 /mnt/boot/efi
     fi
 }
-set_hostname(){
+get_hostname(){
     read -rp "Please enter the hostname [test]: " HOSTNAME
     HOSTNAME=${HOSTNAME:-test}
 }
