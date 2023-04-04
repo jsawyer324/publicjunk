@@ -1,13 +1,15 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="40"
+VERSION="41"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
 BOOTLOADER="grub" #systemd or grub
-SIZE_SWAP="8G"
-SIZE_ROOT="120G"
+#SIZE_SWAP="8G"
+#SIZE_ROOT="120G"
+SIZE_SWAP="2G"
+SIZE_ROOT="15G"
 
 
 #funtions ----------------
