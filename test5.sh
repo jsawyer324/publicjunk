@@ -31,6 +31,10 @@ get_password() {
         get_password
     fi
 }
+calculate_size(){
+    echo "size calculation"
+    #lsblk -dbno SIZE /dev/nvme0n1
+}
 get_drive(){
     lsblk -dpno NAME,MODEL
     echo -ne "\nDont be dumb, the disk you choose will be erased!!\n\n"
@@ -358,6 +362,7 @@ install_systemd_boot(){
 # Select disk.
     clear
     get_drive
+    calculate_size
     set_partitions
 #confirm settings
     clear
