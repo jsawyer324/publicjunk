@@ -8,6 +8,8 @@ TIMEZONE="America/Chicago"
 BOOTLOADER="grub" #systemd or grub
 #SIZE_SWAP="8G"
 #SIZE_ROOT="120G"
+SIZE_MBR="1G"   #MBR size
+SIZE_ESP="1G"   #ESP - EFI System Partition
 SIZE_SWAP="2G"
 SIZE_ROOT="15G"
 
@@ -80,9 +82,9 @@ format_drive(){
     #partition disk
     echo "Partitioning Drive -------------------"
     if [[ -d "/sys/firmware/efi" ]]; then
-        sgdisk -n 1::+1G "${DISK}" -t 1:ef00    #for uefi
+        sgdisk -n 1::+"${SIZE_ESP}" "${DISK}" -t 1:ef00    #for uefi
     else
-        sgdisk -n 1::+1G "${DISK}" -t 1:ef02   #for bios
+        sgdisk -n 1::+"${SIZE_MBR}" "${DISK}" -t 1:ef02   #for bios
     fi
     sgdisk -n 2::+"${SIZE_SWAP}" "${DISK}" -t 2:8200
     sgdisk -n 3::+"${SIZE_ROOT}" "${DISK}"
