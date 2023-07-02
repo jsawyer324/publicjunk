@@ -140,7 +140,7 @@ detect_hypervisor(){
     HWTYPE="vm"
     case $hypervisor in
         kvm )       
-                    BASEINSTALL+="qemu-guest-agent spice-vdagent "
+                    BASEINSTALL+="qemu-guest-agent spice-vdagent xf86-video-qxl "
                     SERVICES+="qemu-guest-agent "
                     ;;
         vmware  )   
