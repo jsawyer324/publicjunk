@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="46"
+VERSION="47"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
-BOOTLOADER="grub" #systemd or grub
+BOOTLOADER="systemd" #systemd or grub
 #SIZE_SWAP="8G"
 #SIZE_ROOT="120G"
 SIZE_MBR="1G"   #MBR size
@@ -125,7 +125,8 @@ set_time(){
 }
 setup_pacman(){
     sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
-    reflector --save /etc/pacman.d/mirrorlist --country US --protocol https --score 10 --verbose
+    reflector --save /etc/pacman.d/mirrorlist --country 'United States' --protocol https --latest 5 --sort rate --verbose
+    pacman -Syy
 }
 detect_CPU(){
     CPU=$(grep vendor_id /proc/cpuinfo)
