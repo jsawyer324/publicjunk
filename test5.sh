@@ -422,7 +422,6 @@ install_systemd_boot(){
 # core install, Install DE and apps
     core_setup
     install_all
-    sleep 10
 # genfstab, hostname, timezones
     config_install
 # arch-chroot, set root, create user
@@ -430,6 +429,5 @@ install_systemd_boot(){
 # bootloader
     bootloader_install
 # reboot
-    sleep 10
     umount -R /mnt
     reboot
