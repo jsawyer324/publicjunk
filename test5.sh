@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="42"
+VERSION="43"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
-BOOTLOADER="systemd" #systemd or grub
+BOOTLOADER="grub" #systemd or grub
 #SIZE_SWAP="8G"
 #SIZE_ROOT="120G"
 SIZE_MBR="1G"   #MBR size
@@ -281,14 +281,14 @@ app_setup(){
         SERVICES+="sshd ntpd NetworkManager "
 
     if [[ $IT == "minimal" ]]; then
-        return
+        return $TRUE
     fi
     if [[ $IT == "full" ]]; then
         #networking
             APPS+="samba cifs-utils nfs-utils ntfs-3g rsync "
     fi
     if [[ $DESKTOP == "Server" ]]; then
-        return
+        return $TRUE
     fi
     
     #software
@@ -396,6 +396,7 @@ install_systemd_boot(){
     clear
     select_DE
     app_setup
+    sleep 10
 # Choose bootloader, detect if UEFI or BIOS
     choose_bootloader
 # Select disk.
@@ -420,7 +421,9 @@ install_systemd_boot(){
     setup_pacman
 # core install, Install DE and apps
     core_setup
+    sleep 10
     install_all
+    sleep 10
 # genfstab, hostname, timezones
     config_install
 # arch-chroot, set root, create user
