@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="47"
+VERSION="48"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -421,9 +421,11 @@ install_systemd_boot(){
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
     setup_pacman
+    sleep 10
 # core install, Install DE and apps
     core_setup
     install_all
+    sleep 10
 # genfstab, hostname, timezones
     config_install
 # arch-chroot, set root, create user
@@ -431,5 +433,5 @@ install_systemd_boot(){
 # bootloader
     bootloader_install
 # reboot
-    umount -R /mnt
-    reboot
+    #umount -R /mnt
+    #reboot
