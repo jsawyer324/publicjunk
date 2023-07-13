@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="43"
+VERSION="44"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
-BOOTLOADER="grub" #systemd or grub
+BOOTLOADER="systemd" #systemd or grub
 #SIZE_SWAP="8G"
 #SIZE_ROOT="120G"
 SIZE_MBR="1G"   #MBR size
@@ -396,7 +396,6 @@ install_systemd_boot(){
     clear
     select_DE
     app_setup
-    sleep 10
 # Choose bootloader, detect if UEFI or BIOS
     choose_bootloader
 # Select disk.
@@ -419,9 +418,9 @@ install_systemd_boot(){
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
     setup_pacman
+    sleep 10
 # core install, Install DE and apps
     core_setup
-    sleep 10
     install_all
     sleep 10
 # genfstab, hostname, timezones
@@ -431,5 +430,6 @@ install_systemd_boot(){
 # bootloader
     bootloader_install
 # reboot
+    sleep 10
     umount -R /mnt
     reboot
