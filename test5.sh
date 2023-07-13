@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="48"
+VERSION="49"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -125,7 +125,7 @@ set_time(){
 }
 setup_pacman(){
     sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
-    reflector --save /etc/pacman.d/mirrorlist --country 'United States' --protocol https --latest 5 --sort rate --verbose
+    reflector --save /etc/pacman.d/mirrorlist --country 'United States' --protocol https --latest 20 --sort rate --verbose
     pacman -Syy
 }
 detect_CPU(){
@@ -421,7 +421,7 @@ install_systemd_boot(){
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
     setup_pacman
-    sleep 10
+    sleep 30
 # core install, Install DE and apps
     core_setup
     install_all
