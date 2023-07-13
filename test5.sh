@@ -291,7 +291,9 @@ app_setup(){
     if [[ $DESKTOP == "Server" ]]; then
         return $TRUE
     fi
-    
+    if [[ $IT == "miniarchvm" ]]; then
+        APPS+="networkmanager-openvpn network-manager-applet ufw "
+    fi
     #software
         APPS+="cmus mpv pianobar firefox "
     #Audio
