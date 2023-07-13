@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="45"
+VERSION="46"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
-BOOTLOADER="systemd" #systemd or grub
+BOOTLOADER="grub" #systemd or grub
 #SIZE_SWAP="8G"
 #SIZE_ROOT="120G"
 SIZE_MBR="1G"   #MBR size
@@ -240,7 +240,7 @@ core_setup(){
 confirm_settings(){
     echo "confirm"
 }
-app_setup(){
+app_setup_old(){
     
     #General
         APPS+="nano sudo reflector htop git openssh ntp networkmanager "
@@ -271,7 +271,7 @@ app_setup(){
         fi
     fi
 }
-app_setup_new(){
+app_setup(){
     #HWTYPE: vm or metal
     #IT: full minimal miniarchvm
     #DESKTOP: DE
