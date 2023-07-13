@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="44"
+VERSION="45"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -240,11 +240,11 @@ core_setup(){
 confirm_settings(){
     echo "confirm"
 }
-app_setup_old(){
+app_setup(){
     
     #General
-        APPS+="nano sudo reflector htop git openssh ntp "
-        SERVICES+="sshd ntpd "
+        APPS+="nano sudo reflector htop git openssh ntp networkmanager "
+        SERVICES+="sshd ntpd NetworkManager "
 
     if [[ $IT == "full" ]]; then
         #networking
@@ -271,7 +271,7 @@ app_setup_old(){
         fi
     fi
 }
-app_setup(){
+app_setup_new(){
     #HWTYPE: vm or metal
     #IT: full minimal miniarchvm
     #DESKTOP: DE
@@ -418,7 +418,6 @@ install_systemd_boot(){
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
     setup_pacman
-    sleep 10
 # core install, Install DE and apps
     core_setup
     install_all
