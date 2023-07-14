@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="51"
+VERSION="52"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -127,7 +127,7 @@ set_time(){
 }
 setup_pacman(){
     sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
-    reflector --save /etc/pacman.d/mirrorlist --country 'United States' --protocol https --latest 20 --sort rate --verbose
+    reflector --save /etc/pacman.d/mirrorlist --country 'United States' --latest 10 --sort rate --verbose
     pacman -Syy
 }
 detect_CPU(){
@@ -363,6 +363,7 @@ bootloader_install(){
     fi
 }
 install_grub_boot(){
+    echo "Installing GRUB -------------------"
     if [[ $UEFI ]]; then
 
         arch-chroot /mnt /bin/bash -e <<EOF
@@ -377,6 +378,7 @@ EOF
     fi
 }
 install_systemd_boot(){
+    echo "Installing Systemd boot -------------------"
     bootctl --path=/mnt/boot install
     echo -e "default  arch \ntimeout  3 \neditor   no" >> /mnt/boot/loader/loader.conf
     echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
