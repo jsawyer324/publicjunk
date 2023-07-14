@@ -16,7 +16,7 @@ do
   nmcli con mod $T ipv4.dns "103.86.96.100, 103.86.99.100"
   nmcli con mod $T ipv6.method "disabled"
 
-  IP=(ping -c1 -t1 -W0 $HOSTNAME 2>&1 | tr -d '():' | awk '/^PING/{print $3}')
+  IP=$(ping -c1 -t1 -W0 $HOSTNAME 2>&1 | tr -d '():' | awk '/^PING/{print $3}')
   sudo ufw allow out to ${IP} port 1194 proto udp
   sudo ufw allow out from any to ${IP}/24
 done
