@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="49"
+VERSION="50"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -12,6 +12,8 @@ SIZE_MBR="1G"   #MBR size
 SIZE_ESP="1G"   #ESP - EFI System Partition
 SIZE_SWAP="2G"
 SIZE_ROOT="15G"
+SERVICES=""
+APPS=""
 
 
 #funtions ----------------
@@ -421,11 +423,9 @@ install_systemd_boot(){
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
     setup_pacman
-    sleep 30
 # core install, Install DE and apps
     core_setup
     install_all
-    sleep 10
 # genfstab, hostname, timezones
     config_install
 # arch-chroot, set root, create user
