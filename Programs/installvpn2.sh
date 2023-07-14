@@ -1,5 +1,7 @@
 #!/bin/sh
 
+WIRED="Wired connection 1"
+
 PS3="Which vpn would you like to setup: "
 select CITY in $(ls -d */)
 do
@@ -27,5 +29,8 @@ sudo ufw enable
 sudo ufw default deny outgoing
 sudo ufw default deny incoming
 sudo ufw allow out on tun0 from any to any
+
+sudo nmcli con mod ${WIRED} connection.autoconnect yes
+sudo nmcli con mod ${WIRED} ipv6.method "disabled"
 
 sudo systemctl restart NetworkManager ufw
