@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="52"
-#FILESYSTEM="ext4"   #not currently used
+VERSION="53"
+FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
 BOOTLOADER="systemd" #systemd or grub
@@ -243,37 +243,6 @@ core_setup(){
 confirm_settings(){
     echo "confirm"
 }
-app_setup_old(){
-    
-    #General
-        APPS+="nano sudo reflector htop git openssh ntp networkmanager "
-        SERVICES+="sshd ntpd NetworkManager "
-
-    if [[ $IT == "full" ]]; then
-        #networking
-            APPS+="samba cifs-utils nfs-utils ntfs-3g rsync networkmanager "
-            SERVICES+="NetworkManager "
-    fi
-    if [[ $IT == "full" ]] || [[ $IT == "miniarchvm" ]]; then
-        
-        if [[ $DESKTOP != "Server" ]]; then
-            #software
-                APPS+="cmus mpv pianobar firefox "
-            #Audio
-                APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol "
-            #General
-                APPS+="xdg-user-dirs "
-        fi
-        if [[ $HWTYPE == "metal" ]]; then
-            #Bluetooth
-                APPS+="bluez bluez-utils bluedevil pulseaudio-bluetooth "
-                SERVICES+="bluetooth "
-            #Other Drivers
-                APPS+="apcupsd broadcom-wl "
-                SERVICES+="apcupsd "
-        fi
-    fi
-}
 app_setup(){
     #HWTYPE: vm or metal
     #IT: full minimal miniarchvm
@@ -323,9 +292,6 @@ config_install(){
 
     arch-chroot /mnt locale-gen
     echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
-    #LANGUAGE
-    #LC_ALL
-    #LC_MESSAGES
 
 }
 install_all(){
