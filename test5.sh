@@ -2,7 +2,7 @@
 
 #config ------------------
 VERSION="53"
-FILESYSTEM="ext4"   #not currently used
+#FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
 BOOTLOADER="systemd" #systemd or grub
@@ -95,27 +95,27 @@ format_drive(){
     #format partition
     echo "Formatting Paritions -------------------"
     if [[ -d "/sys/firmware/efi" ]]; then
-        mkfs.vfat -F32 $PARTITION1
+        mkfs.vfat -F32 "$PARTITION1"
     fi
-    mkswap $PARTITION2
-    yes | mkfs.ext4 $PARTITION3
-    yes | mkfs.ext4 $PARTITION4
+    mkswap "$PARTITION2"
+    yes | mkfs.ext4 "$PARTITION3"
+    yes | mkfs.ext4 "$PARTITION4"
 
     #mount partitions
     echo "Mounting Partitions -------------------"
-    mount $PARTITION3 /mnt
+    mount "$PARTITION3" /mnt
     mkdir /mnt/home
-    mount $PARTITION4 /mnt/home
-    swapon $PARTITION2
+    mount "$PARTITION4" /mnt/home
+    swapon "$PARTITION2"
     
 }
 set_bootloader(){
     mkdir -p /mnt/boot
     if [ $BOOTLOADER == "systemd" ]; then
-        mount $PARTITION1 /mnt/boot
+        mount "$PARTITION1" /mnt/boot
     elif [[ -d "/sys/firmware/efi" ]]; then
         mkdir -p /mnt/boot/efi
-        mount $PARTITION1 /mnt/boot/efi
+        mount "$PARTITION1" /mnt/boot/efi
     fi
 }
 get_hostname(){
@@ -253,14 +253,14 @@ app_setup(){
         SERVICES+="sshd ntpd NetworkManager "
 
     if [[ $IT == "minimal" ]]; then
-        return $TRUE
+        return "$TRUE"
     fi
     if [[ $IT == "full" ]]; then
         #networking
             APPS+="samba cifs-utils nfs-utils ntfs-3g rsync "
     fi
     if [[ $DESKTOP == "Server" ]]; then
-        return $TRUE
+        return "$TRUE"
     fi
     if [[ $IT == "miniarchvm" ]]; then
         APPS+="networkmanager-openvpn network-manager-applet ufw "
@@ -295,8 +295,8 @@ config_install(){
 
 }
 install_all(){
-    pacstrap /mnt $COREINSTALL $BASEINSTALL $APPS --noconfirm --needed
-    systemctl enable $SERVICES --root=/mnt
+    pacstrap /mnt "$COREINSTALL" "$BASEINSTALL" "$APPS" --noconfirm --needed
+    systemctl enable "$SERVICES" --root=/mnt
 }
 config_system(){
     arch-chroot /mnt /bin/bash -e <<EOF
@@ -337,7 +337,7 @@ install_grub_boot(){
             grub-mkconfig -o /boot/grub/grub.cfg 
 EOF
     else
-        grub-install --boot-directory=/mnt/boot ${DISK}
+        grub-install --boot-directory=/mnt/boot "${DISK}"
         arch-chroot /mnt /bin/bash -e <<EOF
             grub-mkconfig -o /boot/grub/grub.cfg
 EOF
@@ -401,5 +401,6 @@ install_systemd_boot(){
 # bootloader
     bootloader_install
 # reboot
-    #umount -R /mnt
-    #reboot
+    sleep 2
+    umount -R /mnt
+    reboot
