@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="55"
+VERSION="56"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -95,27 +95,27 @@ format_drive(){
     #format partition
     echo "Formatting Paritions -------------------"
     if [[ -d "/sys/firmware/efi" ]]; then
-        mkfs.vfat -F32 "${PARTITION1}"
+        mkfs.vfat -F32 $PARTITION1
     fi
-    mkswap "${PARTITION2}"
-    yes | mkfs.ext4 "${PARTITION3}"
-    yes | mkfs.ext4 "${PARTITION4}"
+    mkswap $PARTITION2
+    yes | mkfs.ext4 $PARTITION3
+    yes | mkfs.ext4 $PARTITION4
 
     #mount partitions
     echo "Mounting Partitions -------------------"
-    mount "${PARTITION3}" /mnt
+    mount $PARTITION3 /mnt
     mkdir /mnt/home
-    mount "${PARTITION4}" /mnt/home
-    swapon "${PARTITION2}"
+    mount $PARTITION4 /mnt/home
+    swapon $PARTITION2
     
 }
 set_bootloader(){
     mkdir -p /mnt/boot
     if [ $BOOTLOADER == "systemd" ]; then
-        mount "${PARTITION1}" /mnt/boot
+        mount $PARTITION1 /mnt/boot
     elif [[ -d "/sys/firmware/efi" ]]; then
         mkdir -p /mnt/boot/efi
-        mount "${PARTITION1}" /mnt/boot/efi
+        mount $PARTITION1 /mnt/boot/efi
     fi
 }
 get_hostname(){
@@ -295,8 +295,8 @@ config_install(){
 
 }
 install_all(){
-    pacstrap /mnt "${COREINSTALL}" "${BASEINSTALL}" "${APPS}" --noconfirm --needed
-    systemctl enable "${SERVICES}" --root=/mnt
+    pacstrap /mnt $COREINSTALL $BASEINSTALL $APPS --noconfirm --needed
+    systemctl enable $SERVICES --root=/mnt
 }
 config_system(){
     arch-chroot /mnt /bin/bash -e <<EOF
