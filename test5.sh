@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="53"
+VERSION="54"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
