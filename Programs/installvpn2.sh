@@ -9,10 +9,12 @@ break
 done
 
 cd "$CITY" || exit
-for i in $(ls *.ovpn); do nmcli connection import type openvpn file "$i"; done
 
-for i in $(ls *.ovpn)
+for i in *.ovpn; do nmcli connection import type openvpn file "$i"; done
+
+for i in *.ovpn
 do
+  [[ -e "$i" ]] || break
   T=${i::-5}
   HOSTNAME=${i::-13}
   nmcli con mod "$T" ipv4.dns "103.86.96.100, 103.86.99.100"
