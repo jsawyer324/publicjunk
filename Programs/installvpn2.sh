@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 WIRED="Wired connection 1"
 
