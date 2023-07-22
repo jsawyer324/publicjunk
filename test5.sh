@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="64"
+VERSION="65"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -129,7 +129,7 @@ setup_pacman(){
 
     pacman-key --init
     pacman-key --populate
-    pacman -Syy
+    #pacman -Syy
 
     sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
     #reflector --save /etc/pacman.d/mirrorlist --country 'United States' --latest 10 --sort rate --verbose
@@ -303,7 +303,12 @@ config_install(){
 
 }
 install_all(){
-    pacstrap /mnt $COREINSTALL $BASEINSTALL $APPS --noconfirm --needed
+    pacstrap /mnt $COREINSTALL --noconfirm --needed
+    sleep 10
+    pacstrap /mnt $BASEINSTALL --noconfirm --needed
+    sleep 10
+    pacstrap /mnt $APPS --noconfirm --needed
+    sleep 10
     systemctl enable $SERVICES --root=/mnt
 }
 config_system(){
