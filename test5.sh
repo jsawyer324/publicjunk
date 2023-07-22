@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="59"
+VERSION="60"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -128,7 +128,10 @@ set_time(){
 setup_pacman(){
     sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
     reflector --save /etc/pacman.d/mirrorlist --country 'United States' --latest 10 --sort rate --verbose
-    pacman -S archlinux-keyring
+    #pacman -Syy
+    #pacman -S archlinux-keyring
+    pacman-key --init
+    pacman-key --populate
     pacman -Syy
 }
 detect_CPU(){
@@ -386,18 +389,18 @@ install_systemd_boot(){
 
 # wipe drive, partition disk, format partition, mount partitions
     format_drive
-    sleep 30
+    #sleep 30
 #set bootloader
     set_bootloader
 # timedatectl
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
     setup_pacman
-    sleep 30
+    sleep 10
 # core install, Install DE and apps
     core_setup
     install_all
-    sleep 30
+    sleep 10
 # genfstab, hostname, timezones
     config_install
 # arch-chroot, set root, create user
