@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="57"
+VERSION="58"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -385,15 +385,18 @@ install_systemd_boot(){
 
 # wipe drive, partition disk, format partition, mount partitions
     format_drive
+    sleep 30
 #set bootloader
     set_bootloader
 # timedatectl
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
     setup_pacman
+    sleep 30
 # core install, Install DE and apps
     core_setup
     install_all
+    sleep 30
 # genfstab, hostname, timezones
     config_install
 # arch-chroot, set root, create user
