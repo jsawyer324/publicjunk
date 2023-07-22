@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="62"
+VERSION="63"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -134,11 +134,8 @@ setup_pacman(){
     sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
     reflector --save /etc/pacman.d/mirrorlist --country 'United States' --latest 10 --sort rate --verbose
 
+    pacman -Sy archlinux-keyring --noconfirm
     pacman -Syy
-    pacman -S archlinux-keyring
-
-    #pacman-key --init
-    #pacman-key --populate
 
 }
 detect_CPU(){
