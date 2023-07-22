@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="63"
+VERSION="64"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -132,7 +132,7 @@ setup_pacman(){
     pacman -Syy
 
     sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
-    reflector --save /etc/pacman.d/mirrorlist --country 'United States' --latest 10 --sort rate --verbose
+    #reflector --save /etc/pacman.d/mirrorlist --country 'United States' --latest 10 --sort rate --verbose
 
     pacman -Sy archlinux-keyring --noconfirm
     pacman -Syy
