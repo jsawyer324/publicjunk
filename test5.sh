@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="56"
+VERSION="57"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -402,5 +402,5 @@ install_systemd_boot(){
     bootloader_install
 # reboot
     sleep 2
-    umount -R /mnt
-    reboot
+    #umount -R /mnt
+    #reboot
