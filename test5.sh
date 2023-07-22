@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="60"
+VERSION="61"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -126,13 +126,15 @@ set_time(){
     timedatectl set-ntp true
 }
 setup_pacman(){
+
+    pacman -S archlinux-keyring
+
     sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
     reflector --save /etc/pacman.d/mirrorlist --country 'United States' --latest 10 --sort rate --verbose
     #pacman -Syy
-    #pacman -S archlinux-keyring
-    pacman-key --init
-    pacman-key --populate
-    pacman -Syy
+    #pacman-key --init
+    #pacman-key --populate
+    #pacman -Syy
 }
 detect_CPU(){
     CPU=$(grep vendor_id /proc/cpuinfo)
