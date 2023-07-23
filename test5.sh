@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="67"
+VERSION="68"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -312,9 +312,9 @@ config_install(){
 install_all(){
     pacstrap -K /mnt $COREINSTALL --noconfirm --needed
     # sleep 10
-    pacstrap -K /mnt $BASEINSTALL $APPS --noconfirm --needed
+    pacstrap -K /mnt $BASEINSTALL --noconfirm --needed
     # sleep 10
-    # pacstrap -K /mnt $APPS --noconfirm --needed
+    pacstrap -K /mnt $APPS --noconfirm --needed
     # sleep 10
     systemctl enable $SERVICES --root=/mnt
 }
