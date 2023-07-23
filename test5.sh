@@ -62,27 +62,27 @@ choose_bootloader(){
         APPS+="grub "
     fi
 }
-set_partitions(){
-    if [[ "${DISK}" =~ "nvme" ]]; then
-        PARTITION1=${DISK}p1
-        PARTITION2=${DISK}p2
-        PARTITION3=${DISK}p3
-        PARTITION4=${DISK}p4
-    else
-        PARTITION1=${DISK}1
-        PARTITION2=${DISK}2
-        PARTITION3=${DISK}3
-        PARTITION4=${DISK}4
-    fi
-}
 # set_partitions(){
-#     X=''
-#     if [[ "${DISK}" =~ "nvme" ]]; then X='p'; fi
-#     PARTITION1=${DISK}${X}1
-#     PARTITION2=${DISK}${X}2
-#     PARTITION3=${DISK}${X}3
-#     PARTITION4=${DISK}${X}4
+#     if [[ "${DISK}" =~ "nvme" ]]; then
+#         PARTITION1=${DISK}p1
+#         PARTITION2=${DISK}p2
+#         PARTITION3=${DISK}p3
+#         PARTITION4=${DISK}p4
+#     else
+#         PARTITION1=${DISK}1
+#         PARTITION2=${DISK}2
+#         PARTITION3=${DISK}3
+#         PARTITION4=${DISK}4
+#     fi
 # }
+set_partitions(){
+    X=''
+    if [[ "${DISK}" =~ "nvme" ]]; then X='p'; fi
+    PARTITION1=${DISK}${X}1
+    PARTITION2=${DISK}${X}2
+    PARTITION3=${DISK}${X}3
+    PARTITION4=${DISK}${X}4
+}
 format_drive(){
     #wipe drive
     echo "Wiping Drive -------------------"
