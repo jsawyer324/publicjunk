@@ -1,13 +1,13 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="65"
+VERSION="67"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
 BOOTLOADER="grub" #systemd or grub
 SIZE_SWAP="8G"
-SIZE_ROOT="120G"
+SIZE_ROOT="100G"
 SIZE_MBR="1G"   #MBR size
 SIZE_ESP="1G"   #ESP - EFI System Partition
 #SIZE_SWAP="2G"
@@ -75,6 +75,14 @@ set_partitions(){
         PARTITION4=${DISK}4
     fi
 }
+# set_partitions(){
+#     X=''
+#     if [[ "${DISK}" =~ "nvme" ]]; then X='p'; fi
+#     PARTITION1=${DISK}${X}1
+#     PARTITION2=${DISK}${X}2
+#     PARTITION3=${DISK}${X}3
+#     PARTITION4=${DISK}${X}4
+# }
 format_drive(){
     #wipe drive
     echo "Wiping Drive -------------------"
@@ -129,7 +137,6 @@ setup_pacman(){
 
     pacman-key --init
     pacman-key --populate
-    #pacman -Syy
 
     sed -i 's #Color Color ; s #ParallelDownloads ParallelDownloads ' /etc/pacman.conf
     #reflector --save /etc/pacman.d/mirrorlist --country 'United States' --latest 10 --sort rate --verbose
@@ -303,12 +310,12 @@ config_install(){
 
 }
 install_all(){
-    pacstrap /mnt $COREINSTALL --noconfirm --needed
-    sleep 10
-    pacstrap /mnt $BASEINSTALL --noconfirm --needed
-    sleep 10
-    pacstrap /mnt $APPS --noconfirm --needed
-    sleep 10
+    pacstrap -K /mnt $COREINSTALL --noconfirm --needed
+    # sleep 10
+    pacstrap -K /mnt $BASEINSTALL $APPS --noconfirm --needed
+    # sleep 10
+    # pacstrap -K /mnt $APPS --noconfirm --needed
+    # sleep 10
     systemctl enable $SERVICES --root=/mnt
 }
 config_system(){
@@ -405,11 +412,11 @@ install_systemd_boot(){
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
     setup_pacman
-    sleep 10
+    # sleep 10
 # core install, Install DE and apps
     core_setup
     install_all
-    sleep 10
+    # sleep 10
 # genfstab, hostname, timezones
     config_install
 # arch-chroot, set root, create user
@@ -418,5 +425,5 @@ install_systemd_boot(){
     bootloader_install
 # reboot
     sleep 2
-    #umount -R /mnt
-    #reboot
+    umount -R /mnt
+    reboot
