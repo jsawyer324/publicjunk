@@ -310,13 +310,18 @@ config_install(){
 
 }
 install_all(){
-    pacstrap -K /mnt "${COREINSTALL}" --noconfirm --needed
+
+    echo $COREINSTALL
+    echo "${COREINSTALL}"
+    sleep 20
+
+    pacstrap -K /mnt $COREINSTALL --noconfirm --needed
     # sleep 10
-    pacstrap -K /mnt "${BASEINSTALL}" --noconfirm --needed
+    pacstrap -K /mnt $BASEINSTALL --noconfirm --needed
     # sleep 10
-    pacstrap -K /mnt "${APPS}" --noconfirm --needed
+    pacstrap -K /mnt $APPS --noconfirm --needed
     # sleep 10
-    systemctl enable "${SERVICES}" --root=/mnt
+    systemctl enable $SERVICES --root=/mnt
 }
 config_system(){
     arch-chroot /mnt /bin/bash -e <<EOF
