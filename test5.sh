@@ -353,7 +353,7 @@ install_grub_boot(){
     if [[ $UEFI ]]; then
 
         arch-chroot /mnt /bin/bash -e <<EOF
-            grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --efi-directory=/boot/efi --recheck
+            grub-install --target=x86_64-efi  --bootloader-id=${HOSTNAME} --efi-directory=/boot/efi --recheck
             grub-mkconfig -o /boot/grub/grub.cfg 
 EOF
     else
@@ -367,7 +367,7 @@ install_systemd_boot(){
     echo "Installing Systemd boot -------------------"
     bootctl --path=/mnt/boot install
     echo -e "default  arch \ntimeout  3 \neditor   no" >> /mnt/boot/loader/loader.conf
-    echo -e "title Arch Linux \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
+    echo -e "title ${HOSTNAME} \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
 }
 
 #main --------------------
