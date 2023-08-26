@@ -208,7 +208,7 @@ select_DE(){
                     SERVICES+="gdm "
                     ;;
         XFCE )      #XFCE
-                    APPS+="xfce4 xfce4-goodies lightdm lightdm-gtk-greeter ${xorg} "
+                    APPS+="xfce4 xfce4-goodies lightdm lightdm-gtk-greeter noto-fonts ${xorg} "
                     SERVICES+="lightdm "
                     ;;
         i3 )        #i3
