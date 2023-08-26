@@ -1,17 +1,17 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="69"
+VERSION="69.1"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
-BOOTLOADER="grub" #systemd or grub
-SIZE_SWAP="8G"
-SIZE_ROOT="100G"
+BOOTLOADER="systemd" #systemd or grub
+#SIZE_SWAP="8G"
+#SIZE_ROOT="100G"
 SIZE_MBR="1G"   #MBR size
 SIZE_ESP="1G"   #ESP - EFI System Partition
-#SIZE_SWAP="2G"
-#SIZE_ROOT="15G"
+SIZE_SWAP="2G"
+SIZE_ROOT="15G"
 SERVICES=""
 APPS=""
 
@@ -62,19 +62,6 @@ choose_bootloader(){
         APPS+="grub "
     fi
 }
-# set_partitions(){
-#     if [[ "${DISK}" =~ "nvme" ]]; then
-#         PARTITION1=${DISK}p1
-#         PARTITION2=${DISK}p2
-#         PARTITION3=${DISK}p3
-#         PARTITION4=${DISK}p4
-#     else
-#         PARTITION1=${DISK}1
-#         PARTITION2=${DISK}2
-#         PARTITION3=${DISK}3
-#         PARTITION4=${DISK}4
-#     fi
-# }
 set_partitions(){
     X=''
     if [[ "${DISK}" =~ "nvme" ]]; then X='p'; fi
