@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="69.1"
+VERSION="69.2"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -213,7 +213,7 @@ select_DE(){
                     ;;
         i3 )        #i3
                     APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty ${xorg} "
-                    APPS+="noto-fonts ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font "
+                    APPS+="noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font "
                     SERVICES+="lightdm "
                     ;;
         Awesome )   #Awesome - wip
