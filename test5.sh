@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="69.4"
+VERSION="69.5"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -10,10 +10,10 @@ BOOTLOADER="systemd" #systemd or grub
 #SIZE_ROOT="100G"   #main system
 SIZE_MBR="1G"       #MBR size
 SIZE_ESP="1G"       #ESP - EFI System Partition
-#SIZE_SWAP="2G"      #miniarchvm
-#SIZE_ROOT="15G"     #miniarchvm
-SIZE_SWAP="8G"      #mobilarch
-SIZE_ROOT="40G"     #mobilearch
+SIZE_SWAP="2G"      #miniarchvm
+SIZE_ROOT="15G"     #miniarchvm
+#SIZE_SWAP="8G"      #mobilarch
+#SIZE_ROOT="40G"     #mobilearch
 SERVICES=""
 APPS=""
 
