@@ -64,6 +64,8 @@ sudo ufw enable
 sudo ufw status verbose
 
 #add alias
+echo "pwd"
+pwd
 chmod +x ./reconvpn.sh
 cp ./reconvpn.sh ~/Documents/
 echo "alias reconvpn='~/Documents/reconvpn.sh'" >> ~/.bashrc
@@ -74,4 +76,4 @@ touch ~/.creds
 sudo chmod 600 ~/.creds
 
 #cleanup
-sudo pacman -Sc;yay --aur -Sc
+sudo pacman -Sc --noconfirm;yay --aur -Sc --noconfirm
