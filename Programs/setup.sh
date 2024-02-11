@@ -69,3 +69,6 @@ echo "alias reconvpn='~/Documents/reconvpn.sh'" >> ~/.bashrc
 
 #setup dir
 mkdir ~/nas
+
+#cleanup
+sudo pacman -Sc;yay --aur -Sc
