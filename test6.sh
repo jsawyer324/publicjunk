@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="2"
+VERSION="3"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -177,13 +177,18 @@ detect_hypervisor(){
 }
 detect_GPU(){
     gpu_type=$(lspci)
+    gpu="none"
     if grep -E "NVIDIA|GeForce" <<< "${gpu_type}"; then
+        gpu="nvidia"
         BASEINSTALL+="nvidia nvidia-settings nvidia-utils "
     elif lspci | grep 'VGA' | grep -E "Radeon|AMD"; then
+        gpu="amd"
         BASEINSTALL+="xf86-video-amdgpu "
     elif grep -E "Integrated Graphics Controller" <<< "${gpu_type}"; then
+        gpu="intel 1"
         BASEINSTALL+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
     elif grep -E "Intel Corporation UHD" <<< "${gpu_type}"; then
+        gpu="intel 2"
         BASEINSTALL+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
     fi
 }
@@ -268,7 +273,7 @@ confirm_settings(){
     echo "root size: ${SIZE_ROOT}"
     echo "install type: ${IT}"
     echo "DE: ${DESKTOP}"
-    echo "gpu type: ${gpu_type}"
+    echo "gpu type: ${gpu}"
     echo "hypervisor: ${hypervisor}"
     echo "HWTYPE: ${HWTYPE}"
     echo "BOOTLOADER: ${BOOTLOADER}"
