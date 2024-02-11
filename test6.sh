@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="4"
+VERSION="5"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -277,6 +277,7 @@ confirm_settings(){
     echo "hypervisor: ${hypervisor}"
     echo "HWTYPE: ${HWTYPE}"
     echo "BOOTLOADER: ${BOOTLOADER}"
+    echo -e "\n\n"
 
     read -r -p "${1:-Are you sure you want to continue? [y/N]} " response
     case "$response" in
@@ -459,6 +460,6 @@ install_systemd_boot(){
 # bootloader
     bootloader_install
 # reboot
-    sleep 2
+    #sleep 2
     umount -R /mnt
     reboot
