@@ -27,11 +27,6 @@ done
 
 sudo pacman -S networkmanager-openvpn network-manager-applet ufw --needed 
 
-sudo ufw enable
-sudo ufw default deny outgoing
-sudo ufw default deny incoming
-sudo ufw allow out on tun0 from any to any
-
 sudo nmcli con mod "${WIRED}" connection.autoconnect yes
 sudo nmcli con mod "${WIRED}" ipv6.method "disabled"
 
