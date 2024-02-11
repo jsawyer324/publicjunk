@@ -1,6 +1,7 @@
  #!/bin/sh
 
 #screenlayout
+xrandr --addmode Virtual-1 1920x1153
 xrandr --output Virtual-1 --primary --mode 1920x1153 --pos 0x0 --rotate normal
 echo "xrandr --output Virtual-1 --primary --mode 1920x1153 --pos 0x0 --rotate normal" >> ~/.bash_profile
 
