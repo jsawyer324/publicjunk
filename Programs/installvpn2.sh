@@ -30,4 +30,4 @@ sudo pacman -S networkmanager-openvpn network-manager-applet ufw --needed
 sudo nmcli con mod "${WIRED}" connection.autoconnect yes
 sudo nmcli con mod "${WIRED}" ipv6.method "disabled"
 
-sudo systemctl restart NetworkManager ufw
+sudo systemctl restart NetworkManager
