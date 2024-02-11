@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="1"
+VERSION="2"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -43,7 +43,7 @@ calculate_size(){
 }
 get_drive(){
 
-    if ["${INSTALLTYPE}" == "miniarchvm" ]; then
+    if [[ $INSTALLTYPE == "miniarchvm" ]]; then
         DISK="/dev/vda"
         SIZE_SWAP=$MINIARCH_SIZE_SWAP
         SIZE_ROOT=$MINIARCH_SIZE_ROOT
@@ -201,7 +201,7 @@ select_DE(){
         break
     done
 
-    if ["${INSTALLTYPE}" == "miniarchvm" ]; then
+    if [[ $INSTALLTYPE == "miniarchvm" ]]; then
     
         DESKTOP="XFCE"
         APPS+="xfce4 xfce4-goodies lightdm lightdm-gtk-greeter noto-fonts ${xorg} "
