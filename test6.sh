@@ -277,7 +277,16 @@ confirm_settings(){
     echo "hypervisor: ${hypervisor}"
     echo "HWTYPE: ${HWTYPE}"
     echo "BOOTLOADER: ${BOOTLOADER}"
-    sleep 30
+
+    read -r -p "${1:-Are you sure you want to continue? [y/N]} " response
+    case "$response" in
+        [yY][eE][sS]|[yY]) 
+            
+            ;;
+        *)
+            exit 0
+            ;;
+    esac
 }
 app_setup(){
     #HWTYPE: vm or metal
