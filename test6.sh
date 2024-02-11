@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="3"
+VERSION="4"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -268,7 +268,7 @@ core_setup(){
 confirm_settings(){
     echo "username: ${USERNAME}"
     echo "hostname: ${HOSTNAME}" 
-    echo "drive: ${DRIVE}"
+    echo "disk: ${DISK}"
     echo "swap size: ${SIZE_SWAP}"
     echo "root size: ${SIZE_ROOT}"
     echo "install type: ${IT}"
