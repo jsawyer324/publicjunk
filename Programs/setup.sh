@@ -21,7 +21,7 @@ yay -S --noconfirm brave-bin session-desktop-bin --needed
 WIRED="Wired connection 1"
 
 PS3="Which vpn would you like to setup: "
-select CITY in $(ls -d */)
+select CITY in $(ls -d1 */)
 do
 break
 done
