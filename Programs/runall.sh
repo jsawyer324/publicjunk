@@ -1,5 +1,6 @@
 #!/bin/sh
 
+sh ./screenlayout.sh
 sh ./setupYay.sh
 sh ./installprograms.sh
 sh ./installvpn2.sh
