@@ -1,4 +1,4 @@
-#!/bin/sh
+ #!/bin/sh
 
 #screenlayout
 xrandr --output Virtual-1 --primary --mode 1920x1153 --pos 0x0 --rotate normal
@@ -67,8 +67,10 @@ chmod +x ./reconvpn.sh
 cp ./reconvpn.sh ~/Documents/
 echo "alias reconvpn='~/Documents/reconvpn.sh'" >> ~/.bashrc
 
-#setup dir
+# pre setup files
 mkdir ~/nas
+touch ~/.creds
+sudo chmod 600 ~/.creds
 
 #cleanup
 sudo pacman -Sc;yay --aur -Sc
