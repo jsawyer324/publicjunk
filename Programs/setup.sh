@@ -5,7 +5,7 @@ xrandr --output Virtual-1 --primary --mode 1920x1153 --pos 0x0 --rotate normal
 echo "xrandr --output Virtual-1 --primary --mode 1920x1153 --pos 0x0 --rotate normal" >> ~/.bash_profile
 
 #install pacman programs
-sudo pacman -S --needed firefox torbrowser-launcher git base-devel networkmanager-openvpn network-manager-applet ufw --noconfirm
+sudo pacman -S --needed firefox torbrowser-launcher git base-devel networkmanager-openvpn network-manager-applet ufw cifs-utils --noconfirm
 
 #setup yay
 git clone https://aur.archlinux.org/yay-bin.git
@@ -67,3 +67,5 @@ chmod +x ./reconvpn.sh
 cp ./reconvpn.sh ~/Documents/
 echo "alias reconvpn='~/Documents/reconvpn.sh'" >> ~/.bashrc
 
+#setup dir
+mkdir ~/nas
