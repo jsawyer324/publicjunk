@@ -9,7 +9,7 @@
 xrandr --newmode "1920x1153"  184.75  1920 2048 2248 2576  1153 1156 1166 1196 -hsync +vsync
 xrandr --addmode Virtual-1 1920x1153
 xrandr --output Virtual-1 --primary --mode 1920x1153 --pos 0x0 --rotate normal
-echo "xrandr --output Virtual-1 --primary --mode 1920x1153 --pos 0x0 --rotate normal" >> ~/.bash_profile
+echo "xrandr --output Virtual-1 --primary --mode 1920x1153 --pos 0x0 --rotate normal" >> ~/.profile
 
 #install pacman programs
 sudo pacman -S --needed firefox torbrowser-launcher git base-devel networkmanager-openvpn network-manager-applet ufw cifs-utils --noconfirm
@@ -49,6 +49,7 @@ do
   sudo ufw allow out to "${IP}" port 1194 proto udp
   sudo ufw allow out from any to "${IP}"/24
 done
+cd ..
 
 sudo nmcli con mod "${WIRED}" connection.autoconnect yes
 sudo nmcli con mod "${WIRED}" ipv6.method "disabled"
@@ -70,8 +71,6 @@ sudo ufw enable
 sudo ufw status verbose
 
 #add alias
-echo "pwd"
-pwd
 chmod +x ./reconvpn.sh
 cp ./reconvpn.sh ~/Documents/
 echo "alias reconvpn='~/Documents/reconvpn.sh'" >> ~/.bashrc
