@@ -232,6 +232,12 @@ select_DE(){
                         APPS+="plasma-meta kde-graphics-meta kde-multimedia-meta kde-network-meta kde-system-meta kde-utilities-meta ${xorg} "
                         SERVICES+="sddm "
                         ;;
+            Plasma6 )    #KDE Plasma
+                        APPS+="gwenview okular spectacle elisa kdeconnect kio-extras dolphin ark filelight kate kcalc kcharselect kdialog 
+                        konsole kwalletmanager print-manager bluedevil kscreen kwallet-pam oxygen-sounds"
+                        APPS+="plasma-desktop plasma-disks plasma-nm plasma-pa plasma-systemmonitor powerdevil xdg-desktop-portal-kde sddm sddm-kcm ${xorg} "
+                        SERVICES+="sddm "
+                        ;;
             Gnome )     #Gnome
                         APPS+="gnome gnome-tweaks gnome-packagekit-plugin ${xorg} "
                         SERVICES+="gdm "
