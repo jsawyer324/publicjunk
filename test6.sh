@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="5"
+VERSION="6"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -16,7 +16,7 @@ SIZE_SWAP="8G"      #mobilarch
 SIZE_ROOT="40G"     #mobilearch
 SERVICES=""
 APPS=""
-AUDIO="pulse"        #pulse or pipewire
+AUDIO="pipewire"        #pulse or pipewire
 
 
 #funtions ----------------
