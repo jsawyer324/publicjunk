@@ -16,6 +16,7 @@ SIZE_SWAP="8G"      #mobilarch
 SIZE_ROOT="40G"     #mobilearch
 SERVICES=""
 APPS=""
+AUDIO="pulse"        #pulse or pipewire
 
 
 #funtions ----------------
@@ -224,7 +225,7 @@ select_DE(){
         case $DESKTOP in
             Plasma )    #KDE Plasma
                         APPS+="gwenview okular spectacle elisa kdeconnect kio-extras dolphin ark filelight kate kcalc kcharselect kdialog 
-                        konsole kwalletmanager print-manager bluedevil kinfocenter kscreen kwallet-pam oxygen-sounds plasma-desktop 
+                        konsole kwalletmanager print-manager kinfocenter kscreen kwallet-pam oxygen-sounds plasma-desktop 
                         plasma-disks plasma-nm plasma-pa plasma-systemmonitor powerdevil xdg-desktop-portal-kde sddm sddm-kcm ${xorg} "
                         SERVICES+="sddm "
                         ;;
@@ -319,14 +320,20 @@ app_setup(){
     fi
     #software
         APPS+="cmus mpv pianobar firefox "
-    #Audio
-        APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pavucontrol "
     #General
         APPS+="xdg-user-dirs "
+        
+    if [[ $AUDIO == "pulse" ]]; then
+        #Audio - pulseaudio
+        APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pulseaudio-bluetooth pavucontrol "
+    else
+        #Audio - pipewire
+        APPS+="sof-firmware pipewire pipewire-pulse pipewire-audio pipewire-alsa pavucontrol "
+    fi
 
     if [[ $HWTYPE == "metal" ]]; then
         #Bluetooth
-            APPS+="bluez bluez-utils bluedevil pulseaudio-bluetooth "
+            APPS+="bluez bluez-utils bluedevil "
             SERVICES+="bluetooth "
         #Other Drivers
             APPS+="apcupsd broadcom-wl "
