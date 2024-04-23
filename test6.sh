@@ -215,7 +215,7 @@ select_DE(){
     
     else
         PS3="Select a DE [Server]: "
-        select DE in Plasma PlasmaMeta Gnome XFCE i3 Awesome LXQT Server
+        select DE in Plasma PlasmaMeta Plasma6 Gnome XFCE i3 Awesome LXQT Server
         do
             DESKTOP=$DE
             break
@@ -235,7 +235,7 @@ select_DE(){
                         ;;
             Plasma6 )    #KDE Plasma
                         APPS+="gwenview okular spectacle kdeconnect dolphin ark filelight kate kcalc kcharselect kdialog 
-                        konsole kwalletmanager "
+                        konsole kwalletmanager plasma-nm "
                         APPS+="plasma-meta ${xorg} "
                         SERVICES+="sddm "
                         ;;
