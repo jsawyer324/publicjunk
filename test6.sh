@@ -316,7 +316,7 @@ app_setup(){
         return "$TRUE"
     fi
     if [[ $IT == "miniarchvm" ]]; then
-        APPS+="networkmanager-openvpn network-manager-applet ufw noto-fonts-emoji noto-fonts-cjk noto-fonts-extra "
+        APPS+="networkmanager-openvpn network-manager-applet ufw pacman-contrib noto-fonts-emoji noto-fonts-cjk noto-fonts-extra "
     fi
     #software
         APPS+="cmus mpv pianobar firefox "
