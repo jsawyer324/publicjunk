@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="7"
+VERSION="8"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
-BOOTLOADER="systemd" #systemd or grub
+BOOTLOADER="grub" #systemd or grub
 SIZE_SWAP="8G"     #main system
 SIZE_ROOT="100G"   #main system
 SIZE_MBR="1G"       #MBR size
