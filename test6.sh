@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="8"
+VERSION="9"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -181,7 +181,7 @@ detect_GPU(){
     gpu="none"
     if grep -E "NVIDIA|GeForce" <<< "${gpu_type}"; then
         gpu="nvidia"
-        BASEINSTALL+="nvidia nvidia-settings nvidia-utils "
+        BASEINSTALL+="nvidia-open nvidia-settings nvidia-utils "
     elif lspci | grep 'VGA' | grep -E "Radeon|AMD"; then
         gpu="amd"
         BASEINSTALL+="xf86-video-amdgpu "
