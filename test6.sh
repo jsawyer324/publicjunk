@@ -8,15 +8,18 @@ TIMEZONE="America/Chicago"
 BOOTLOADER="systemd" #systemd or grub
 SIZE_SWAP="8G"     #main system
 SIZE_ROOT="100G"   #main system
+#SIZE_SWAP="2G"     #custom
+#SIZE_ROOT="15G"   #custom
 SIZE_MBR="1G"       #MBR size
 SIZE_ESP="1G"       #ESP - EFI System Partition
-MINIARCH_SIZE_SWAP="2G"      #miniarchvm size override
-MINIARCH_SIZE_ROOT="15G"     #miniarchvm size override
-MOBILEARCH_SIZE_SWAP="8G"      #mobilarch
-MOBILEARCH_SIZE_ROOT="40G"     #mobilearch
+MINIARCH_SIZE_SWAP="2G"                 #miniarchvm size override
+MINIARCH_SIZE_ROOT="15G"                #miniarchvm size override
+MOBILEARCH_SIZE_SWAP="8G"               #mobilarch
+MOBILEARCH_SIZE_ROOT="40G"              #mobilearch
 SERVICES=""
 APPS=""
-AUDIO="pipewire"        #pulse or pipewire
+AUDIO="pipewire"                        #pulse or pipewire
+xorg="xorg-server xorg-apps xorg-xinit" #Xorg
 
 
 #funtions ----------------
@@ -44,23 +47,7 @@ calculate_size(){
 }
 get_drive(){
 
-    if [[ $INSTALLTYPE == "miniarchvm" ]]; then
-        DISK="/dev/vda"
-        SIZE_SWAP=$MINIARCH_SIZE_SWAP
-        SIZE_ROOT=$MINIARCH_SIZE_ROOT
-    elif [[ $INSTALLTYPE == "mobilearch" ]]; then
-        SIZE_SWAP=$MOBILEARCH_SIZE_SWAP
-        SIZE_ROOT=$MOBILEARCH_SIZE_ROOT
-        
-        lsblk -dpno NAME,MODEL
-        echo -ne "\nDont be dumb, the disk you choose will be erased!!\n\n"
-        PS3="Select the disk you want to use: "
-        select ENTRY in $(lsblk -dpno NAME|grep -P "/dev/sd|nvme|vd");
-        do
-            DISK=${ENTRY}
-            break
-        done
-    else
+    if [[ -z $DISK ]]; then            #if disk is unset, choose disk
         lsblk -dpno NAME,MODEL
         echo -ne "\nDont be dumb, the disk you choose will be erased!!\n\n"
         PS3="Select the disk you want to use: "
@@ -208,16 +195,34 @@ detect_GPU(){
 set_kernel(){
     KERNEL="linux"
 }
-select_DE(){
-    #Xorg
-    xorg="xorg-server xorg-apps xorg-xinit"
+select_HWTYPE(){
 
     PS3="Install Type? [minimal]: "
-    select IT in full minimal miniarchvm mobilearch
+    select IT in full minimal miniarchvm mobilearch miniarchcustom
     do
         INSTALLTYPE=$IT
         break
     done
+
+    if [[ $INSTALLTYPE == "miniarchvm" ]]; then
+        DISK="/dev/vda"
+        SIZE_SWAP=$MINIARCH_SIZE_SWAP
+        SIZE_ROOT=$MINIARCH_SIZE_ROOT
+    elif [[ $INSTALLTYPE == "mobilearch" ]]; then
+        SIZE_SWAP=$MOBILEARCH_SIZE_SWAP
+        SIZE_ROOT=$MOBILEARCH_SIZE_ROOT
+    elif [[ $INSTALLTYPE == "miniarchcustom" ]]; then
+        DISK="/dev/vda"
+        SIZE_SWAP=$MINIARCH_SIZE_SWAP
+        SIZE_ROOT=$MINIARCH_SIZE_ROOT
+    fi
+
+}
+select_DE(){
+   
+    
+
+
 
     if [[ $INSTALLTYPE == "miniarchvm" ]]; then
     
@@ -288,30 +293,6 @@ core_setup(){
     if [ "${INSTALLTYPE}" != "minimal" ]; then
         COREINSTALL+="base-devel "
     fi
-}
-confirm_settings(){
-    echo "username: ${USERNAME}"
-    echo "hostname: ${HOSTNAME}" 
-    echo "disk: ${DISK}"
-    echo "swap size: ${SIZE_SWAP}"
-    echo "root size: ${SIZE_ROOT}"
-    echo "install type: ${IT}"
-    echo "DE: ${DESKTOP}"
-    echo "gpu type: ${gpu}"
-    echo "hypervisor: ${hypervisor}"
-    echo "HWTYPE: ${HWTYPE}"
-    echo "BOOTLOADER: ${BOOTLOADER}"
-    echo -e "\n\n"
-
-    read -r -p "${1:-Are you sure you want to continue? [y/N]} " response
-    case "$response" in
-        [yY][eE][sS]|[yY]) 
-            
-            ;;
-        *)
-            exit 0
-            ;;
-    esac
 }
 app_setup(){
     #HWTYPE: vm or metal
@@ -451,6 +432,9 @@ install_systemd_boot(){
 # pick kernel
     clear
     set_kernel
+# select hardware type
+    clear
+    select_HWTYPE
 # Select DE & type (full, min etc for software bundles)
     clear
     select_DE
@@ -464,7 +448,27 @@ install_systemd_boot(){
     set_partitions
 #confirm settings
     clear
-    confirm_settings
+    echo "username: ${USERNAME}"
+    echo "hostname: ${HOSTNAME}" 
+    echo "disk: ${DISK}"
+    echo "swap size: ${SIZE_SWAP}"
+    echo "root size: ${SIZE_ROOT}"
+    echo "install type: ${IT}"
+    echo "DE: ${DESKTOP}"
+    echo "gpu type: ${gpu}"
+    echo "hypervisor: ${hypervisor}"
+    echo "HWTYPE: ${HWTYPE}"
+    echo "BOOTLOADER: ${BOOTLOADER}"
+    echo -e "\n\n"
+
+    read -r -p "${1:-Are you sure you want to continue? [y/N]} " response
+    case "$response" in
+        [yY][eE][sS]|[yY]) 
+            ;;
+        *)
+            exit 0
+            ;;
+    esac
     clear
 
 #------- all setup done, installing now  -------
