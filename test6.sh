@@ -6,14 +6,14 @@ VERSION="9"
 KERNEL="linux"
 TIMEZONE="America/Chicago"
 BOOTLOADER="systemd" #systemd or grub
-#SIZE_SWAP="8G"     #main system
-#SIZE_ROOT="100G"   #main system
+SIZE_SWAP="8G"     #main system
+SIZE_ROOT="100G"   #main system
 SIZE_MBR="1G"       #MBR size
 SIZE_ESP="1G"       #ESP - EFI System Partition
 MINIARCH_SIZE_SWAP="2G"      #miniarchvm size override
 MINIARCH_SIZE_ROOT="15G"     #miniarchvm size override
-SIZE_SWAP="8G"      #mobilarch
-SIZE_ROOT="40G"     #mobilearch
+MOBILEARCH_SIZE_SWAP="8G"      #mobilarch
+MOBILEARCH_SIZE_ROOT="40G"     #mobilearch
 SERVICES=""
 APPS=""
 AUDIO="pipewire"        #pulse or pipewire
@@ -48,6 +48,18 @@ get_drive(){
         DISK="/dev/vda"
         SIZE_SWAP=$MINIARCH_SIZE_SWAP
         SIZE_ROOT=$MINIARCH_SIZE_ROOT
+    elif [[ $INSTALLTYPE == "mobilearch" ]]; then
+        SIZE_SWAP=$MOBILEARCH_SIZE_SWAP
+        SIZE_ROOT=$MOBILEARCH_SIZE_ROOT
+        
+        lsblk -dpno NAME,MODEL
+        echo -ne "\nDont be dumb, the disk you choose will be erased!!\n\n"
+        PS3="Select the disk you want to use: "
+        select ENTRY in $(lsblk -dpno NAME|grep -P "/dev/sd|nvme|vd");
+        do
+            DISK=${ENTRY}
+            break
+        done
     else
         lsblk -dpno NAME,MODEL
         echo -ne "\nDont be dumb, the disk you choose will be erased!!\n\n"
@@ -201,7 +213,7 @@ select_DE(){
     xorg="xorg-server xorg-apps xorg-xinit"
 
     PS3="Install Type? [minimal]: "
-    select IT in full minimal miniarchvm
+    select IT in full minimal miniarchvm mobilearch
     do
         INSTALLTYPE=$IT
         break
