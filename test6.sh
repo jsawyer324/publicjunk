@@ -5,15 +5,15 @@ VERSION="9"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
-BOOTLOADER="grub" #systemd or grub
-SIZE_SWAP="8G"     #main system
-SIZE_ROOT="100G"   #main system
+BOOTLOADER="systemd" #systemd or grub
+#SIZE_SWAP="8G"     #main system
+#SIZE_ROOT="100G"   #main system
 SIZE_MBR="1G"       #MBR size
 SIZE_ESP="1G"       #ESP - EFI System Partition
 MINIARCH_SIZE_SWAP="2G"      #miniarchvm size override
 MINIARCH_SIZE_ROOT="15G"     #miniarchvm size override
-#SIZE_SWAP="8G"      #mobilarch
-#SIZE_ROOT="40G"     #mobilearch
+SIZE_SWAP="8G"      #mobilarch
+SIZE_ROOT="40G"     #mobilearch
 SERVICES=""
 APPS=""
 AUDIO="pipewire"        #pulse or pipewire
@@ -215,7 +215,7 @@ select_DE(){
     
     else
         PS3="Select a DE [Server]: "
-        select DE in Plasma PlasmaMeta Plasma6 Gnome XFCE i3 Awesome LXQT Server
+        select DE in Plasma PlasmaMeta Plasma6 Gnome XFCE i3 Awesome LXQT Hyprland Server
         do
             DESKTOP=$DE
             break
@@ -258,6 +258,11 @@ select_DE(){
             LXQT )      #LXQT
                         APPS+="lxqt xdg-utils ttf-freefont sddm libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt ${xorg} "
                         SERVICES+="sddm "
+                        ;;
+            Hyperland ) #Hyprland
+                        APPS+="hyprland lemurs "
+                        APPS+="noto-fonts noto-fonts-emoji noto-fonts-extra noto-fonts-cjk "
+                        SERVICES+="lemurs "
                         ;;
             Server )    #Server
                         ;;
@@ -328,7 +333,7 @@ app_setup(){
         APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pulseaudio-bluetooth pavucontrol "
     else
         #Audio - pipewire
-        APPS+="sof-firmware pipewire pipewire-pulse pipewire-audio pipewire-alsa pavucontrol "
+        APPS+="sof-firmware pipewire pipewire-pulse pipewire-audio pipewire-alsa pavucontrol wireplumber "
     fi
 
     if [[ $HWTYPE == "metal" ]]; then
