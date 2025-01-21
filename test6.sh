@@ -212,7 +212,7 @@ select_HWTYPE(){
         SIZE_SWAP=$MOBILEARCH_SIZE_SWAP
         SIZE_ROOT=$MOBILEARCH_SIZE_ROOT
     elif [[ $INSTALLTYPE == "miniarchcustom" ]]; then
-        DISK="/dev/vda"
+
         SIZE_SWAP=$MINIARCH_SIZE_SWAP
         SIZE_ROOT=$MINIARCH_SIZE_ROOT
     fi
