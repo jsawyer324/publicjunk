@@ -20,6 +20,7 @@ SERVICES=""
 APPS=""
 AUDIO="pipewire"                        #pulse or pipewire
 xorg="xorg-server xorg-apps xorg-xinit" #Xorg
+SEPERATE_HOME=false
 
 
 #funtions ----------------
@@ -77,7 +78,9 @@ set_partitions(){
     PARTITION1=${DISK}${X}1
     PARTITION2=${DISK}${X}2
     PARTITION3=${DISK}${X}3
-    PARTITION4=${DISK}${X}4
+    if [ "$SEPERATE_HOME" = true ]; then
+        PARTITION4=${DISK}${X}4
+    fi
 }
 format_drive(){
     #wipe drive
@@ -93,8 +96,12 @@ format_drive(){
         sgdisk -n 1::+"${SIZE_MBR}" "${DISK}" -t 1:ef02   #for bios
     fi
     sgdisk -n 2::+"${SIZE_SWAP}" "${DISK}" -t 2:8200
-    sgdisk -n 3::+"${SIZE_ROOT}" "${DISK}"
-    sgdisk -n 4:: "${DISK}"
+    if [ "$SEPERATE_HOME" = true ]; then
+        sgdisk -n 3::+"${SIZE_ROOT}" "${DISK}"
+        sgdisk -n 4:: "${DISK}"
+    else
+        sgdisk -n 3:: "${DISK}"
+    fi
 
     #format partition
     echo "Formatting Paritions -------------------"
@@ -103,13 +110,17 @@ format_drive(){
     fi
     mkswap $PARTITION2
     yes | mkfs.ext4 $PARTITION3
-    yes | mkfs.ext4 $PARTITION4
+    if [ "$SEPERATE_HOME" = true ]; then
+        yes | mkfs.ext4 $PARTITION4
+    fi
 
     #mount partitions
     echo "Mounting Partitions -------------------"
     mount $PARTITION3 /mnt
-    mkdir /mnt/home
-    mount $PARTITION4 /mnt/home
+    if [ "$SEPERATE_HOME" = true ]; then
+        mkdir /mnt/home
+        mount $PARTITION4 /mnt/home
+    fi
     swapon $PARTITION2
     
 }
@@ -459,6 +470,7 @@ install_systemd_boot(){
     echo "hypervisor: ${hypervisor}"
     echo "HWTYPE: ${HWTYPE}"
     echo "BOOTLOADER: ${BOOTLOADER}"
+    echo "Seperate Home: ${SEPERATE_HOME}"
     echo -e "\n\n"
 
     read -r -p "${1:-Are you sure you want to continue? [y/N]} " response
