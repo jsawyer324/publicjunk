@@ -1,13 +1,13 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="9"
+VERSION="10"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
 BOOTLOADER="systemd" #systemd or grub
 SIZE_SWAP="8G"     #main system
-SIZE_ROOT="100G"   #main system
+SIZE_ROOT="150G"   #main system
 #SIZE_SWAP="2G"     #custom
 #SIZE_ROOT="15G"   #custom
 SIZE_MBR="1G"       #MBR size
@@ -20,7 +20,7 @@ SERVICES=""
 APPS=""
 AUDIO="pipewire"                        #pulse or pipewire
 xorg="xorg-server xorg-apps xorg-xinit" #Xorg
-SEPERATE_HOME=false
+SEPERATE_HOME=true
 
 
 #funtions ----------------
@@ -243,7 +243,7 @@ select_DE(){
     
     else
         PS3="Select a DE [Server]: "
-        select DE in Plasma PlasmaMeta Plasma6 Gnome XFCE i3 Awesome LXQT Hyprland Server
+        select DE in Plasma PlasmaMeta Plasma6 Plasma6_wayland Gnome XFCE i3 Awesome LXQT Hyprland Server
         do
             DESKTOP=$DE
             break
@@ -266,6 +266,12 @@ select_DE(){
                         konsole kwalletmanager plasma-nm "
                         APPS+="plasma-meta ${xorg} "
                         SERVICES+="sddm "
+                        ;;
+            Plasma6_wayland )    #KDE Plasma
+                        APPS+="gwenview okular spectacle kdeconnect dolphin ark filelight kate kcalc kcharselect kdialog 
+                        konsole kwalletmanager "
+                        APPS+="plasma-meta "
+                        SERVICES+=" "
                         ;;
             Gnome )     #Gnome
                         APPS+="gnome gnome-tweaks gnome-packagekit-plugin ${xorg} "
