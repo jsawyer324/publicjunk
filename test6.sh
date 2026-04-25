@@ -277,7 +277,7 @@ select_DE(){
                         SERVICES+="sddm "
                         ;;
             Hyperland ) #Hyprland
-                        APPS+="hyprland lemurs "
+                        APPS+="hyprland lemurs waybar kitty dunst dolphin polkit-kde-agent qt5-wayland qt6-wayland "
                         APPS+="noto-fonts noto-fonts-emoji noto-fonts-extra noto-fonts-cjk "
                         SERVICES+="lemurs "
                         ;;
