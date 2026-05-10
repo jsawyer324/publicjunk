@@ -20,7 +20,7 @@ SERVICES=""
 APPS=""
 AUDIO="pipewire"                        #pulse or pipewire
 xorg="xorg-server xorg-apps xorg-xinit" #Xorg
-SEPERATE_HOME=true
+SEPERATE_HOME=false
 
 
 #funtions ----------------
