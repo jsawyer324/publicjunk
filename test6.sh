@@ -243,7 +243,7 @@ select_DE(){
     
     else
         PS3="Select a DE [Server]: "
-        select DE in Plasma PlasmaMeta Plasma6 Plasma6_wayland Gnome XFCE i3 Awesome LXQT Hyprland Server
+        select DE in Server Plasma PlasmaMeta Plasma6 Plasma6_wayland Gnome XFCE i3 Awesome LXQT Hyprland 
         do
             DESKTOP=$DE
             break
@@ -251,6 +251,8 @@ select_DE(){
     
     
         case $DESKTOP in
+            Server )    #Server
+                        ;;
             Plasma )    #KDE Plasma
                         APPS+="gwenview okular spectacle elisa kdeconnect kio-extras dolphin ark filelight kate kcalc kcharselect kdialog 
                         konsole kwalletmanager print-manager kinfocenter kscreen kwallet-pam oxygen-sounds plasma-desktop 
@@ -298,8 +300,6 @@ select_DE(){
                         APPS+="noto-fonts noto-fonts-emoji noto-fonts-extra noto-fonts-cjk "
                         SERVICES+="lemurs "
                         ;;
-            Server )    #Server
-                        ;;
             "" )        ;;
             * )         ;;
         esac
@@ -321,14 +321,14 @@ app_setup(){
         SERVICES+="sshd ntpd NetworkManager "
 
     if [[ $IT == "minimal" ]]; then
-        return "$TRUE"
+        return 0
     fi
     if [[ $IT == "full" ]]; then
         #networking
             APPS+="samba cifs-utils nfs-utils ntfs-3g rsync "
     fi
     if [[ $DESKTOP == "Server" ]]; then
-        return "$TRUE"
+        return 0
     fi
     if [[ $IT == "miniarchvm" ]]; then
         APPS+="networkmanager-openvpn network-manager-applet ufw pacman-contrib noto-fonts-emoji noto-fonts-cjk noto-fonts-extra "
