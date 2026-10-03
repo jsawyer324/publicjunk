@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="14"
+VERSION="15"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -204,7 +204,7 @@ detect_GPU(){
         BASEINSTALL+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
     elif grep -E "UHD Graphics 620" <<< "${gpu_type}"; then
         gpu="intel 3"
-        BASEINSTALL+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
+        BASEINSTALL+="mesa vulkan-intel intel-media-driver "
     fi
 }
 set_kernel(){
@@ -379,12 +379,13 @@ install_all(){
     sleep 20
 
     pacstrap -K /mnt $COREINSTALL --noconfirm --needed
-    $TESTING && sleep 10
+    $TESTING && { echo "after coreinstall"; sleep 10; }
     pacstrap -K /mnt $BASEINSTALL --noconfirm --needed
-    $TESTING && sleep 10
+    $TESTING && { echo "after baseinstall"; sleep 10; }
     pacstrap -K /mnt $APPS --noconfirm --needed
-    $TESTING && sleep 10
+    $TESTING && { echo "after apps"; sleep 10; }
     systemctl enable $SERVICES --root=/mnt
+    $TESTING && { echo "after services"; sleep 10; }
 }
 config_system(){
     arch-chroot /mnt /bin/bash -e <<EOF
@@ -501,18 +502,18 @@ install_systemd_boot(){
 
 # wipe drive, partition disk, format partition, mount partitions
     format_drive
-    $TESTING && sleep 10
+    $TESTING && { echo "after format"; sleep 10; }
 #set bootloader
     set_bootloader
 # timedatectl
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
     setup_pacman
-    $TESTING && sleep 10
+    $TESTING && { echo "after setup pacman"; sleep 10; }
 # core install, Install DE and apps
     core_setup
     install_all
-    $TESTING && sleep 10
+    $TESTING && { echo "just ran install_all"; sleep 10; }
 # genfstab, hostname, timezones
     config_install
 # arch-chroot, set root, create user
@@ -520,6 +521,6 @@ install_systemd_boot(){
 # bootloader
     bootloader_install
 # reboot
-    $TESTING && sleep 10
+    $TESTING && { echo "rebooting"; sleep 10; }
     umount -R /mnt
     reboot
