@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="10"
+VERSION="13"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -20,7 +20,7 @@ SERVICES=""
 APPS=""
 AUDIO="pipewire"                        #pulse or pipewire
 xorg="xorg-server xorg-apps xorg-xinit" #Xorg
-SEPERATE_HOME=false
+SEPERATE_HOME=true
 
 
 #funtions ----------------
@@ -200,6 +200,9 @@ detect_GPU(){
         BASEINSTALL+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
     elif grep -E "Intel Corporation UHD" <<< "${gpu_type}"; then
         gpu="intel 2"
+        BASEINSTALL+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
+    elif grep -E "UHD Graphics 620" <<< "${gpu_type}"; then
+        gpu="intel 3"
         BASEINSTALL+="libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa "
     fi
 }
@@ -477,6 +480,10 @@ install_systemd_boot(){
     echo "HWTYPE: ${HWTYPE}"
     echo "BOOTLOADER: ${BOOTLOADER}"
     echo "Seperate Home: ${SEPERATE_HOME}"
+    echo "CoreInstall: ${COREINSTALL}"
+    echo "BaseInstall: ${BASEINSTALL}"
+    echo "Services: ${SERVICES}"
+    echo "Apps: ${APPS}"
     echo -e "\n\n"
 
     read -r -p "${1:-Are you sure you want to continue? [y/N]} " response
