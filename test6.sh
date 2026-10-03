@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="15"
+VERSION="16"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -355,7 +355,7 @@ app_setup(){
             APPS+="bluez bluez-utils bluedevil "
             SERVICES+="bluetooth "
         #Other Drivers
-            APPS+="apcupsd broadcom-wl "
+            APPS+="apcupsd broadcom-wl-dkms "
             SERVICES+="apcupsd "
     fi
     
