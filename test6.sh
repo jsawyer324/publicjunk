@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="13"
+VERSION="14"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -21,6 +21,7 @@ APPS=""
 AUDIO="pipewire"                        #pulse or pipewire
 xorg="xorg-server xorg-apps xorg-xinit" #Xorg
 SEPERATE_HOME=true
+TESTING=true    #add sleep between commands to slow it down
 
 
 #funtions ----------------
@@ -378,11 +379,11 @@ install_all(){
     sleep 20
 
     pacstrap -K /mnt $COREINSTALL --noconfirm --needed
-    # sleep 10
+    $TESTING && sleep 10
     pacstrap -K /mnt $BASEINSTALL --noconfirm --needed
-    # sleep 10
+    $TESTING && sleep 10
     pacstrap -K /mnt $APPS --noconfirm --needed
-    # sleep 10
+    $TESTING && sleep 10
     systemctl enable $SERVICES --root=/mnt
 }
 config_system(){
@@ -500,18 +501,18 @@ install_systemd_boot(){
 
 # wipe drive, partition disk, format partition, mount partitions
     format_drive
-    #sleep 30
+    $TESTING && sleep 10
 #set bootloader
     set_bootloader
 # timedatectl
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
     setup_pacman
-    # sleep 10
+    $TESTING && sleep 10
 # core install, Install DE and apps
     core_setup
     install_all
-    # sleep 10
+    $TESTING && sleep 10
 # genfstab, hostname, timezones
     config_install
 # arch-chroot, set root, create user
@@ -519,6 +520,6 @@ install_systemd_boot(){
 # bootloader
     bootloader_install
 # reboot
-    #sleep 2
+    $TESTING && sleep 10
     umount -R /mnt
     reboot
