@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="16"
+VERSION="17"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -22,7 +22,9 @@ AUDIO="pipewire"                        #pulse or pipewire
 xorg="xorg-server xorg-apps xorg-xinit" #Xorg
 SEPERATE_HOME=true
 TESTING=true    #add sleep between commands to slow it down
-
+GREEN='\033[0;32m' # green color
+RED='\033[0;31m'
+NC='\033[0m' # No Color / Reset
 
 #funtions ----------------
 show_version(){
@@ -374,18 +376,16 @@ config_install(){
 }
 install_all(){
 
-    echo $COREINSTALL
     echo "${COREINSTALL}"
-    sleep 20
 
     pacstrap -K /mnt $COREINSTALL --noconfirm --needed
-    $TESTING && { echo "after coreinstall"; sleep 10; }
+    $TESTING && { echo -e "${GREEN}after coreinstall${NC}"; sleep 10; }
     pacstrap -K /mnt $BASEINSTALL --noconfirm --needed
-    $TESTING && { echo "after baseinstall"; sleep 10; }
+    $TESTING && { echo -e "${GREEN}after baseinstall${NC}"; sleep 10; }
     pacstrap -K /mnt $APPS --noconfirm --needed
-    $TESTING && { echo "after apps"; sleep 10; }
+    $TESTING && { echo -e  "${GREEN}after apps${NC}"; sleep 10; }
     systemctl enable $SERVICES --root=/mnt
-    $TESTING && { echo "after services"; sleep 10; }
+    $TESTING && { echo -e "${GREEN}after services${NC}"; sleep 10; }
 }
 config_system(){
     arch-chroot /mnt /bin/bash -e <<EOF
@@ -502,18 +502,18 @@ install_systemd_boot(){
 
 # wipe drive, partition disk, format partition, mount partitions
     format_drive
-    $TESTING && { echo "after format"; sleep 10; }
+    $TESTING && { echo -e "${GREEN}after format${NC}"; sleep 10; }
 #set bootloader
     set_bootloader
 # timedatectl
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
     setup_pacman
-    $TESTING && { echo "after setup pacman"; sleep 10; }
+    $TESTING && { echo -e "${GREEN}after setup pacman${NC}"; sleep 10; }
 # core install, Install DE and apps
     core_setup
     install_all
-    $TESTING && { echo "just ran install_all"; sleep 10; }
+    $TESTING && { echo -e "${GREEN}just ran install_all${NC}"; sleep 10; }
 # genfstab, hostname, timezones
     config_install
 # arch-chroot, set root, create user
@@ -521,6 +521,6 @@ install_systemd_boot(){
 # bootloader
     bootloader_install
 # reboot
-    $TESTING && { echo "rebooting"; sleep 10; }
+    $TESTING && { echo -e "${GREEN}rebooting${NC}"; sleep 10; }
     umount -R /mnt
     reboot
