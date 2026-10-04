@@ -250,7 +250,7 @@ select_DE(){
     
     else
         PS3="Select a DE [Server]: "
-        select DE in Server Plasma PlasmaMeta Plasma6 Plasma6_wayland Gnome XFCE i3 Awesome LXQT Hyprland 
+        select DE in Server Plasma Plasma_wayland Gnome XFCE i3 Awesome LXQT Hyprland 
         do
             DESKTOP=$DE
             break
@@ -261,22 +261,12 @@ select_DE(){
             Server )    #Server
                         ;;
             Plasma )    #KDE Plasma
-                        APPS+="gwenview okular spectacle elisa kdeconnect kio-extras dolphin ark filelight kate kcalc kcharselect kdialog 
-                        konsole kwalletmanager print-manager kinfocenter kscreen kwallet-pam oxygen-sounds plasma-desktop 
-                        plasma-disks plasma-nm plasma-pa plasma-systemmonitor powerdevil xdg-desktop-portal-kde sddm sddm-kcm ${xorg} "
-                        SERVICES+="sddm "
-                        ;;
-            PlasmaMeta )    #KDE Plasma
-                        APPS+="plasma-meta kde-graphics-meta kde-multimedia-meta kde-network-meta kde-system-meta kde-utilities-meta ${xorg} "
-                        SERVICES+="sddm "
-                        ;;
-            Plasma6 )    #KDE Plasma
                         APPS+="gwenview okular spectacle kdeconnect dolphin ark filelight kate kcalc kcharselect kdialog 
                         konsole kwalletmanager plasma-login-manager "
                         APPS+="plasma-meta ${xorg} "
                         SERVICES+="plasmalogin "
                         ;;
-            Plasma6_wayland )    #KDE Plasma
+            Plasma_wayland )    #KDE Plasma
                         APPS+="gwenview okular spectacle kdeconnect dolphin ark filelight kate kcalc kcharselect kdialog 
                         konsole kwalletmanager plasma-login-manager "
                         APPS+="plasma-meta "
@@ -302,7 +292,7 @@ select_DE(){
                         APPS+="lxqt xdg-utils ttf-freefont sddm libpulse libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons pavucontrol-qt ${xorg} "
                         SERVICES+="sddm "
                         ;;
-            Hyperland ) #Hyprland
+            Hyprland ) #Hyprland
                         APPS+="hyprland lemurs waybar kitty dunst dolphin polkit-kde-agent qt5-wayland qt6-wayland "
                         APPS+="noto-fonts noto-fonts-emoji noto-fonts-extra noto-fonts-cjk "
                         SERVICES+="lemurs "
@@ -439,6 +429,41 @@ install_systemd_boot(){
     echo -e "default  arch \ntimeout  3 \neditor   no" >> /mnt/boot/loader/loader.conf
     echo -e "title ${HOSTNAME} \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
 }
+confirm_settings(){
+    echo "username: ${USERNAME}"
+    echo "hostname: ${HOSTNAME}" 
+    echo "disk: ${DISK}"
+    echo "swap size: ${SIZE_SWAP}"
+    echo "root size: ${SIZE_ROOT}"
+    echo "install type: ${IT}"
+    echo "DE: ${DESKTOP}"
+    echo "gpu type: ${gpu}"
+    echo "hypervisor: ${hypervisor}"
+    echo "HWTYPE: ${HWTYPE}"
+    echo "BOOTLOADER: ${BOOTLOADER}"
+    echo "Seperate Home: ${SEPERATE_HOME}"
+    echo "CoreInstall: ${COREINSTALL}"
+    echo "BaseInstall: ${BASEINSTALL}"
+    echo "Services: ${SERVICES}"
+    echo "Apps: ${APPS}"
+    echo -e "\n\n"
+
+    read -r -p "${1:-Are you sure you want to continue? [y/N]} " response
+    case "$response" in
+        [yY][eE][sS]|[yY]) 
+            ;;
+        *)
+            exit 0
+            ;;
+    esac
+    clear
+}
+testing_pause(){
+    $TESTING && sleep 10
+}
+message(){
+    echo -e "${RED}${1}${NC}"
+}
 
 #main --------------------
 
@@ -471,39 +496,15 @@ install_systemd_boot(){
     set_partitions
 #confirm settings
     clear
-    echo "username: ${USERNAME}"
-    echo "hostname: ${HOSTNAME}" 
-    echo "disk: ${DISK}"
-    echo "swap size: ${SIZE_SWAP}"
-    echo "root size: ${SIZE_ROOT}"
-    echo "install type: ${IT}"
-    echo "DE: ${DESKTOP}"
-    echo "gpu type: ${gpu}"
-    echo "hypervisor: ${hypervisor}"
-    echo "HWTYPE: ${HWTYPE}"
-    echo "BOOTLOADER: ${BOOTLOADER}"
-    echo "Seperate Home: ${SEPERATE_HOME}"
-    echo "CoreInstall: ${COREINSTALL}"
-    echo "BaseInstall: ${BASEINSTALL}"
-    echo "Services: ${SERVICES}"
-    echo "Apps: ${APPS}"
-    echo -e "\n\n"
-
-    read -r -p "${1:-Are you sure you want to continue? [y/N]} " response
-    case "$response" in
-        [yY][eE][sS]|[yY]) 
-            ;;
-        *)
-            exit 0
-            ;;
-    esac
-    clear
+    confirm_settings
 
 #------- all setup done, installing now  -------
 
 # wipe drive, partition disk, format partition, mount partitions
     format_drive
-    $TESTING && { echo -e "${GREEN}after format${NC}"; sleep 10; }
+    message "after format"
+    testing_pause
+    #$TESTING && { echo -e "${GREEN}after format${NC}"; sleep 10; }
 #set bootloader
     set_bootloader
 # timedatectl
