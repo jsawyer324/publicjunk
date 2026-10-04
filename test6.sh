@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="18"
+VERSION="19"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
