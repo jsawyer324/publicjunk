@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="17"
+VERSION="18"
 #FILESYSTEM="ext4"   #not currently used
 KERNEL="linux"
 TIMEZONE="America/Chicago"
@@ -21,12 +21,13 @@ APPS=""
 AUDIO="pipewire"                        #pulse or pipewire
 xorg="xorg-server xorg-apps xorg-xinit" #Xorg
 SEPERATE_HOME=true
-TESTING=true    #add sleep between commands to slow it down
-GREEN='\033[0;32m' # green color
-RED='\033[0;31m'
-NC='\033[0m' # No Color / Reset
+#--------------------------
+TESTING=true            #add sleep between commands to slow it down
+GREEN='\033[0;32m'      # green color
+RED='\033[0;31m'        # red color
+NC='\033[0m'            # No Color / Reset
 
-#funtions ----------------
+#functions ----------------
 show_version(){
     echo "Version "$VERSION
 }
@@ -271,15 +272,15 @@ select_DE(){
                         ;;
             Plasma6 )    #KDE Plasma
                         APPS+="gwenview okular spectacle kdeconnect dolphin ark filelight kate kcalc kcharselect kdialog 
-                        konsole kwalletmanager plasma-nm "
+                        konsole kwalletmanager plasma-login-manager "
                         APPS+="plasma-meta ${xorg} "
-                        SERVICES+="sddm "
+                        SERVICES+="plasmalogin "
                         ;;
             Plasma6_wayland )    #KDE Plasma
                         APPS+="gwenview okular spectacle kdeconnect dolphin ark filelight kate kcalc kcharselect kdialog 
-                        konsole kwalletmanager "
+                        konsole kwalletmanager plasma-login-manager "
                         APPS+="plasma-meta "
-                        SERVICES+=" "
+                        SERVICES+="plasmalogin "
                         ;;
             Gnome )     #Gnome
                         APPS+="gnome gnome-tweaks gnome-packagekit-plugin ${xorg} "
