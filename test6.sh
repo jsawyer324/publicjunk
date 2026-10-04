@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="19"
-#FILESYSTEM="ext4"   #not currently used
-KERNEL="linux"
+VERSION="21"
+#FILESYSTEM="ext4"    #not currently used
+KERNEL="linux"        #not currently used
 TIMEZONE="America/Chicago"
 BOOTLOADER="systemd" #systemd or grub
 SIZE_SWAP="8G"     #main system
@@ -293,7 +293,7 @@ select_DE(){
                         SERVICES+="sddm "
                         ;;
             Hyprland ) #Hyprland
-                        APPS+="hyprland lemurs waybar kitty dunst dolphin polkit-kde-agent qt5-wayland qt6-wayland "
+                        APPS+="hyprland hyprlauncher lemurs waybar kitty dunst dolphin polkit-kde-agent qt5-wayland qt6-wayland "
                         APPS+="noto-fonts noto-fonts-emoji noto-fonts-extra noto-fonts-cjk "
                         SERVICES+="lemurs "
                         ;;
@@ -348,8 +348,10 @@ app_setup(){
             APPS+="bluez bluez-utils bluedevil "
             SERVICES+="bluetooth "
         #Other Drivers
-            APPS+="apcupsd broadcom-wl-dkms "
-            SERVICES+="apcupsd "
+            # APPS+="apcupsd broadcom-wl-dkms "
+            # SERVICES+="apcupsd "
+            APPS+="broadcom-wl-dkms "
+            SERVICES+=" "
     fi
     
 }
