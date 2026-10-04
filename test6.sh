@@ -262,13 +262,13 @@ select_DE(){
                         ;;
             Plasma )    #KDE Plasma
                         APPS+="gwenview okular spectacle kdeconnect dolphin ark filelight kate kcalc kcharselect kdialog 
-                        konsole kwalletmanager plasma-login-manager "
+                        konsole kwalletmanager plasma-login-manager bluedevil "
                         APPS+="plasma-meta ${xorg} "
                         SERVICES+="plasmalogin "
                         ;;
             Plasma_wayland )    #KDE Plasma
                         APPS+="gwenview okular spectacle kdeconnect dolphin ark filelight kate kcalc kcharselect kdialog 
-                        konsole kwalletmanager plasma-login-manager "
+                        konsole kwalletmanager plasma-login-manager bluedevil "
                         APPS+="plasma-meta "
                         SERVICES+="plasmalogin "
                         ;;
@@ -281,7 +281,7 @@ select_DE(){
                         SERVICES+="lightdm "
                         ;;
             i3 )        #i3
-                        APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty polybar rofi network-manager-applet ${xorg} "
+                        APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty polybar rofi network-manager-applet blueman ${xorg} "
                         APPS+="noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font ttf-nerd-fonts-symbols "
                         SERVICES+="lightdm "
                         ;;
@@ -345,7 +345,7 @@ app_setup(){
 
     if [[ $HWTYPE == "metal" ]]; then
         #Bluetooth
-            APPS+="bluez bluez-utils bluedevil "
+            APPS+="bluez bluez-utils "
             SERVICES+="bluetooth "
         #Other Drivers
             # APPS+="apcupsd broadcom-wl-dkms "
