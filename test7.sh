@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="18"
-#FILESYSTEM="ext4"   #not currently used
-KERNEL="linux"
+VERSION="21"
+#FILESYSTEM="ext4"    #not currently used
+KERNEL="linux"        #not currently used
 TIMEZONE="America/Chicago"
 BOOTLOADER="systemd" #systemd or grub
 SIZE_SWAP="8G"     #main system
@@ -60,39 +60,15 @@ NC='\033[0m'            # No Color / Reset
     set_partitions
 #confirm settings
     clear
-    echo "username: ${USERNAME}"
-    echo "hostname: ${HOSTNAME}" 
-    echo "disk: ${DISK}"
-    echo "swap size: ${SIZE_SWAP}"
-    echo "root size: ${SIZE_ROOT}"
-    echo "install type: ${IT}"
-    echo "DE: ${DESKTOP}"
-    echo "gpu type: ${gpu}"
-    echo "hypervisor: ${hypervisor}"
-    echo "HWTYPE: ${HWTYPE}"
-    echo "BOOTLOADER: ${BOOTLOADER}"
-    echo "Seperate Home: ${SEPERATE_HOME}"
-    echo "CoreInstall: ${COREINSTALL}"
-    echo "BaseInstall: ${BASEINSTALL}"
-    echo "Services: ${SERVICES}"
-    echo "Apps: ${APPS}"
-    echo -e "\n\n"
-
-    read -r -p "${1:-Are you sure you want to continue? [y/N]} " response
-    case "$response" in
-        [yY][eE][sS]|[yY]) 
-            ;;
-        *)
-            exit 0
-            ;;
-    esac
-    clear
+    confirm_settings
 
 #------- all setup done, installing now  -------
 
 # wipe drive, partition disk, format partition, mount partitions
     format_drive
-    $TESTING && { echo -e "${GREEN}after format${NC}"; sleep 10; }
+    message "after format"
+    testing_pause
+    #$TESTING && { echo -e "${GREEN}after format${NC}"; sleep 10; }
 #set bootloader
     set_bootloader
 # timedatectl
@@ -326,6 +302,10 @@ select_HWTYPE(){
 
 }
 select_DE(){
+   
+    
+
+
 
     if [[ $INSTALLTYPE == "miniarchvm" ]]; then
     
@@ -335,7 +315,7 @@ select_DE(){
     
     else
         PS3="Select a DE [Server]: "
-        select DE in Server Plasma6 Plasma6_wayland Gnome XFCE i3 Awesome LXQT Hyprland 
+        select DE in Server Plasma Plasma_wayland Gnome XFCE i3 Awesome LXQT Hyprland 
         do
             DESKTOP=$DE
             break
@@ -345,15 +325,15 @@ select_DE(){
         case $DESKTOP in
             Server )    #Server
                         ;;
-            Plasma6 )    #KDE Plasma
+            Plasma )    #KDE Plasma
                         APPS+="gwenview okular spectacle kdeconnect dolphin ark filelight kate kcalc kcharselect kdialog 
-                        konsole kwalletmanager plasma-login-manager "
+                        konsole kwalletmanager plasma-login-manager bluedevil "
                         APPS+="plasma-meta ${xorg} "
                         SERVICES+="plasmalogin "
                         ;;
-            Plasma6_wayland )    #KDE Plasma
+            Plasma_wayland )    #KDE Plasma
                         APPS+="gwenview okular spectacle kdeconnect dolphin ark filelight kate kcalc kcharselect kdialog 
-                        konsole kwalletmanager plasma-login-manager "
+                        konsole kwalletmanager plasma-login-manager bluedevil "
                         APPS+="plasma-meta "
                         SERVICES+="plasmalogin "
                         ;;
@@ -366,8 +346,8 @@ select_DE(){
                         SERVICES+="lightdm "
                         ;;
             i3 )        #i3
-                        APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty polybar rofi ${xorg} "
-                        APPS+="noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font "
+                        APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty polybar rofi network-manager-applet blueman ${xorg} "
+                        APPS+="noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font ttf-nerd-fonts-symbols "
                         SERVICES+="lightdm "
                         ;;
             Awesome )   #Awesome - wip
@@ -378,7 +358,7 @@ select_DE(){
                         SERVICES+="sddm "
                         ;;
             Hyprland ) #Hyprland
-                        APPS+="hyprland lemurs waybar kitty dunst dolphin polkit-kde-agent qt5-wayland qt6-wayland "
+                        APPS+="hyprland hyprlauncher lemurs waybar kitty dunst dolphin polkit-kde-agent qt5-wayland qt6-wayland "
                         APPS+="noto-fonts noto-fonts-emoji noto-fonts-extra noto-fonts-cjk "
                         SERVICES+="lemurs "
                         ;;
@@ -430,11 +410,13 @@ app_setup(){
 
     if [[ $HWTYPE == "metal" ]]; then
         #Bluetooth
-            APPS+="bluez bluez-utils bluedevil "
+            APPS+="bluez bluez-utils "
             SERVICES+="bluetooth "
         #Other Drivers
-            APPS+="apcupsd broadcom-wl-dkms "
-            SERVICES+="apcupsd "
+            # APPS+="apcupsd broadcom-wl-dkms "
+            # SERVICES+="apcupsd "
+            APPS+="broadcom-wl-dkms "
+            SERVICES+=" "
     fi
     
 }
@@ -513,4 +495,39 @@ install_systemd_boot(){
     bootctl --path=/mnt/boot install
     echo -e "default  arch \ntimeout  3 \neditor   no" >> /mnt/boot/loader/loader.conf
     echo -e "title ${HOSTNAME} \nlinux /vmlinuz-linux \ninitrd /initramfs-linux.img \noptions root=${PARTITION3} rw" >> /mnt/boot/loader/entries/arch.conf
+}
+confirm_settings(){
+    echo "username: ${USERNAME}"
+    echo "hostname: ${HOSTNAME}" 
+    echo "disk: ${DISK}"
+    echo "swap size: ${SIZE_SWAP}"
+    echo "root size: ${SIZE_ROOT}"
+    echo "install type: ${IT}"
+    echo "DE: ${DESKTOP}"
+    echo "gpu type: ${gpu}"
+    echo "hypervisor: ${hypervisor}"
+    echo "HWTYPE: ${HWTYPE}"
+    echo "BOOTLOADER: ${BOOTLOADER}"
+    echo "Seperate Home: ${SEPERATE_HOME}"
+    echo "CoreInstall: ${COREINSTALL}"
+    echo "BaseInstall: ${BASEINSTALL}"
+    echo "Services: ${SERVICES}"
+    echo "Apps: ${APPS}"
+    echo -e "\n\n"
+
+    read -r -p "${1:-Are you sure you want to continue? [y/N]} " response
+    case "$response" in
+        [yY][eE][sS]|[yY]) 
+            ;;
+        *)
+            exit 0
+            ;;
+    esac
+    clear
+}
+testing_pause(){
+    $TESTING && sleep 10
+}
+message(){
+    echo -e "${RED}${1}${NC}"
 }
