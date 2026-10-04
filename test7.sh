@@ -25,6 +25,7 @@ SEPERATE_HOME=true
 TESTING=true            #add sleep between commands to slow it down
 GREEN='\033[0;32m'      # green color
 RED='\033[0;31m'        # red color
+CYAN='\033[0;36m'       # cyan color
 NC='\033[0m'            # No Color / Reset
 
 
@@ -65,29 +66,38 @@ NC='\033[0m'            # No Color / Reset
 #------- all setup done, installing now  -------
 
 # wipe drive, partition disk, format partition, mount partitions
+    message "Formatting Drive"
     format_drive
-    message "after format"
     testing_pause
     #$TESTING && { echo -e "${GREEN}after format${NC}"; sleep 10; }
 #set bootloader
+    message "Set Bootloader"
     set_bootloader
 # timedatectl
+    message "Set Time"
     set_time
 # setup pacman, update, pacstrap, update mirrors etc
+    message "Setup Pacman"
     setup_pacman
-    $TESTING && { echo -e "${GREEN}after setup pacman${NC}"; sleep 10; }
+    testing_pause
 # core install, Install DE and apps
+    message "core setup"
     core_setup
+    message "install all"
     install_all
-    $TESTING && { echo -e "${GREEN}just ran install_all${NC}"; sleep 10; }
+    testing_pause
 # genfstab, hostname, timezones
+    message "config install"
     config_install
 # arch-chroot, set root, create user
+    message "confiig system"
     config_system
 # bootloader
+    message "bootloader install"
     bootloader_install
 # reboot
-    $TESTING && { echo -e "${GREEN}rebooting${NC}"; sleep 10; }
+    message "rebooting"
+    testing_pause
     umount -R /mnt
     reboot
 
@@ -302,10 +312,6 @@ select_HWTYPE(){
 
 }
 select_DE(){
-   
-    
-
-
 
     if [[ $INSTALLTYPE == "miniarchvm" ]]; then
     
@@ -346,7 +352,8 @@ select_DE(){
                         SERVICES+="lightdm "
                         ;;
             i3 )        #i3
-                        APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty polybar rofi network-manager-applet blueman ${xorg} "
+                        # APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty polybar rofi network-manager-applet blueman ${xorg} "
+                        APPS+="i3-wm i3lock numlockx lightdm lightdm-gtk-greeter ranger kitty polybar rofi network-manager-applet blueman ${xorg} "
                         APPS+="noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font ttf-nerd-fonts-symbols "
                         SERVICES+="lightdm "
                         ;;
@@ -405,7 +412,8 @@ app_setup(){
         APPS+="sof-firmware pulseaudio pulseaudio-alsa alsa-utils pulseaudio-bluetooth pavucontrol "
     else
         #Audio - pipewire
-        APPS+="sof-firmware pipewire pipewire-pulse pipewire-audio pipewire-alsa pavucontrol wireplumber "
+        # APPS+="sof-firmware pipewire pipewire-pulse pipewire-audio pipewire-alsa pavucontrol wireplumber "
+        APPS+="sof-firmware pipewire pipewire-audio pipewire-alsa pavucontrol "
     fi
 
     if [[ $HWTYPE == "metal" ]]; then
@@ -433,17 +441,22 @@ config_install(){
 
 }
 install_all(){
-
-    echo "${COREINSTALL}"
-
+   
+    message "core install"
     pacstrap -K /mnt $COREINSTALL --noconfirm --needed
-    $TESTING && { echo -e "${GREEN}after coreinstall${NC}"; sleep 10; }
+    testing_pause
+    
+    message "base install"
     pacstrap -K /mnt $BASEINSTALL --noconfirm --needed
-    $TESTING && { echo -e "${GREEN}after baseinstall${NC}"; sleep 10; }
+    testing_pause
+    
+    message "install apps"
     pacstrap -K /mnt $APPS --noconfirm --needed
-    $TESTING && { echo -e  "${GREEN}after apps${NC}"; sleep 10; }
+    testing_pause
+    
+    message "enable services"
     systemctl enable $SERVICES --root=/mnt
-    $TESTING && { echo -e "${GREEN}after services${NC}"; sleep 10; }
+    # testing_pause - not needed 
 }
 config_system(){
     arch-chroot /mnt /bin/bash -e <<EOF
@@ -529,5 +542,6 @@ testing_pause(){
     $TESTING && sleep 10
 }
 message(){
-    echo -e "${RED}${1}${NC}"
+    echo -e "${CYAN}${1}${NC}"
+    sleep 1
 }
