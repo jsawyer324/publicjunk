@@ -282,7 +282,7 @@ select_DE(){
                         ;;
             i3 )        #i3
                         APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty polybar rofi ${xorg} "
-                        APPS+="noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font "
+                        APPS+="noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font ttf-nerd-fonts-symbols "
                         SERVICES+="lightdm "
                         ;;
             Awesome )   #Awesome - wip
