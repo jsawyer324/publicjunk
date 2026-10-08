@@ -321,7 +321,7 @@ select_DE(){
     
     else
         PS3="Select a DE [Server]: "
-        select DE in Server Plasma Plasma_wayland Gnome XFCE i3 Awesome LXQT Hyprland 
+        select DE in Server Plasma Plasma_wayland Gnome XFCE i3 i3v2 Awesome LXQT Hyprland 
         do
             DESKTOP=$DE
             break
@@ -354,6 +354,12 @@ select_DE(){
             i3 )        #i3
                         # APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty polybar rofi network-manager-applet blueman ${xorg} "
                         APPS+="i3-wm i3lock numlockx lightdm lightdm-gtk-greeter ranger picom kitty polybar rofi network-manager-applet blueman ${xorg} "
+                        APPS+="noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font ttf-nerd-fonts-symbols "
+                        SERVICES+="lightdm "
+                        ;;
+            i3v2 )        #i3
+                        # APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty polybar rofi network-manager-applet blueman ${xorg} "
+                        APPS+="i3-wm i3lock numlockx lightdm lightdm-gtk-greeter ranger picom kitty polybar rofi network-manager-applet blueman xorg-server "
                         APPS+="noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font ttf-nerd-fonts-symbols "
                         SERVICES+="lightdm "
                         ;;
