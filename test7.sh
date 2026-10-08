@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #config ------------------
-VERSION="21"
+VERSION="22"
 #FILESYSTEM="ext4"    #not currently used
 KERNEL="linux"        #not currently used
 TIMEZONE="America/Chicago"
@@ -28,78 +28,6 @@ RED='\033[0;31m'        # red color
 CYAN='\033[0;36m'       # cyan color
 NC='\033[0m'            # No Color / Reset
 
-
-
-#main --------------------
-
-# detect cpu, gpu, hypervisor
-    detect_CPU
-    detect_GPU
-    detect_hypervisor
-# Customize User details, name, pass, hostname
-    clear
-    show_version
-    get_usersetup
-    clear
-    get_hostname
-# pick kernel
-    clear
-    set_kernel
-# select hardware type
-    clear
-    select_HWTYPE
-# Select DE & type (full, min etc for software bundles)
-    clear
-    select_DE
-    app_setup
-# Choose bootloader, detect if UEFI or BIOS
-    choose_bootloader
-# Select disk.
-    clear
-    get_drive
-    calculate_size
-    set_partitions
-#confirm settings
-    clear
-    confirm_settings
-
-#------- all setup done, installing now  -------
-
-# wipe drive, partition disk, format partition, mount partitions
-    message "Formatting Drive"
-    format_drive
-    testing_pause
-    #$TESTING && { echo -e "${GREEN}after format${NC}"; sleep 10; }
-#set bootloader
-    message "Set Bootloader"
-    set_bootloader
-# timedatectl
-    message "Set Time"
-    set_time
-# setup pacman, update, pacstrap, update mirrors etc
-    message "Setup Pacman"
-    setup_pacman
-    testing_pause
-# core install, Install DE and apps
-    message "core setup"
-    core_setup
-    message "install all"
-    install_all
-    testing_pause
-# genfstab, hostname, timezones
-    message "config install"
-    config_install
-# arch-chroot, set root, create user
-    message "confiig system"
-    config_system
-# bootloader
-    message "bootloader install"
-    bootloader_install
-# reboot
-    message "rebooting"
-    testing_pause
-    umount -R /mnt
-    reboot
 
 
 #functions ----------------
@@ -551,3 +479,76 @@ message(){
     echo -e "${CYAN}${1}${NC}"
     sleep 1
 }
+
+
+
+#main --------------------
+
+# detect cpu, gpu, hypervisor
+    detect_CPU
+    detect_GPU
+    detect_hypervisor
+# Customize User details, name, pass, hostname
+    clear
+    show_version
+    get_usersetup
+    clear
+    get_hostname
+# pick kernel
+    clear
+    set_kernel
+# select hardware type
+    clear
+    select_HWTYPE
+# Select DE & type (full, min etc for software bundles)
+    clear
+    select_DE
+    app_setup
+# Choose bootloader, detect if UEFI or BIOS
+    choose_bootloader
+# Select disk.
+    clear
+    get_drive
+    calculate_size
+    set_partitions
+#confirm settings
+    clear
+    confirm_settings
+
+#------- all setup done, installing now  -------
+
+# wipe drive, partition disk, format partition, mount partitions
+    message "Formatting Drive"
+    format_drive
+    testing_pause
+    #$TESTING && { echo -e "${GREEN}after format${NC}"; sleep 10; }
+#set bootloader
+    message "Set Bootloader"
+    set_bootloader
+# timedatectl
+    message "Set Time"
+    set_time
+# setup pacman, update, pacstrap, update mirrors etc
+    message "Setup Pacman"
+    setup_pacman
+    testing_pause
+# core install, Install DE and apps
+    message "core setup"
+    core_setup
+    message "install all"
+    install_all
+    testing_pause
+# genfstab, hostname, timezones
+    message "config install"
+    config_install
+# arch-chroot, set root, create user
+    message "confiig system"
+    config_system
+# bootloader
+    message "bootloader install"
+    bootloader_install
+# reboot
+    message "rebooting"
+    testing_pause
+    umount -R /mnt
+    reboot
