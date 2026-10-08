@@ -353,7 +353,7 @@ select_DE(){
                         ;;
             i3 )        #i3
                         # APPS+="i3-wm i3blocks i3lock i3status numlockx lightdm lightdm-gtk-greeter ranger dmenu kitty polybar rofi network-manager-applet blueman ${xorg} "
-                        APPS+="i3-wm i3lock numlockx lightdm lightdm-gtk-greeter ranger kitty polybar rofi network-manager-applet blueman ${xorg} "
+                        APPS+="i3-wm i3lock numlockx lightdm lightdm-gtk-greeter ranger picom kitty polybar rofi network-manager-applet blueman ${xorg} "
                         APPS+="noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-dejavu ttf-freefont ttf-liberation ttf-droid ttf-roboto terminus-font ttf-nerd-fonts-symbols "
                         SERVICES+="lightdm "
                         ;;
